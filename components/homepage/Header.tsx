@@ -47,13 +47,13 @@ function Header() {
             </div>
 
             {/* NAVBAR */}
-            <div className=' w-full bg-[#008000] flex overflow-x-auto whitespace-nowrap md:justify-between gap-6 py-3.5 px-4 md:px-24 font-alata text-[19px]'>
+            <nav className=' w-full bg-[#008000] flex overflow-x-auto whitespace-nowrap md:justify-between gap-6 py-3.5 px-4 md:px-24 font-alata text-[19px]'>
                 {
                     nav.map((items, index) =>
                         <Link key={index} href={items.path}>{items.name}</Link>
                     )}
 
-            </div>
+            </nav>
         </div>
     )
 }
