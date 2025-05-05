@@ -21,13 +21,13 @@ function Header() {
     return (
         <div className='pt-3 md:pt-[26px]'>
             {/* TOPBAR */}
-            <div className='w-full py-1.5 bg-[#008000] flex items-center justify-between px-3 md:px-[26px]'>
+            <div className='w-full py-1.5 bg-[#008000] flex items-center justify-between px-3 md:px-[26px] text-white'>
                 <p className='text-[13px] font-alata'>Read Today's Paper</p>
                 <p className='text-[13px] font-alata'>28 Baishak 2082, Monday</p>
             </div>
 
             {/* LOGO */}
-            <div className='flex w-full justify-between items-center px-3 md:px-9'>
+            <div className='flex w-full justify-between items-center px-3 md:px-9 pt-4'>
                 <div className='md:w-[436px] md:h-[94px] w-[150px] h-[40px] relative'>
                     <Image
                         src={'/images/homepage/Logo.png'}
@@ -47,7 +47,7 @@ function Header() {
             </div>
 
             {/* NAVBAR */}
-            <nav className=' w-full bg-[#008000] flex overflow-x-auto whitespace-nowrap md:justify-between gap-6 py-3.5 px-4 md:px-24 font-alata text-[19px]'>
+            <nav className=' w-full bg-[#008000] flex overflow-x-auto whitespace-nowrap md:justify-between gap-6 py-3.5 px-4 md:px-24 font-alata text-[19px] text-white'>
                 {
                     nav.map((items, index) =>
                         <Link key={index} href={items.path}>{items.name}</Link>
