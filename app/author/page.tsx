@@ -79,7 +79,7 @@ function page() {
                 <div className='w-[319px] h-[319px] bg-[#d9d9d9] rounded-full '></div>
                 <div className='font-jost font-[400] w-[629px] flex flex-col gap-3'>
                     <p className='text-[96px] text-[#9e9e9e]'>Sandeep Thapa</p>
-                    <p className='text-[#545657] text-[16px]'>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
+                    <p className='text-[#545657] text-[16px]'>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using &apos;Content here, content here&apos;, making it look like readable English.</p>
                     <div className='flex gap-6 absolute mt-60 ml-96'>
                         <div className='p-2 bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center border-2 border-black'><FaFacebookF size={20} /></div>
                         <div className='p-2 bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center border-2 border-black'><FaTwitter /></div>

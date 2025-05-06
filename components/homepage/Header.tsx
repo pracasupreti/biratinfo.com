@@ -22,7 +22,7 @@ function Header() {
         <div className='pt-3 md:pt-[26px]'>
             {/* TOPBAR */}
             <div className='w-full py-1.5 bg-[#008000] flex items-center justify-between px-3 md:px-[26px] text-white'>
-                <p className='text-[13px] font-alata'>Read Today's Paper</p>
+                <p className='text-[13px] font-alata'>Read Today&apos;s Paper</p>
                 <p className='text-[13px] font-alata'>28 Baishak 2082, Monday</p>
             </div>
 

@@ -22,13 +22,13 @@ function BottomBar() {
                 <PaginationItem className='border-3 rounded-[5px]'>
                     <PaginationPrevious href="#" />
                 </PaginationItem>
-                <PaginationItem className={`${current === 1 ? 'bg-[#2656fe] text-white border-[#2656fe] border-3 rounded-[5px]' : 'border-3 rounded-[5px]'} `} >
+                <PaginationItem className={`${current === 1 ? 'bg-[#2656fe] text-white border-[#2656fe] border-3 rounded-[5px]' : 'border-3 rounded-[5px]'} `} onClick={() => setCurrent(1)}>
                     <PaginationLink href="#">1</PaginationLink>
                 </PaginationItem>
-                <PaginationItem className={`${current === 2 ? 'bg-[#2656fe] text-white border-[#2656fe] border-3 rounded-[5px]' : 'border-3 rounded-[5px]'} `} >
+                <PaginationItem className={`${current === 2 ? 'bg-[#2656fe] text-white border-[#2656fe] border-3 rounded-[5px]' : 'border-3 rounded-[5px]'} `} onClick={() => setCurrent(2)} >
                     <PaginationLink href="#">2</PaginationLink>
                 </PaginationItem>
-                <PaginationItem className={`${current === 3 ? 'bg-[#2656fe] text-white border-[#2656fe] border-3 rounded-[5px]' : 'border-3 rounded-[5px]'} `}>
+                <PaginationItem className={`${current === 3 ? 'bg-[#2656fe] text-white border-[#2656fe] border-3 rounded-[5px]' : 'border-3 rounded-[5px]'} `} onClick={() => setCurrent(3)}>
                     <PaginationLink href="#">3</PaginationLink>
                 </PaginationItem>
                 <PaginationItem className='border-3 rounded-[5px]'>

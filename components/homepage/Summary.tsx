@@ -29,7 +29,7 @@ function Summary() {
             <div className='flex flex-col text-center items-center justify-center gap-5'>
                 <div className='md:w-[673px] md:h-[448px] w-[373px] h-[248px] bg-[url(/images/homepage/SummaryImage1.png)] bg-cover bg-no-repeat bg-center' />
                 <p className='text-[#939393] font-orienta text-[20px]'>Politics</p>
-                <p className='text-black font-ibm_plex_serif font-[700] text-[30px] px-48'>Self-care for four-years-old's? The rise
+                <p className='text-black font-ibm_plex_serif font-[700] text-[30px] px-48'>Self-care for four-years-old&apos;s? The rise
                     of pre-teen beauty therapies</p>
                 <p className='text-[#808080] font-ibm_plex_serif font-[500] text-[18px] px-60'>As the “get ready with me” trend goes into overdrive on TikTok,
                     some skincare therapists are sounding warning about the
