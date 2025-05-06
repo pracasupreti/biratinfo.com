@@ -62,7 +62,7 @@ function Employment() {
                         <p className='text-[#808080] font-inter font-[500] text-[13px] max-w-[308px] max-h-[96px]'>{items.description}</p>
                         <div className='flex items-center gap-2'>
                             <MessageSquareIcon size={16} stroke='#808080' />
-                            <p className='text-[#808080] font-inter font-[500] text-[13px]'>6</p>
+                            <p className='text-[#808080] font-inter font-[500] text-[13px]'>{items.comment}</p>
                             {items.index === 3 || items.index === 4 ? <TrendingUpIcon size={16} stroke='#808080' /> : ''}
 
                         </div>
