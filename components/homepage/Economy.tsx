@@ -3,56 +3,64 @@ import { Button } from '../ui/button'
 import Image from 'next/image'
 
 function Economy() {
-    const Economy = [
+    const economy = [
         {
             description: 'Pinecone’s new serverless architecture hopes to make the vector database more versatile',
-            imageUrl: '/images/homepage/Economy2.png'
+            imageUrl: '/images/homepage/Economy2.png',
         },
         {
             description: 'Ready or not, here come the AI agents',
-            imageUrl: '/images/homepage/Economy3.png'
+            imageUrl: '/images/homepage/Economy3.png',
         },
         {
             description: 'Hudi’s backers could have the missing piece in the push for data format unity',
-            imageUrl: '/images/homepage/Economy1.png'
+            imageUrl: '/images/homepage/Economy1.png',
         },
         {
             description: 'Why using generative AI server to replace junior employee could backfire ',
-            imageUrl: '/images/homepage/Economy4.png'
+            imageUrl: '/images/homepage/Economy4.png',
         },
     ]
+
     return (
-        <div className='flex flex-col gap-16 pb-10'>
-            <div className='flex flex-col gap-2'>
-                <p className='text-[#939393] font-orienta text-[20px] pl-20'>Economy</p>
-                <div className='w-full h-[3px] bg-[#ebebeb]' />
+        <section className="flex flex-col gap-16 pb-10 px-4 sm:px-8 md:px-20">
+            <div className="flex flex-col gap-2 max-w-screen-4xl w-full mx-auto">
+                <p className="text-[#939393] font-orienta text-[20px]">Economy</p>
+                <div className="w-full h-[3px] bg-[#ebebeb]" />
             </div>
-            <div className='flex flex-col gap-20'>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-24 mx-auto'>
-                    {Economy.map((items, index) =>
-                        <div key={index} className='flex gap-4'>
-                            <div className='min-w-[318px] h-[165px] relative'>
+
+            <div className="flex flex-col gap-20 max-w-screen-2xl w-full mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-16">
+                    {economy.map((item, index) => (
+                        <div key={index} className="flex flex-col lg:flex-row gap-6">
+                            <div className="w-full aspect-[16/9] relative">
                                 <Image
-                                    src={items.imageUrl}
-                                    alt=''
+                                    src={item.imageUrl}
+                                    alt=""
                                     fill
-                                    objectFit='contain'
+                                    className="object-contain rounded-md"
                                 />
                             </div>
-                            <div className='flex flex-col gap-4'>
-                                <p className='text-black font-ibm_plex_serif font-[700] text-[20px] max-w-[309px] max-h-[105px] '>{items.description}</p>
-                                <p className='text-[#808080] font-roboto font-[500] text-[13px] flex items-center gap-x-2'>
+
+                            <div className="flex flex-col gap-4 w-full" >
+                                <p className="text-black font-ibm_plex_serif font-bold text-[18px] md:text-[20px] leading-snug md:mt-1">
+                                    {item.description}
+                                </p>
+                                <p className="text-[#808080] font-roboto font-medium text-[13px] flex items-center gap-x-2">
                                     <span>TOM KRAZIT</span>
                                     <span>.</span>
                                     <span>FEB 18, 2025</span>
                                 </p>
                             </div>
                         </div>
-                    )}
+                    ))}
                 </div>
-                <Button className='w-[344px] h-[42px] bg-white border-1 border-[#c9c9c9] text-[#939393] font-roboto font-[600] text-[20px] text-center mx-auto'>Browse More</Button>
+
+                <Button className="w-full max-w-[344px] h-[42px] bg-white border border-[#c9c9c9] text-[#939393] font-roboto font-semibold text-[20px] text-center mx-auto">
+                    Browse More
+                </Button>
             </div>
-        </div>
+        </section>
     )
 }
 

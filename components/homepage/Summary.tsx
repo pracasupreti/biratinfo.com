@@ -5,56 +5,60 @@ function Summary() {
     const summary = [
         {
             title: 'Society',
-            description: 'After becoming a parent, I developed an Intense fear of dying',
+            description: 'After becoming a parent, I developed an intense fear of dying',
             imageUrl: '/images/homepage/SummaryImage2.png'
         },
         {
-            title: 'Health(Advertorial )',
+            title: 'Health (Advertorial)',
             description: 'Should I tell the braless friend of a friend that her breasts wobble?',
             imageUrl: '/images/homepage/SummaryImage5.png'
         },
         {
             title: 'Startups',
-            description: 'The shies Rebecca Harding  has worn to death-and what she’ll buy next',
+            description: 'The shoes Rebecca Harding has worn to death — and what she’ll buy next',
             imageUrl: '/images/homepage/SummaryImage3.png'
         },
         {
             title: 'Economy',
-            description: ' Confused about skincare trends?  This is what you need to know ',
+            description: 'Confused about skincare trends? This is what you need to know',
             imageUrl: '/images/homepage/SummaryImage4.png'
         },
     ]
-    return (
-        <div className='md:flex-row flex flex-col px-12 md:px-20 pb-10'>
-            <div className='flex flex-col text-center items-center justify-center gap-5'>
-                <div className='md:w-[673px] md:h-[448px] w-[373px] h-[248px] bg-[url(/images/homepage/SummaryImage1.png)] bg-cover bg-no-repeat bg-center' />
-                <p className='text-[#939393] font-orienta text-[20px]'>Politics</p>
-                <p className='text-black font-ibm_plex_serif font-[700] text-[30px] px-48'>Self-care for four-years-old&apos;s? The rise
-                    of pre-teen beauty therapies</p>
-                <p className='text-[#808080] font-ibm_plex_serif font-[500] text-[18px] px-60'>As the “get ready with me” trend goes into overdrive on TikTok,
-                    some skincare therapists are sounding warning about the
-                    potential for long-term damage</p>
-            </div>
-            <div>
-                <div className='grid md:grid-cols-2 grid-cols-1 gap-y-12'>
-                    {summary.map((items, index) =>
-                        <div key={index} className='flex flex-col gap-4'>
-                            <div className='w-[260px] h-[173px] relative'>
-                                <Image
-                                    src={items.imageUrl}
-                                    alt=''
-                                    fill
-                                    objectFit='contain'
-                                />
-                            </div>
-                            <p className='text-[#939393] font-orienta text-[16px] '>{items.title}</p>
-                            <p className='text-black font-ibm_plex_serif font-[700] text-[19px] md:pr-20'>{items.description}</p>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
 
+    return (
+        <section className="w-full px-4 sm:px-6 lg:px-20 py-10 flex flex-col lg:flex-row gap-16">
+            <div className="flex flex-col text-center items-center lg:items-start lg:text-left lg:w-1/2 gap-4">
+                <div className="w-full h-[240px] sm:h-[320px] lg:h-[448px] rounded-xl bg-[url('/images/homepage/SummaryImage1.png')] bg-cover bg-center" />
+                <p className="text-[#939393] font-orienta text-base sm:text-lg">Politics</p>
+                <h2 className="text-black font-ibm_plex_serif font-bold text-xl sm:text-2xl lg:text-3xl">
+                    Self-care for four-year-olds? The rise of pre-teen beauty therapies
+                </h2>
+                <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg">
+                    As the “get ready with me” trend goes into overdrive on TikTok,
+                    some skincare therapists are sounding warning about the
+                    potential for long-term damage.
+                </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-x-6 gap-y-14 xl:gap-y-6 lg:w-1/2">
+                {summary.map((item, index) => (
+                    <div key={index} className="flex flex-col gap-3">
+                        <div className="relative w-full h-[180px] sm:h-[200px] rounded-md overflow-hidden">
+                            <Image
+                                src={item.imageUrl}
+                                alt={item.title}
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+                        <p className="text-[#939393] font-orienta text-sm">{item.title}</p>
+                        <h3 className="text-black font-ibm_plex_serif font-semibold text-base sm:text-lg">
+                            {item.description}
+                        </h3>
+                    </div>
+                ))}
+            </div>
+        </section>
     )
 }
 

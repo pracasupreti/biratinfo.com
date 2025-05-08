@@ -35,52 +35,54 @@ function Society() {
             imageUrl: '/images/homepage/SocietyImage4.png'
         },
         {
-            description: 'The Snowflake breaches are ecposing the limits of cloud security’s shared-responsibility model',
+            description: 'The Snowflake breaches are exposing the limits of cloud security’s shared-responsibility model',
             imageUrl: '/images/homepage/SocietyImage5.png'
         },
     ]
 
     return (
         <div className='flex flex-col gap-16 pb-10'>
-            <div className='flex flex-col gap-2'>
-                <p className='text-[#939393] font-orienta text-[20px] pl-20'>Society</p>
+            <div className='flex flex-col gap-2 px-4 sm:px-10 lg:px-20'>
+                <p className='text-[#939393] font-orienta text-[20px]'>Society</p>
                 <div className='w-full h-[3px] bg-[#ebebeb]' />
             </div>
-            <div className='flex justify-evenly'>
-                {Society1.map((items, index) =>
-                    <div className='flex flex-col gap-6' key={index}>
 
-                        <div className='w-[417px] h-[237px] relative'>
+            <div className='grid gap-10 px-4 sm:px-10 lg:px-20 md:grid-cols-2 xl:grid-cols-3'>
+                {Society1.map((item, index) => (
+                    <div className='flex flex-col gap-6' key={index}>
+                        <div className='w-full aspect-[16/9] relative'>
                             <Image
-                                src={items.imageUrl}
+                                src={item.imageUrl}
                                 alt=''
                                 fill
-                                objectFit='contain'
+                                className='object-cover rounded-md'
                             />
                         </div>
-                        <p className='font-roboto font-[400] text-[22px] text-black max-w-[339px] max-h-[77px]'>{items.title}</p>
-                        <p className='font-inter font-[500] text-[14px] text-[#808080] max-w-[339px]'>{items.description}</p>
+                        <p className='font-roboto font-[400] text-[20px] text-black'>{item.title}</p>
+                        <p className='font-inter font-[500] text-[14px] text-[#808080]'>{item.description}</p>
                         <div className='flex items-center gap-4'>
                             <div className='h-[27px] w-[27px] rounded-full bg-[#808080]' />
-                            <span className='font-inter font-[500] text-[18px] text-[#808080]'>Grant Trant</span>
+                            <span className='font-inter font-[500] text-[16px] text-[#808080]'>Grant Trant</span>
                         </div>
                     </div>
-                )}
+                ))}
             </div>
-            <div className='flex flex-col gap-20'>
-                <div className='flex gap-y-12 items-start justify-evenly'>
-                    {Society2.map((items, index) =>
+
+
+            <div className='flex flex-col gap-20 px-4 sm:px-10 lg:px-20'>
+                <div className='grid gap-10 sm:grid-cols-2 lg:grid-cols-4'>
+                    {Society2.map((item, index) => (
                         <div key={index} className='flex flex-col gap-4'>
-                            <div className='min-w-[285px] h-[186px] relative'>
+                            <div className='w-full aspect-[3/2] relative'>
                                 <Image
-                                    src={items.imageUrl}
+                                    src={item.imageUrl}
                                     alt=''
                                     fill
-                                    objectFit='contain'
+                                    className='object-cover rounded-md'
                                 />
                             </div>
-                            <div className='flex flex-col gap-4'>
-                                <p className='text-black font-ibm_plex_serif font-[700] text-[20px] max-w-[295px] max-h-[150px] '>{items.description}</p>
+                            <div className='flex flex-col gap-2'>
+                                <p className='text-black font-ibm_plex_serif font-[700] text-[18px]'>{item.description}</p>
                                 <p className='text-[#808080] font-roboto font-[500] text-[13px] flex items-center gap-x-2'>
                                     <span>TOM KRAZIT</span>
                                     <span>.</span>
@@ -88,9 +90,13 @@ function Society() {
                                 </p>
                             </div>
                         </div>
-                    )}
+                    ))}
                 </div>
-                <Button className='w-[344px] h-[42px] bg-white border-1 border-[#c9c9c9] text-[#939393] font-roboto font-[600] text-[20px] text-center mx-auto'>Browse More</Button>
+
+                {/* Button */}
+                <Button className='w-[80%] sm:w-[344px] h-[42px] bg-white border border-[#c9c9c9] text-[#939393] font-roboto font-[600] text-[18px] mx-auto'>
+                    Browse More
+                </Button>
             </div>
         </div>
     )

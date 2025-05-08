@@ -18,44 +18,54 @@ function Header() {
         { name: "Entertainment", path: "/entertainment" },
         { name: "Market", path: "/market" }
     ];
+
     return (
-        <div className='pt-3 md:pt-[26px]'>
+        <header className='pt-3 md:pt-6'>
             {/* TOPBAR */}
-            <div className='w-full py-1.5 bg-[#008000] flex items-center justify-between px-3 md:px-[26px] text-white'>
-                <p className='text-[13px] font-alata'>Read Today&apos;s Paper</p>
-                <p className='text-[13px] font-alata'>28 Baishak 2082, Monday</p>
+            <div className='w-full py-1.5 bg-[#008000] flex flex-col sm:flex-row items-center justify-between px-3 md:px-6 text-white'>
+                <p className='text-sm font-alata text-center sm:text-left'>
+                    Read Today&apos;s Paper
+                </p>
+                <p className='text-sm font-alata text-center sm:text-right'>
+                    28 Baishak 2082, Monday
+                </p>
             </div>
 
-            {/* LOGO */}
-            <div className='flex w-full justify-between items-center px-3 md:px-9 pt-4'>
-                <div className='md:w-[436px] md:h-[94px] w-[150px] h-[40px] relative'>
+            {/* LOGOS */}
+            <div className='flex flex-col md:flex-row items-center justify-between w-full px-3 md:px-9 pt-4 gap-4'>
+                <div className='relative w-full max-w-[180px] md:max-w-[280px] aspect-[4/1]'>
                     <Image
-                        src={'/images/homepage/Logo.png'}
-                        alt=''
+                        src='/images/homepage/Logo.png'
+                        alt='Site Logo'
                         fill
-                        objectFit='contain'
+                        className='object-contain'
                     />
                 </div>
-                <div className='md:w-[817px] md:h-[124px] w-[200px] h-[60px] relative'>
+                <div className='relative w-full max-w-[280px] md:max-w-[500px] aspect-[6/1]'>
                     <Image
-                        src={'/images/homepage/NMB.png'}
-                        alt=''
+                        src='/images/homepage/NMB.png'
+                        alt='Sponsor Logo'
                         fill
-                        objectFit='contain'
+                        className='object-contain'
                     />
                 </div>
             </div>
 
             {/* NAVBAR */}
-            <nav className=' w-full bg-[#008000] flex overflow-x-auto whitespace-nowrap md:justify-between gap-6 py-3.5 px-4 md:px-24 font-alata text-[19px] text-white'>
-                {
-                    nav.map((items, index) =>
-                        <Link key={index} href={items.path}>{items.name}</Link>
-                    )}
+            <nav className='w-full bg-[#008000] flex overflow-x-auto whitespace-nowrap gap-6 py-3.5 px-4 md:px-6 xl:px-24 font-alata text-[15px] sm:text-[17px] md:text-[19px] text-white scrollbar-hide md:justify-between items-center'>
 
+                {nav.map((item, index) => (
+                    <Link
+                        key={index}
+                        href={item.path}
+                        className='shrink-0 hover:underline transition duration-200'
+                    >
+                        {item.name}
+                    </Link>
+                ))}
             </nav>
-        </div>
-    )
+        </header>
+    );
 }
 
-export default Header
+export default Header;
