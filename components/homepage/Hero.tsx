@@ -1,5 +1,6 @@
 import { CircleIcon, Clock2Icon, TagIcon } from 'lucide-react'
 import React from 'react'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 function Hero() {
     return (
@@ -16,7 +17,11 @@ function Hero() {
 
                 <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-5 md:gap-6 xl:gap-16 text-xs sm:text-sm md:text-base font-normal">
                     <p className="flex items-center gap-2">
-                        <CircleIcon className="w-5 h-5 sm:w-6 sm:h-6" fill="#d9d9d9" color="#d9d9d9" />
+                        <Avatar>
+                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+
                         Prakash Thapa
                     </p>
                     <p className="flex items-center gap-2">
