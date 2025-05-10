@@ -6,7 +6,7 @@ import { UserRoundIcon } from 'lucide-react'
 
 function Footer() {
     return (
-        <div className='bg-[#008000] pb-10 w-full'>
+        <div className='bg-[#008000] pb-10 w-full overflow-x-hidden'>
             <div className='flex flex-col md:flex-row justify-between items-center px-4 md:px-10 pt-10 gap-6'>
                 <div className='w-[150px] h-[40px] md:w-[280px] md:h-[67px] relative'>
                     <Image
@@ -56,7 +56,7 @@ function Footer() {
                         <p className='text-[13px]'>their mortages</p>
                         <p className='text-[13px]'>early.After all,that’s</p>
                     </div>
-                    <div className='flex flex-col gap-6 md:mt-20'>
+                    <div className='flex flex-col gap-6 md:mt-14'>
                         <p className='text-[13px]'>Most mortgage</p>
                         <p className='text-[13px]'>Lenders would rather</p>
                         <p className='text-[13px]'>people didn’t pay off</p>

@@ -1,0 +1,95 @@
+import React from 'react';
+import Image from 'next/image';
+
+function Page() {
+    const SocialMedia = [
+        {
+            path: '/images/singlepage/facebook.svg'
+        },
+        {
+            path: '/images/singlepage/instagram.svg'
+        },
+        {
+            path: '/images/singlepage/linkedin.svg'
+        },
+        {
+            path: '/images/singlepage/pinterest.svg'
+        },
+        {
+            path: '/images/singlepage/snapchat.svg'
+        },
+        {
+            path: '/images/singlepage/telegram.svg'
+        },
+        {
+            path: '/images/singlepage/tiktok.svg'
+        },
+        {
+            path: '/images/singlepage/viber.svg'
+        },
+        {
+            path: '/images/singlepage/youtube.svg'
+        },
+    ]
+    return (
+        <div className="flex flex-col gap-12 ">
+            <div className='h-[80vh] w-full bg-[#888888] relative'>
+                <div className='bg-[#d7d7d7] w-[90%] h-[30%] absolute left-0 right-0 mx-auto bottom-[-15%] rounded-2xl'>
+                    {/* IMAGE */}
+                </div>
+            </div>
+            <div className=' w-full max-w-screen-3xl px-4 md:px-24 md:text-start text-center flex flex-col gap-4 md:gap-8 font-[400] text-[20px] md:mt-24 mt-10'>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's...</p>
+            </div>
+            <div className='w-full max-w-screen-3xl px-4 md:px-24 flex flex-col md:flex-row items-center gap-10'>
+                <div className='w-full md:w-1/2 flex flex-col gap-6 text-center md:text-start'>
+                    <p className='font-[700] text-[40px] md:text-[40px]'>Lorem Ipsum is simply dummy text</p>
+                    <p className='font-[400] text-[20px] md:text-[20px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                    <p className='font-[400] text-[20px] md:text-[20px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s stan–</p>
+                    <p className='font-[400] text-[20px] md:text-[20px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                    <p className='font-[400] text-[20px] md:text-[20px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type–</p>
+                </div>
+
+                <div className='w-full md:w-2/5 h-[40vh] bg-[#888888] mx-auto'>
+                    {/* IMAGE */}
+                </div>
+            </div>
+            <div className='w-full max-w-screen-3xl px-4 md:px-24 text-center md:text-start'>
+                <p className='font-[700] text-[40px] md:text-[40px]'>Lorem Ipsum is simply dummy text</p>
+                <p className='font-[400] text-[20px] md:text-[20px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            </div>
+            <div className='w-full max-w-screen-3xl px-4 md:px-24 text-center md:text-start flex flex-col gap-6'>
+                <p className='font-[700] text-[40px] md:text-[40px]'>Conclusion</p>
+                <p className='font-[400] text-[20px] md:text-[20px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                <p className='font-[400] text-[20px] md:text-[20px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            </div>
+            <div className='flex max-w-screen-xl mx-auto gap-4'>
+                {SocialMedia.map((items, index) =>
+                    <div className='md:w-10 w-7 h-10 relative' key={index}>
+                        <Image src={items.path} alt='' fill className='object-contain' />
+                    </div>
+                )}
+
+            </div>
+            <div className='mb-20 flex flex-col gap-6'>
+                <p className='font-[700] text-[36px] text-center'>Related News</p>
+                <div className='max-w-screen-3xl flex md:gap-3 gap-8 px-4 md:px-24 md:flex-row flex-col items-center'>
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <div key={i} className='w-full md:max-w-2/3'>
+                            <div className="w-full lg:h-[25vh] md:h-[15vh] h-[30vh] bg-[#888888]"></div>
+                            <div >
+                                <p className='font-[700] text-[36px]'>'Partying with Rebels': Shock rumours swirled Rachelle's murder</p>
+                                <p>Rachelle Childs 'partied with bikies who killed her and severed her fingers'. This was one rumour peddled following her gruesome murder. Listen to the podcast and watch the video.</p>
+                            </div>
+                        </div>
+                    ))}
+
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Page
