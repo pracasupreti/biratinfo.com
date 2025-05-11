@@ -10,7 +10,7 @@ function Society() {
             imageUrl: '/images/homepage/SocietyImage1.png'
         },
         {
-            title: 'Gratitude Railroad: From Wall Street to Impact Investing ',
+            title: '3B Raised, 500M lives impacted: Inside Leapfrog Investment\'s Bold Vision ',
             description: 'Today, I\'m joined by Dr. Andy Kuper, Founderand CEO of Leapfrog Investment, a pioneering firm that has reshaped how global capital can drive profit with purpose.',
             imageUrl: '/images/homepage/SocietyImage2.png'
         },
@@ -23,11 +23,11 @@ function Society() {
 
     const Society2 = [
         {
-            description: 'Wiz is a multicloud security rocket ship. Now it works for a cloud provider',
+            description: 'A very basic error caused the Crowd Strike outage. Windows security may never be the same',
             imageUrl: '/images/homepage/SocietyImage7.png'
         },
         {
-            description: 'Post-quantum security tools are here. Do enterprise really need them now?',
+            description: 'A very basic error caused the Crowd Strike outage. Windows security may never be the same',
             imageUrl: '/images/homepage/SocietyImage6.png'
         },
         {
@@ -47,7 +47,7 @@ function Society() {
                 <div className='w-full h-[3px] bg-[#ebebeb]' />
             </div>
 
-            <div className='grid gap-10 px-4 sm:px-10 lg:px-20 md:grid-cols-2 xl:grid-cols-3'>
+            <div className='grid gap-10 px-4 sm:px-10 lg:px-20 md:grid-cols-2 lg:grid-cols-3'>
                 {Society1.map((item, index) => (
                     <div className='flex flex-col gap-6' key={index}>
                         <div className='w-full aspect-[16/9] relative'>
@@ -58,7 +58,7 @@ function Society() {
                                 className='object-cover rounded-md'
                             />
                         </div>
-                        <p className='font-roboto font-[400] text-[20px] text-black md:min-h-24'>{item.title}</p>
+                        <p className='font-roboto font-[400] text-[20px] text-black'>{item.title}</p>
                         <p className='font-inter font-[500] text-[14px] text-[#808080]'>{item.description}</p>
                         <div className='flex items-center gap-4'>
                             <div className='h-[27px] w-[27px] rounded-full bg-[#808080]' />
@@ -93,7 +93,6 @@ function Society() {
                     ))}
                 </div>
 
-                {/* Button */}
                 <Button className='w-[80%] sm:w-[344px] h-[42px] bg-white border border-[#c9c9c9] text-[#939393] font-roboto font-[600] text-[18px] mx-auto'>
                     Browse More
                 </Button>

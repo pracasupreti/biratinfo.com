@@ -9,15 +9,15 @@ function Economy() {
             imageUrl: '/images/homepage/Economy2.png',
         },
         {
-            description: 'Ready or not, here come the AI agents',
+            description: 'Pinecone’s new serverless architecture hopes to make the vector database more versatile',
             imageUrl: '/images/homepage/Economy3.png',
         },
         {
-            description: 'Hudi’s backers could have the missing piece in the push for data format unity',
+            description: 'Pinecone’s new serverless architecture hopes to make the vector database more versatile',
             imageUrl: '/images/homepage/Economy1.png',
         },
         {
-            description: 'Why using generative AI server to replace junior employee could backfire ',
+            description: 'Pinecone’s new serverless architecture hopes to make the vector database more versatile',
             imageUrl: '/images/homepage/Economy4.png',
         },
     ]

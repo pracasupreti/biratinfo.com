@@ -52,7 +52,7 @@ function Header() {
             </div>
 
             {/* NAVBAR */}
-            <nav className='w-full bg-[#008000] flex overflow-x-auto whitespace-nowrap gap-6 py-3.5 px-4 md:px-6 xl:px-24 font-alata text-[15px] sm:text-[17px] md:text-[19px] text-white scrollbar-hide md:justify-between items-center'>
+            <nav className='w-full bg-[#008000] flex overflow-x-auto whitespace-nowrap gap-6 py-3.5 px-4 md:px-6 xl:px-6 lg:px-20 font-alata text-[15px] sm:text-[17px] md:text-[19px] xl:text-[13px] text-white scrollbar-hide md:justify-between items-center'>
 
                 {nav.map((item, index) => (
                     <Link

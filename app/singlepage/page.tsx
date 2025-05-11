@@ -29,6 +29,7 @@ function Page() {
         },
         {
             path: '/images/singlepage/youtube.svg'
+
         },
     ]
     return (

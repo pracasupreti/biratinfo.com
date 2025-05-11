@@ -16,7 +16,7 @@ const Employment = () => {
         {
             index: 2,
             miniTitle: 'Careers',
-            title: 'Revealed: The best months to look for a new job ',
+            title: 'Revealed: The best months to look for a new job is revealed',
             description:
                 'As purse string tighten, Aussies looking a for a summer escape in the cooler months are opting to travel to these destinations where they can get the best bang for buck',
             imageUrl: '/images/homepage/Employment2.png',

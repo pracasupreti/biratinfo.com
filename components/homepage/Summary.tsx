@@ -43,7 +43,7 @@ function Summary() {
             <div className="grid sm:grid-cols-2 gap-x-6 gap-y-14 xl:gap-y-6 lg:w-1/2">
                 {summary.map((item, index) => (
                     <div key={index} className="flex flex-col gap-3">
-                        <div className="relative w-full h-[180px] sm:h-[200px] rounded-md overflow-hidden">
+                        <div className="relative w-full h-[200px] sm:max-h-[200px] sm:max-w-[350px] rounded-md overflow-hidden">
                             <Image
                                 src={item.imageUrl}
                                 alt={item.title}
@@ -52,7 +52,7 @@ function Summary() {
                             />
                         </div>
                         <p className="text-[#939393] font-orienta text-sm">{item.title}</p>
-                        <h3 className="text-black font-ibm_plex_serif font-semibold text-base sm:text-lg">
+                        <h3 className="text-black font-ibm_plex_serif font-semibold text-base sm:text-lg max-w-[350px]">
                             {item.description}
                         </h3>
                     </div>
