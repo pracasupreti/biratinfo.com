@@ -43,7 +43,7 @@ const Employment = () => {
     ]
 
     return (
-        <section className='flex flex-col gap-12 md:gap-16 pb-10 px-4 sm:px-8 md:px-20'>
+        <section className='flex flex-col gap-12 md:gap-16 pb-20 px-4 sm:px-8 md:px-20'>
             {/* Header */}
             <div className='flex flex-col gap-2'>
                 <p className='text-[#939393] font-orienta text-[18px] md:text-[20px]'>Employment</p>
