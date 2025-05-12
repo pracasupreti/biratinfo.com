@@ -4,10 +4,10 @@ import { MailIcon, MapPinIcon, PhoneCallIcon } from 'lucide-react'
 
 function Footer1() {
     return (
-        <div className='w-full px-20 flex flex-col gap-20 py-10 '>
+        <div className='w-full px-20 flex flex-col gap-20 py-10 bg-[#F9F8F8] '>
             <div className='flex flex-col gap-14'>
                 <div className='flex items-center justify-between'>
-                    <p className='font-inter font-[700] text-[22px]'>विराट सूचना प्रविधि प्रा. लि.</p>
+                    <p className='font-inter font-[700] text-[22px]'>विराट इन्फर्म्याटिक्स प्रा. लि.</p>
                     <div className='flex gap-4 '>
                         <div className='w-[42px] h-[42px] bg-[#d9d9d9] rounded-full flex items-center justify-center'><Image src={'/images/kasinHomepage/facebook.svg'} alt='facebook icon' width={25} height={25} /></div>
                         <div className='w-[42px] h-[42px] bg-[#d9d9d9] rounded-full flex items-center justify-center'><Image src={'/images/kasinHomepage/twitter.svg'} alt='facebook icon' width={25} height={25} /></div>
@@ -69,7 +69,7 @@ function Footer1() {
             {/* COPYRIGHT */}
             <div className='flex flex-col gap-2'>
                 <div className='w-full h-0.5 bg-black' />
-                <div className='flex justify-between items-center font-inter font-[400] text-[18px]'>
+                <div className='flex justify-between items-center font-inter font-[400] text-[16px]'>
                     <p>Copyright 2025 BIRAT Informatics Pvt. Ltd.&nbsp;&nbsp;|&nbsp;&nbsp;A Product of SRIYOG Consulting</p>
                     <p>Terms & Conditions&nbsp;&nbsp;|&nbsp;&nbsp;Privacy Policy&nbsp;&nbsp;|&nbsp;&nbsp;Advertise</p>
 
