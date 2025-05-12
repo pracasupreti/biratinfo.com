@@ -1,7 +1,8 @@
 import React from 'react'
-import Header from './kasin/Header'
-import Hero from './kasin/Hero'
-import Body from './kasin/Body'
+import Header from './Header'
+import Hero from './Hero'
+import Body from './Body'
+import Footer from './Footer'
 
 function Kasin() {
   return (
@@ -9,6 +10,7 @@ function Kasin() {
       <Header />
       <Hero />
       <Body />
+      <Footer />
     </div>
   )
 }

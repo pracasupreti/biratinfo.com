@@ -40,7 +40,7 @@ function Header() {
             </div>
 
             {/* LOGOS */}
-            <div className='flex flex-col md:flex-row items-center justify-between w-full px-3 md:px-9 pt-4 gap-4 md:gap-10 lg:gap-4'>
+            <div className='flex flex-col md:flex-row items-center justify-between w-full px-3 md:px-9 pt-2 gap-4 md:gap-10 lg:gap-4'>
                 <div className='relative w-full max-w-[180px] md:max-w-[280px] aspect-[4/1]'>
                     <Image
                         src='/images/homepage/Logo.png'
@@ -66,11 +66,11 @@ function Header() {
                     return (
                         <div
                             key={index}
-                            className={`px-3 py-1 h-full flex items-center rounded ${isActive ? 'bg-green-900 text-white' : ''}`}
+                            className={`px-3 py-1 h-full flex items-center ${isActive ? 'bg-green-900 text-white' : ''} hover:bg-green-900 text-white transition duration-200`}
                         >
                             <Link
                                 href={item.path}
-                                className='shrink-0 hover:underline transition duration-200'
+                                className='shrink-0 transition duration-200'
                             >
                                 {item.name}
                             </Link>

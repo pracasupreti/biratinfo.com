@@ -1,4 +1,4 @@
-import Kasin from '@/components/Kasin'
+import Kasin from '@/components/kasin/Kasin'
 import React from 'react'
 
 function page() {

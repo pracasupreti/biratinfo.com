@@ -32,7 +32,7 @@ function Header() {
             </div>
 
             {/* LOGOS */}
-            <div className='flex flex-col md:flex-row items-center justify-between w-full px-3 md:px-9 pt-4 gap-4 md:gap-10 lg:gap-4'>
+            <div className='flex flex-col md:flex-row items-center justify-between w-full px-3 md:px-9 pt-2 gap-4 md:gap-10 lg:gap-4'>
                 <div className='relative w-full max-w-[180px] md:max-w-[280px] aspect-[4/1]'>
                     <Image
                         src='/images/homepage/Logo.png'
