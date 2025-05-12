@@ -1,6 +1,5 @@
 import React from 'react'
 import Image from 'next/image'
-import { Button } from '../ui/button'
 
 function Technology() {
     const Society1 = [
@@ -25,24 +24,24 @@ function Technology() {
         }
     ]
 
-    const Society2 = [
-        {
-            description: 'A very basic error caused the Crowd Strike outage. Windows security may never be the same',
-            imageUrl: '/images/homepage/SocietyImage7.png'
-        },
-        {
-            description: 'A very basic error caused the Crowd Strike outage. Windows security may never be the same',
-            imageUrl: '/images/homepage/SocietyImage6.png'
-        },
-        {
-            description: 'A very basic error caused the Crowd Strike outage. Windows security may never be the same ',
-            imageUrl: '/images/homepage/SocietyImage4.png'
-        },
-        {
-            description: 'The Snowflake breaches are exposing the limits of cloud security’s shared-responsibility model',
-            imageUrl: '/images/homepage/SocietyImage5.png'
-        },
-    ]
+    // const Society2 = [
+    //     {
+    //         description: 'A very basic error caused the Crowd Strike outage. Windows security may never be the same',
+    //         imageUrl: '/images/homepage/SocietyImage7.png'
+    //     },
+    //     {
+    //         description: 'A very basic error caused the Crowd Strike outage. Windows security may never be the same',
+    //         imageUrl: '/images/homepage/SocietyImage6.png'
+    //     },
+    //     {
+    //         description: 'A very basic error caused the Crowd Strike outage. Windows security may never be the same ',
+    //         imageUrl: '/images/homepage/SocietyImage4.png'
+    //     },
+    //     {
+    //         description: 'The Snowflake breaches are exposing the limits of cloud security’s shared-responsibility model',
+    //         imageUrl: '/images/homepage/SocietyImage5.png'
+    //     },
+    // ]
 
     return (
         <div className='flex flex-col gap-12 pb-10'>

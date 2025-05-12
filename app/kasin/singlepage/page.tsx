@@ -102,7 +102,7 @@ function Page() {
                     <p className='font-[400] text-[20px] md:text-[20px]'>राजनीतिको धमिलो गतिले गर्दा रुपमा बिकसित हुदै गइरहेको नेपालको अहिले प्रधानमन्त्री ओली र सभापति देउवा भित्रि रुपमा केमेल सिर्जना भइरहेको अहिले अबस्थाले पनि देखाउँछ । जसको मुल कारण गर्भर नियुक्ति नै हो । जुन अहिले सम्म हुन सकेको छैन ।</p>
                 </div>
                 {/* SIDE IMAGE */}
-                <div className='w-full md:w-2/6 h-[60vh] relative mx-auto' >
+                <div className='w-full md:w-2/7 h-[50vh] relative mx-auto' >
                     <Image src={'/images/kasinSinglepage/Image1.jpg'} alt='' fill className='object-cover' />
                 </div>
             </div>
