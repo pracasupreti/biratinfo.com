@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 function Summary() {
     const summary = [
@@ -30,9 +31,9 @@ function Summary() {
             <div className="flex flex-col text-center items-center lg:items-start lg:text-left lg:w-1/2 gap-4">
                 <div className="w-full h-[240px] sm:h-[320px] lg:h-[448px] bg-[url('/images/kasinHomepage/SummaryImage1.png')] bg-cover bg-center" />
                 <p className="text-[#939393] font-orienta text-base sm:text-lg">राजनीति</p>
-                <h2 className="text-black font-ibm_plex_serif font-bold text-xl sm:text-2xl lg:text-3xl cursor-pointer">
+                <Link href={'/kasin/singlepage'} className="text-black font-ibm_plex_serif font-bold text-xl sm:text-2xl lg:text-3xl cursor-pointer">
                     प्रधानमन्त्री ओलीको राजनीतिक चर्तुयाँईको घेरोमा सभापति देउवा : गर्भनरका कारण भित्रि मनमुटाव
-                </h2>
+                </Link>
                 <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg cursor-pointer">
                     नेपालको राजनीति अहिले तरंगित अवस्थामा छ । नेपाली कांग्रेस र नेकपा एमालेको गठबन्धन सरकारको अहिले चौतर्फी आलोचना भैरहेको छ । देशले अहिले सम्म नयाँ गतिभिर पाउन सकेको छैन् । जसका कारण आर्थिक चलखेलका कुराहरु राम्ररी चलायमान हुन सकेको छैन् ।
                 </p>
