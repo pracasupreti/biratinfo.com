@@ -74,7 +74,7 @@ function Footer1() {
                             className='rounded-sm mx-auto'
                         />
                         <Image
-                            src='/images/homepage/Appstore.png'
+                            src='/images/homepage/AppStore.png'
                             alt='App Store'
                             height={56}
                             width={205}
