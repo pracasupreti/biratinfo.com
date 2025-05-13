@@ -1,42 +1,42 @@
 import React from 'react';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { CalendarIcon, Clock2Icon, FacebookIcon, InstagramIcon, LinkedinIcon } from 'lucide-react';
+import { CalendarIcon, Clock2Icon } from 'lucide-react';
 import Footer from '@/components/kasin/Footer';
 import { Button } from '@/components/ui/button';
-import { PiPinterestLogo } from 'react-icons/pi';
+
 
 function Page() {
-    const SocialMedia = [
-        {
-            path: '/images/singlepage/facebook.svg'
-        },
-        {
-            path: '/images/singlepage/instagram.svg'
-        },
-        {
-            path: '/images/singlepage/linkedin.svg'
-        },
-        {
-            path: '/images/singlepage/pinterest.svg'
-        },
-        {
-            path: '/images/singlepage/snapchat.svg'
-        },
-        {
-            path: '/images/singlepage/telegram.svg'
-        },
-        {
-            path: '/images/singlepage/tiktok.svg'
-        },
-        {
-            path: '/images/singlepage/viber.svg'
-        },
-        {
-            path: '/images/singlepage/youtube.svg'
+    // const SocialMedia = [
+    //     {
+    //         path: '/images/singlepage/facebook.svg'
+    //     },
+    //     {
+    //         path: '/images/singlepage/instagram.svg'
+    //     },
+    //     {
+    //         path: '/images/singlepage/linkedin.svg'
+    //     },
+    //     {
+    //         path: '/images/singlepage/pinterest.svg'
+    //     },
+    //     {
+    //         path: '/images/singlepage/snapchat.svg'
+    //     },
+    //     {
+    //         path: '/images/singlepage/telegram.svg'
+    //     },
+    //     {
+    //         path: '/images/singlepage/tiktok.svg'
+    //     },
+    //     {
+    //         path: '/images/singlepage/viber.svg'
+    //     },
+    //     {
+    //         path: '/images/singlepage/youtube.svg'
 
-        },
-    ]
+    //     },
+    // ]
 
     const relatedNews = [
         {
