@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 function Technology() {
     const Society1 = [
@@ -64,7 +65,10 @@ function Technology() {
                         <p className='font-roboto font-[400] text-[20px] text-black'>{item.title}</p>
                         <p className='font-inter font-[500] text-[14px] text-[#808080]'>{item.description}</p>
                         <div className='flex items-center gap-4'>
-                            <div className='h-[27px] w-[27px] rounded-full bg-[#808080]' />
+                            <div className='h-[27px] w-[27px] rounded-full'><Avatar>
+                                <AvatarImage src="https://github.com/shadcn.png" />
+                                <AvatarFallback>CN</AvatarFallback>
+                            </Avatar></div>
                             <span className='font-inter font-[500] text-[16px] text-[#808080]'>{item.author}</span>
                         </div>
                     </div>

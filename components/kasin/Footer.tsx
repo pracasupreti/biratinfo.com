@@ -6,11 +6,9 @@ function Footer() {
     return (
         <div className='w-full px-4 lg:px-20 md:px-6 flex flex-col gap-10 md:gap-20 py-10 bg-[#F9F8F8] '>
             <div className='flex flex-col gap-10 md:gap-14'>
-                {/* Header */}
                 <div className='flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0 text-center md:text-left'>
                     <p className='font-inter font-[700] text-[22px]'>विराट इन्फर्म्याटिक्स प्रा. लि.</p>
                     <div className='flex gap-4 justify-center md:justify-end'>
-                        {/* Social icons */}
                         {['facebook', 'twitter', 'youtube', 'instagram'].map((icon) => (
                             <div key={icon} className='w-[42px] h-[42px] bg-[#d9d9d9] rounded-full flex items-center justify-center'>
                                 <Image src={`/images/kasinHomepage/${icon}.svg`} alt={`${icon} icon`} width={25} height={25} />
@@ -21,7 +19,6 @@ function Footer() {
 
                 {/* Grid Section */}
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
-                    {/* Team Info */}
                     <div className='flex flex-col gap-2 text-center md:text-left'>
                         <p className='font-inter font-[700] text-[22px]'>हाम्रो टिम</p>
                         <p className='font-inter font-[400] text-xs sm:text-sm md:text-base lg:text-lg'>अध्यक्ष तथा निर्देशक : सुधीर नेपाल</p>
@@ -31,13 +28,12 @@ function Footer() {
                         <p className='font-[400] text-xs sm:text-sm md:text-base lg:text-lg'>जनसम्पर्क अधिकृत : श्रीशा शर्मा</p>
                     </div>
 
-                    {/* Contact Info */}
                     <div className='flex flex-col items-center md:text-start text-center'>
                         <div className='flex flex-col gap-2 items-center md:items-start'>
                             <p className='font-inter font-[700] text-[22px] text-center md:text-left'>सम्पर्क</p>
 
                             <div className='font-inter font-[400] text-xs sm:text-sm md:text-base lg:text-lg flex items-center gap-2'>
-                                <div className='w-[30px] h-[30px] bg-white rounded-full' />
+                                <div className='w-[30px] h-[30px] bg-[#F9F8F8] rounded-full' />
                                 <p>सूचना विभाग दर्ता नं. १२३-०८१/८२</p>
                             </div>
 
@@ -64,7 +60,6 @@ function Footer() {
                         </div>
                     </div>
 
-                    {/* App Store Buttons */}
                     <div className='text-white text-center font-jost font-semibold text-lg flex flex-col gap-4'>
                         <Image
                             src='/images/homepage/GooglePlay.png'
@@ -74,7 +69,7 @@ function Footer() {
                             className='rounded-sm mx-auto'
                         />
                         <Image
-                            src='/images/homepage/AppStore.jpg'
+                            src='/images/homepage/AppStore.png'
                             alt='App Store'
                             height={56}
                             width={205}

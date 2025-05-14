@@ -44,17 +44,14 @@ const Security = () => {
 
     return (
         <section className='flex flex-col gap-12 pb-20 px-4 sm:px-8 md:px-20'>
-            {/* Header */}
             <div className='flex flex-col gap-2'>
                 <p className='text-[#939393] font-orienta text-[18px] md:text-[20px]'>सुरक्षा</p>
                 <div className='w-full h-[2px] bg-[#ebebeb]' />
             </div>
 
-            {/* Grid of Articles */}
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-8'>
                 {employment.map((item) => (
                     <div className='flex flex-col gap-3' key={item.index}>
-                        {/* Image */}
                         <div className='w-full aspect-[16/9] relative md:hover:translate-y-[-10px] md:transition md:duration-400'>
                             <Image
                                 src={item.imageUrl}
@@ -65,7 +62,6 @@ const Security = () => {
                             />
                         </div>
 
-                        {/* Label and Category */}
                         <div className='flex gap-2 ml-2 md:ml-0'>
                             {item.index === 3 && (
                                 <span className='font-roboto font-semibold text-[13px] bg-black text-white px-2 rounded-lg'>
@@ -75,15 +71,12 @@ const Security = () => {
                             <p className='text-[#808080] font-roboto font-semibold text-[13px]'>{item.miniTitle}</p>
                         </div>
 
-                        {/* Title */}
                         <h3 className='font-ibm_plex_serif font-medium text-[18px] leading-snug ml-2 md:ml-0'>
                             {item.title}
                         </h3>
 
-                        {/* Description */}
                         <p className='text-[#808080] font-inter text-[13px] ml-2 md:ml-0'>{item.description}</p>
 
-                        {/* Footer */}
                         <div className='flex items-center gap-2 ml-2 md:ml-0' >
                             <MessageSquareIcon size={16} stroke='#808080' />
                             <p className='text-[#808080] font-inter text-[13px]'>{item.comment}</p>

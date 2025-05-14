@@ -101,7 +101,7 @@ function Page() {
             </div>
             <div className='w-full max-w-screen-3xl px-4 md:px-24 flex flex-col lg:flex-row items-center lg:gap-40 md:gap-20 gap-10'>
                 <div className='w-full lg:w-1/2 flex flex-col gap-6 text-center md:text-start'>
-                    <p className='font-[700] text-lg sm:text-xl md:text-2xl lg:text-3xl'>गर्भर कसले गर्दा सभापति देउवा प्रधानमन्त्री ओलीसँग टाढिएका हुन् भन्ने आंकलन राजनीति पण्डितहरुको</p>
+                    <p className='font-[700] text-lg sm:text-xl md:text-2xl lg:text-3xl text-[#055D59]'>गर्भर कसले गर्दा सभापति देउवा प्रधानमन्त्री ओलीसँग टाढिएका हुन् भन्ने आंकलन राजनीति पण्डितहरुको</p>
                     <p className='font-[400] text-xs sm:text-sm md:text-base lg:text-lg'>गर्भर र नेपाल प्रहरीको प्रमुख पदमा भागबन्डा गरेकोमा प्रमुख नियुक्त भएका छन भन्ने गर्भरमा भागबन्डा नमिलेको कुरा स्पष्ट देखिन्छ । पाका नेताहरुलाई सत्ताको आग्रह र आफन्तहरुको प्रभावले अहिले पनि सत्ताइन्दों (बिधित र अब्यबस्थापनको मारमा चलिरहेको नेपाली राजनीतिमा अहिले एक प्रकारको तुवाँलो लागिरहेको छ ।</p>
                     <p className='font-[400] text-xs sm:text-sm md:text-base lg:text-lg'>देशमा देखीएका आर्थिक, बेरोजगारी जस्ता जटिल समस्याहरुको समाधान तर्फ प्रधानमन्त्री ओली नेतृत्वको सरकारको आँखा जानु मुख्य बिषय थियो । तर त्यो हुन सकेको छैन । जसले गर्दा राजनीति खराब हुदाँ हुदै पनि राज्य संचालनका लागि अपरिहार्य हुन्छ । यसो भन्दैमा राजनीति त्यति खराब विधा पनि हैन, यसका केही नैतिक मूल्य, मान्यता, आदर्श र उद्देश्य अवश्य हुन्छन् ।</p>
                     <p className='font-[400] text-xs sm:text-sm md:text-base lg:text-lg'>राजनीतिमा चतुरता, छलछाम, तिकडम, धुर्तता र बललाई अबस्य हुन्छ, तर त्यसको पनि एउटा नैतिक सीमा, मर्यादा र समझदारी हुन्छ । अहिले प्रधानमन्त्री ओलीको यही राजनीति चर्चाएका कारण कांग्रेस सभापति सितार भिट्ट गर्दै गइरहेको अहिलेको राजनीतिक परिस्थितिले पनि देखाउँछ ।</p>
@@ -112,7 +112,7 @@ function Page() {
                 <div className='w-full md:w-[502px] max-w-full relative mx-auto md:mx-0 h-auto' >
                     <div className='relative w-full h-[700px] max-h-[100vh]'>
                         <Image
-                            src={'/images/kasinSinglepage/Image1.jpg'}
+                            src={'/images/kasinSinglepage/advertisement.avif'}
                             alt='Nepal Politics'
                             fill
                             className='object-cover rounded-md'

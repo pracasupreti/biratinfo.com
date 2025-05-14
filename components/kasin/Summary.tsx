@@ -39,7 +39,7 @@ function Summary() {
                 </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-x-6 gap-y-14 xl:gap-y-6 lg:w-1/2">
+            <div className="grid sm:grid-cols-2 gap-x-6 gap-y-14  lg:w-1/2">
                 {summary.map((item, index) => (
                     <div key={index} className="flex flex-col gap-3">
                         <div className="relative w-full aspect-[3/2] sm:max-h-[200px] sm:max-w-[350px] overflow-hidden  md:hover:translate-y-[-10px] md:transition md:duration-400">

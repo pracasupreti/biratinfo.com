@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
 import React from 'react'
+import MobileNav from '../MobileNav';
 
 function Header() {
     const nav = [
@@ -60,27 +61,29 @@ function Header() {
             </div>
 
             {/* NAVBAR */}
-            <nav className='w-full bg-[#008000] md:py-1  hidden sm:flex md:gap-3 lg:py-0 lg:gap-6 min-h-10 items-center px-6 justify-center font-alata text-[15px] sm:text-[17px] md:text-[19px] xl:text-[13px] text-white flex-wrap'>
-                {nav.map((item, index) => {
-                    const isActive = pathname.startsWith(item.path);
-                    return (
-                        <div
-                            key={index}
-                            className={`px-3 py-1 h-full flex items-center ${isActive ? 'bg-green-900 text-white' : ''} hover:bg-green-900 text-white transition duration-200`}
-                        >
-                            <Link
-                                href={item.path}
-                                className='shrink-0 transition duration-200'
+            <nav className='w-full bg-[#008000] hidden lg:flex items-center overflow-x-auto whitespace-nowrap scrollbar-hide px-4 md:px-6 lg:px-12 xl:px-24 font-alata text-white'>
+                <div className='mx-auto flex gap-4 md:gap-6 xl:gap-14'>
+                    {nav.map((item, index) => {
+                        const isActive = pathname.startsWith(item.path);
+                        return (
+                            <div
+                                key={index}
+                                className={`px-3 py-2 h-10 flex items-center ${isActive ? 'bg-green-900 text-white' : ''} hover:bg-green-900 text-white transition duration-200`}
                             >
-                                {item.name}
-                            </Link>
-                        </div>
-                    );
-                })}
+                                <Link
+                                    href={item.path}
+                                    className='shrink-0 hover:underline transition duration-200 text-[15px] sm:text-[17px] md:text-[19px] lg:text-[20px] xl:text-[22px]'
+                                >
+                                    {item.name}
+                                </Link>
+                            </div>
+                        );
+                    })}
+                </div>
             </nav>
 
-            <div className='w-full sm:hidden bg-[#008000] h-10'>
-                {/* MOBILE NAV */}
+            <div className='w-full lg:hidden bg-[#008000] h-10 flex items-center justify-end px-5'>
+                <MobileNav />
             </div>
 
         </header>
