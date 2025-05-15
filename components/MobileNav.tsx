@@ -29,8 +29,8 @@ function MobileNav() {
     ];
     return (
         <Sheet>
-            <SheetTrigger ><MenuIcon color="white" size={30} /></SheetTrigger>
-            <SheetContent side="left" className="bg-[#008000]">
+            <SheetTrigger ><MenuIcon color="#055D59" size={30} /></SheetTrigger>
+            <SheetContent side="left" className="bg-[#055D59]">
                 <SheetHeader className="flex flex-col gap-6">
                     <SheetTitle className="text-white font-inter font-[400] text-xl">BIRAT Informatics Pvt. Ltd.</SheetTitle>
                     {nav.map((items, index) =>
