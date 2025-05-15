@@ -30,7 +30,7 @@ function Header() {
     return (
         <header className='pt-3 md:pt-6'>
             {/* TOPBAR */}
-            <div className='w-full py-1.5 bg-[#008000] flex flex-col sm:flex-row items-center justify-between px-3 md:px-6 text-white'>
+            <div className='w-full py-1.5 bg-text-color flex flex-col sm:flex-row items-center justify-between px-3 md:px-6 lg:px-12 xl:px-24 text-white'>
                 <p className='text-sm font-alata text-center sm:text-left'>
                     आज को ताजा खबर
                 </p>
@@ -40,39 +40,39 @@ function Header() {
                 </p>
             </div>
 
-            {/* LOGOS */}
-            <div className='flex flex-col md:flex-row items-center justify-between w-full px-3 md:px-9 pt-2 gap-4 md:gap-10 lg:gap-4'>
-                <div className='relative w-full max-w-[180px] md:max-w-[280px] aspect-[4/1]'>
+            <div className='flex flex-col md:flex-row items-center justify-between w-full px-3 md:px-9 lg:px-12 xl:px-24 pt-2 gap-4 md:gap-10'>
+                <div className='relative w-full max-w-[180px] md:max-w-[280px] lg:max-w-[320px] xl:max-w-[380px] aspect-[4/1]'>
                     <Image
                         src='/images/homepage/Logo.png'
                         alt='Site Logo'
                         fill
                         className='object-contain'
+                        priority
                     />
                 </div>
-                <div className='relative w-full max-w-[280px] md:max-w-[500px] aspect-[6/1]'>
+                <div className='relative w-full max-w-[280px] md:max-w-[500px] lg:max-w-[600px] xl:max-w-[700px] aspect-[6/1]'>
                     <Image
                         src='/images/homepage/NMB.png'
                         alt='Sponsor Logo'
                         fill
                         className='object-contain'
+                        priority
                     />
                 </div>
             </div>
 
-            {/* NAVBAR */}
-            <nav className='w-full bg-[#008000] hidden lg:flex items-center overflow-x-auto whitespace-nowrap scrollbar-hide px-4 md:px-6 lg:px-12 xl:px-24 font-alata text-white'>
+            <nav className='w-full bg-text-color hidden lg:flex items-center overflow-x-auto whitespace-nowrap scrollbar-hide px-4 md:px-6 lg:px-12 xl:px-24 font-alata text-white'>
                 <div className='mx-auto flex gap-4 md:gap-6 xl:gap-14'>
                     {nav.map((item, index) => {
                         const isActive = pathname.startsWith(item.path);
                         return (
                             <div
                                 key={index}
-                                className={`px-3 py-2 h-10 flex items-center ${isActive ? 'bg-green-900 text-white' : ''} hover:bg-green-900 text-white transition duration-200`}
+                                className={`px-3 py-2 h-10 flex items-center ${isActive ? 'bg-green-950 text-white' : ''} hover:bg-green-950 text-white transition duration-200`}
                             >
                                 <Link
                                     href={item.path}
-                                    className='shrink-0 hover:underline transition duration-200 text-[15px] sm:text-[17px] md:text-[19px] lg:text-[20px] xl:text-[22px]'
+                                    className='shrink-0 transition duration-200 text-[15px] sm:text-[17px] md:text-[19px] lg:text-[20px] xl:text-[22px]'
                                 >
                                     {item.name}
                                 </Link>

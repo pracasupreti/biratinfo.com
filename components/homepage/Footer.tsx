@@ -80,7 +80,7 @@ function Footer1() {
 
             {/* COPYRIGHT */}
             <div className='flex flex-col gap-2'>
-                <div className='w-full h-0.5 bg-black' />
+                <div className='w-full h-0.5 bg-text-color' />
                 <div className='flex flex-col md:flex-row justify-between items-center gap-2 text-center md:text-left font-inter font-[400] text-[16px]'>
                     <p>Copyright 2025 BIRAT Informatics Pvt. Ltd.&nbsp;&nbsp;|&nbsp;&nbsp;A Product of SRIYOG Consulting</p>
                     <p>Terms & Conditions&nbsp;&nbsp;|&nbsp;&nbsp;Privacy Policy&nbsp;&nbsp;|&nbsp;&nbsp;Advertise</p>

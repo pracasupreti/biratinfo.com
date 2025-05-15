@@ -26,13 +26,13 @@ function Sports() {
     return (
         <div className="flex flex-col gap-12 px-4 sm:px-6 lg:px-20 pb-10">
             <div className="flex flex-col gap-2">
-                <p className="text-[#939393] font-orienta text-xl">खेलकुद</p>
+                <p className="text-[#939393] font-orienta text-xl font-[700]">खेलकुद</p>
                 <div className="w-full h-[3px] bg-[#ebebeb]" />
             </div>
 
             <div className="flex flex-col lg:flex-row gap-12">
                 <div className="flex-1 flex flex-col gap-5">
-                    <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url(/images/kasinHomepage/SportsImage1.png)]"
+                    <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url(/images/kasinHomepage/SportsImage1.png)] rounded-xl"
                     />
                     <p className="text-black font-ibm_plex_serif font-bold text-2xl lg:text-3xl cursor-pointer">
                         आइसीसी यू-१९ विश्वकप एसिया छनोट अन्तर्गत नेपाल र अफगानिस्तानबीचको खेल रद्द भए नेपाल विश्वकपबाट बञ्चित भएपछि समर्थकहरु आक्रोशित बनेका छन् ।
@@ -46,9 +46,9 @@ function Sports() {
 
                 <div className="flex-1 flex flex-col gap-2">
                     {Politics.map((item, index) => (
-                        <div key={index} className="flex flex-col sm:flex-row gap-4">
+                        <div key={index} className="flex flex-col sm:flex-row gap-4 group">
                             {/* Image */}
-                            <div className="relative w-full sm:w-[40%] aspect-[3/2] overflow-hidden md:hover:translate-y-[-10px] md:transition md:duration-400">
+                            <div className="relative w-full sm:w-[40%] aspect-[3/2] overflow-hidden md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl">
                                 <Image
                                     src={item.imageUrl}
                                     alt=""

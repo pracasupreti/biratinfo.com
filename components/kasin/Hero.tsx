@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 function Hero() {
     return (
         <section className="w-full min-h-[calc(100vh-187px)] bg-[url('/images/kasinHomepage/Hero1.jpg')] bg-cover bg-no-repeat bg-center flex items-end justify-center">
-            <div className="bg-white w-[95%] sm:w-[90%] lg:max-w-[1348px] xl:max-w-[1440px] mx-auto rounded-t-xl sm:rounded-t-2xl md:rounded-t-3xl px-4 sm:px-6 md:px-8 lg:px-20 xl:px-36 py-5 sm:py-6 md:py-8 xl:py-10 text-[#008000] text-center font-jost flex flex-col items-center gap-3 sm:gap-5 md:gap-6">
+            <div className="bg-white w-[95%] sm:w-[90%] lg:max-w-[1348px] xl:max-w-[1440px] mx-auto rounded-t-xl sm:rounded-t-2xl md:rounded-t-3xl px-4 sm:px-6 md:px-8 lg:px-20 xl:px-36 py-5 sm:py-6 md:py-8 xl:py-10 text-text-color text-center font-jost flex flex-col items-center gap-3 sm:gap-5 md:gap-6">
 
                 <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-tight">
                     कोइला लोड गरेको ट्रक अनियन्त्रित भई पल्टिँदा दुबैतर्फ बाटो अवरुद्ध

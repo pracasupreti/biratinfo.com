@@ -33,15 +33,15 @@ function Economy() {
     return (
         <section className="flex flex-col gap-12 pb-10 px-4 sm:px-8 md:px-20">
             <div className="flex flex-col gap-2 max-w-screen-4xl w-full mx-auto">
-                <p className="text-[#939393] font-orienta text-[20px]">अर्थ /कारोवार</p>
+                <p className="text-[#939393] font-orienta text-[20px] font-[700]">अर्थ /कारोवार</p>
                 <div className="w-full h-[3px] bg-[#ebebeb]" />
             </div>
 
             <div className="flex flex-col gap-20 max-w-screen-2xl w-full mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-16">
                     {economy.map((item, index) => (
-                        <div key={index} className="flex flex-col lg:flex-row gap-6">
-                            <div className="w-full aspect-[3/2] relative md:hover:translate-y-[-10px] md:transition md:duration-400">
+                        <div key={index} className="flex flex-col lg:flex-row gap-6 group">
+                            <div className="w-full aspect-[3/2] relative md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl overflow-hidden">
                                 <Image
                                     src={item.imageUrl}
                                     alt=""
@@ -51,7 +51,7 @@ function Economy() {
                             </div>
 
                             <div className="flex flex-col gap-4 w-full" >
-                                <p className="text-black font-ibm_plex_serif font-bold text-[18px] md:text-[20px] leading-snug md:mt-1">
+                                <p className="text-text-color font-ibm_plex_serif font-bold text-[18px] md:text-[20px] leading-snug md:mt-1 cursor-pointer">
                                     {item.description}
                                 </p>
                                 <p className="text-[#808080] font-roboto font-medium text-[13px] flex items-center gap-x-2">

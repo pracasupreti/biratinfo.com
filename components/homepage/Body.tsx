@@ -1,10 +1,10 @@
 import React from 'react'
 import Summary from './Summary'
 import Politics from './Politics'
-import Society from './Society'
 import Economy from './Economy'
-
-import Employment from './Employment'
+import Technology from './Technology'
+import Sports from './Sports'
+import Health from './Health'
 
 function Body() {
 
@@ -12,9 +12,10 @@ function Body() {
         <div className='md:pt-14 pt-10'>
             <Summary />
             <Politics />
-            <Society />
             <Economy />
-            <Employment />
+            <Technology />
+            <Sports />
+            <Health />
         </div>
     )
 }

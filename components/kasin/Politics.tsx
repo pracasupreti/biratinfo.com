@@ -32,7 +32,7 @@ function Politics() {
 
             <div className="flex flex-col lg:flex-row gap-12">
                 <div className="flex-1 flex flex-col gap-5">
-                    <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url(/images/kasinHomepage/PoliticsImage1.png)]"
+                    <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url(/images/kasinHomepage/PoliticsImage1.png)] rounded-xl"
                     />
                     <p className="text-black font-ibm_plex_serif font-bold text-2xl lg:text-3xl cursor-pointer">
                         प्राप्त उपलब्धिको रक्षा एवं प्रवद्र्धन गर्न प्रस्तुत नीतिमा सदन एक हुने : प्रधानमन्त्री ओली (पूर्ण पाठ सहित)
@@ -44,11 +44,11 @@ function Politics() {
                     </p>
                 </div>
 
-                <div className="flex-1 flex flex-col gap-2">
+                <div className="flex-1 flex flex-col gap-10 md:gap-6 lg:gap-4">
                     {Politics.map((item, index) => (
                         <div key={index} className="flex flex-col sm:flex-row gap-4">
                             {/* Image */}
-                            <div className="relative w-full sm:w-[40%] aspect-[3/2] overflow-hidden md:hover:translate-y-[-10px] md:transition md:duration-400">
+                            <div className="relative w-full sm:w-[40%] aspect-[3/2] overflow-hidden md:hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl">
                                 <Image
                                     src={item.imageUrl}
                                     alt=""
