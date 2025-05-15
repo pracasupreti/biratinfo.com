@@ -36,10 +36,10 @@ function Summary() {
                 <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat rounded-2xl bg-[url('/images/homepage/SummaryImage1.webp')]" />
                 <p className="text-[#939393] font-orienta text-base sm:text-lg font-[700]">Politics</p>
                 <Link href={''} className="text-text-color font-ibm_plex_serif font-bold text-xl sm:text-2xl lg:text-3xl cursor-pointer">
-                    Relief on China's factory floors as US tariffs put on hold
+                    Relief on China&apos;s factory floors as US tariffs put on hold
                 </Link>
                 <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg cursor-pointer">
-                    There's a vast empty space in the middle of the factory floor in Foshan in southern China where workers should be welding high-end air fryers for the US market. Derek Wang says his American customers were wowed by his air fryer models.
+                    There&apos;s a vast empty space in the middle of the factory floor in Foshan in southern China where workers should be welding high-end air fryers for the US market. Derek Wang says his American customers were wowed by his air fryer models.
                 </p>
             </div>
 

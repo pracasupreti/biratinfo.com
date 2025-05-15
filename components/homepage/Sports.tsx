@@ -38,7 +38,7 @@ function Sports() {
                     <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url(/images/homepage/SportsImage1.webp)] rounded-xl"
                     />
                     <p className="font-ibm_plex_serif font-bold text-2xl lg:text-3xl cursor-pointer text-text-color">
-                        Forest's Awoniyi out of coma after surgery
+                        Forest&apos;s Awoniyi out of coma after surgery
                     </p>
                     <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg">
                         Nottingham Forest forward Taiwo Awoniyi has woken from an induced coma after having surgery to repair a serious abdominal injury.
