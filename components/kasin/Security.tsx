@@ -45,7 +45,7 @@ const Security = () => {
     return (
         <section className='flex flex-col gap-12 pb-20 px-4 sm:px-8 md:px-20'>
             <div className='flex flex-col gap-2'>
-                <p className='text-[#939393] font-orienta text-[18px] md:text-[20px]'>सुरक्षा</p>
+                <p className='text-[#939393] font-orienta text-[18px] md:text-[20px] font-[700]'>सुरक्षा</p>
                 <div className='w-full h-[2px] bg-[#ebebeb]' />
             </div>
 
@@ -71,7 +71,7 @@ const Security = () => {
                             <p className='text-[#808080] font-roboto font-semibold text-[13px]'>{item.miniTitle}</p>
                         </div>
 
-                        <h3 className='font-ibm_plex_serif font-medium text-[18px] leading-snug ml-2 md:ml-0'>
+                        <h3 className='font-ibm_plex_serif font-medium text-[18px] leading-snug ml-2 md:ml-0 text-text-color'>
                             {item.title}
                         </h3>
 

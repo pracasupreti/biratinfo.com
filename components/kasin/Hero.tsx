@@ -18,7 +18,7 @@ function Hero() {
                 <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-5 md:gap-6 xl:gap-16 xl:text-lg text-xs sm:text-sm md:text-base font-normal">
                     <p className="flex items-center gap-2">
                         <Avatar>
-                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarImage src="/images/kasinHomepage/author.png" />
                             <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                         प्रकाश थापा

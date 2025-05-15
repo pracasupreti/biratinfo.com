@@ -64,7 +64,7 @@ function Header() {
             <nav className='w-full bg-text-color hidden lg:flex items-center overflow-x-auto whitespace-nowrap scrollbar-hide px-4 md:px-6 lg:px-12 xl:px-24 font-alata text-white'>
                 <div className='mx-auto flex gap-4 md:gap-6 xl:gap-14'>
                     {nav.map((item, index) => {
-                        const isActive = pathname.startsWith(item.path);
+                        const isActive = pathname === item.path;
                         return (
                             <div
                                 key={index}
@@ -82,7 +82,7 @@ function Header() {
                 </div>
             </nav>
 
-            <div className='w-full lg:hidden bg-[#008000] h-10 flex items-center justify-end px-5'>
+            <div className='w-full lg:hidden bg-text-color h-10 flex items-center justify-end px-5'>
                 <MobileNav />
             </div>
 

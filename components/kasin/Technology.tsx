@@ -62,7 +62,7 @@ function Technology() {
                                 className='object-cover'
                             />
                         </div>
-                        <p className='font-roboto font-[400] text-[20px] text-black'>{item.title}</p>
+                        <p className='font-roboto font-[400] text-[20px] text-text-color'>{item.title}</p>
                         <p className='font-inter font-[500] text-[14px] text-[#808080]'>{item.description}</p>
                         <div className='flex items-center gap-4'>
                             <div className='h-[27px] w-[27px] rounded-full'><Avatar>

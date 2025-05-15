@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 
 function Sports() {
-    const Politics = [
+    const Sports = [
         {
             title: 'Bologna edged out AC Milan to win the Coppa Italia, their first major trophy since 1974',
             description: 'Dan Ndoye scored the only goal in Rome\'s Stadio Olimpico, latching on to a loose ball in the box before lashing a shot into the back of the net.',
@@ -51,7 +51,7 @@ function Sports() {
                 </div>
 
                 <div className="flex-1 flex flex-col gap-10 md:gap-6 lg:gap-4">
-                    {Politics.map((item, index) => (
+                    {Sports.map((item, index) => (
                         <div key={index} className="flex flex-col sm:flex-row gap-4">
                             {/* Image */}
                             <div className="relative w-full sm:w-[40%] aspect-[3/2] overflow-hidden md:hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl">

@@ -2,21 +2,24 @@ import React from 'react'
 import Image from 'next/image'
 
 function Sports() {
-    const Politics = [
+    const Sports = [
         {
-            description: 'जुम्ला–रारा म्याराथन , ५ सय ९१ धावक सहभागी हुँदै',
+            title: 'जुम्ला–रारा म्याराथन , ५ सय ९१ धावक सहभागी हुँदै',
+            description: 'शनिबार सदरमुकाम खलङ्गा बजारमा आयोजना हुने जुम्ला–रारा अल्ट्रा म्याराथन ५ सय ११ जना धावक सहभागी हुने भएका छन्।',
             imageUrl: '/images/kasinHomepage/SportsImage2.jpeg',
             author: 'प्रकाश थापा',
             publishedDate: 'बैशाख २७, २०८२'
         },
         {
-            description: 'खेल रद्द भएर नेपाल विश्वकपबाट वञ्चित भएपछि समर्थकहरू आक्रोशित',
+            title: 'खेल रद्द भएर नेपाल विश्वकपबाट वञ्चित भएपछि समर्थकहरू आक्रोशित',
+            description: 'लिभरपुलले इंग्लिस प्रिमियर लिगको उपाधि जितेको छ। टोटेनहम हट्सपरलाई आइतबार ४-२ ले पराजित गरेसँगै लिभरपुलले उपाधि हात पारेको हो।',
             imageUrl: '/images/kasinHomepage/SportsImage3.png',
             author: 'प्रकाश थापा',
             publishedDate: 'बैशाख २७, २०८२'
         },
         {
-            description: 'इंग्लिस प्रिमियर लिग आर्सनलको कमजोर प्रदर्शन बन्यो लिभरपुललाई उपाधि चुम्ने अवसर',
+            title: 'इंग्लिस प्रिमियर लिग आर्सनलको कमजोर प्रदर्शन बन्यो लिभरपुललाई उपाधि चुम्ने अवसर',
+            description: 'आईसीसी यू-१९ विश्वकप एसिया छनोट अन्तर्गत नेपाल र अफगानिस्तानबीचको खेल रद्द भएपछि नेपाल विश्वकपबाट बाहिरिएको छ।',
             imageUrl: '/images/kasinHomepage/SportsImage4.png',
             author: 'प्रकाश थापा',
             publishedDate: 'बैशाख २४, २०८२'
@@ -34,8 +37,11 @@ function Sports() {
                 <div className="flex-1 flex flex-col gap-5">
                     <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url(/images/kasinHomepage/SportsImage1.png)] rounded-xl"
                     />
-                    <p className="text-black font-ibm_plex_serif font-bold text-2xl lg:text-3xl cursor-pointer">
+                    <p className="text-text-color font-ibm_plex_serif font-bold text-2xl lg:text-3xl cursor-pointer">
                         आइसीसी यू-१९ विश्वकप एसिया छनोट अन्तर्गत नेपाल र अफगानिस्तानबीचको खेल रद्द भए नेपाल विश्वकपबाट बञ्चित भएपछि समर्थकहरु आक्रोशित बनेका छन् ।
+                    </p>
+                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg">
+                        नेपाली महिला क्रिकेट टोलीले शुक्रबार मलेसियामा टि ट्वान्टी विश्वकप २०२४ को छनोट खेलेको छ। छनोटको दोस्रो खेलमा घरेलु टोलीसँग प्रतिस्पर्धा गरेको छ।
                     </p>
                     <p className="text-[#808080] font-roboto text-sm flex items-center gap-2">
                         <span>प्रकाश थापा</span>
@@ -44,8 +50,8 @@ function Sports() {
                     </p>
                 </div>
 
-                <div className="flex-1 flex flex-col gap-2">
-                    {Politics.map((item, index) => (
+                <div className="flex-1 flex flex-col gap-10 md:gap-6 lg:gap-4">
+                    {Sports.map((item, index) => (
                         <div key={index} className="flex flex-col sm:flex-row gap-4 group">
                             {/* Image */}
                             <div className="relative w-full sm:w-[40%] aspect-[3/2] overflow-hidden md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl">
@@ -57,7 +63,10 @@ function Sports() {
                                 />
                             </div>
                             <div className="flex flex-col gap-1 sm:w-[60%]">
-                                <p className="text-black font-ibm_plex_serif font-semibold text-lg cursor-pointer">{item.description}</p>
+                                <p className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color">{item.title}</p>
+                                <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm ">
+                                    {item.description}
+                                </p>
                                 <p className="text-[#808080] font-roboto text-sm mt-2 flex items-center gap-2">
                                     <span>{item.author}</span>
                                     <span>·</span>
