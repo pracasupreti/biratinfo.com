@@ -51,8 +51,8 @@ const Security = () => {
 
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-8'>
                 {employment.map((item) => (
-                    <div className='flex flex-col gap-3' key={item.index}>
-                        <div className='w-full aspect-[16/9] relative md:hover:translate-y-[-10px] md:transition md:duration-400'>
+                    <div className='flex flex-col gap-3 group' key={item.index}>
+                        <div className='w-full aspect-[16/9] relative md:group-hover:translate-y-[-10px] md:transition md:duration-400'>
                             <Image
                                 src={item.imageUrl}
                                 alt='security image'
@@ -71,7 +71,7 @@ const Security = () => {
                             <p className='text-[#808080] font-roboto font-semibold text-[13px]'>{item.miniTitle}</p>
                         </div>
 
-                        <h3 className='font-ibm_plex_serif font-medium text-[18px] leading-snug ml-2 md:ml-0 text-text-color'>
+                        <h3 className='font-ibm_plex_serif font-medium text-[18px] leading-snug ml-2 md:ml-0 text-text-color cursor-pointer'>
                             {item.title}
                         </h3>
 
