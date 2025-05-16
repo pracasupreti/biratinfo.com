@@ -1,94 +1,119 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { MailIcon, MapPinIcon, PhoneCallIcon } from 'lucide-react'
 
 function Footer() {
     return (
-        <div className='w-full px-4 lg:px-20 md:px-6 flex flex-col gap-10 md:gap-20 py-10 bg-[#F9F8F8] '>
-            <div className='flex flex-col gap-10 md:gap-14'>
-                <div className='flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0 text-center md:text-left'>
-                    <p className='font-inter font-[700] text-[22px]'>विराट इन्फर्म्याटिक्स प्रा. लि.</p>
-                    <div className='flex gap-4 justify-center md:justify-end'>
+        <div className='w-full px-4 lg:px-20 md:px-6 py-12 bg-[#F9F8F8]'>
+            <div className='max-w-7xl mx-auto flex flex-col gap-12'>
+                <div className='flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left'>
+                    <h2 className='text-2xl font-bold text-gray-900'>विराट इन्फर्म्याटिक्स प्रा. लि.</h2>
+                    <div className='flex gap-4 justify-center'>
                         {['facebook', 'twitter', 'youtube', 'instagram'].map((icon) => (
-                            <div key={icon} className='w-[42px] h-[42px] bg-[#d9d9d9] rounded-full flex items-center justify-center'>
-                                <Image src={`/images/kasinHomepage/${icon}.svg`} alt={`${icon} icon`} width={25} height={25} />
-                            </div>
+                            <Link
+                                key={icon}
+                                href="#"
+                                className='w-10 h-10 bg-[#d9d9d9] rounded-full flex items-center justify-center shadow-sm hover:bg-gray-300 transition-colors'
+                                aria-label={`Follow us on ${icon}`}
+                            >
+                                <Image
+                                    src={`/images/kasinHomepage/${icon}.svg`}
+                                    alt={`${icon} icon`}
+                                    width={20}
+                                    height={20}
+                                    className='hover:opacity-80 transition-opacity'
+                                />
+                            </Link>
                         ))}
                     </div>
                 </div>
 
-                {/* Grid Section */}
-                <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
-                    <div className='flex flex-col gap-2 text-center md:text-left'>
-                        <p className='font-inter font-[700] text-[22px]'>हाम्रो टिम</p>
-                        <p className='font-inter font-[400] text-xs sm:text-sm md:text-base lg:text-lg'>अध्यक्ष तथा निर्देशक : सुधीर नेपाल</p>
-                        <p className='font-inter font-[400] text-xs sm:text-sm md:text-base lg:text-lg'>प्रमुख प्राविधिक अधिकृत : प्रकाश शर्मा</p>
-                        <p className='font-inter font-[400] text-xs sm:text-sm md:text-base lg:text-lg'>खाता : निरन्जन थापा </p>
-                        <p className='font-inter font-[400] text-xs sm:text-sm md:text-base lg:text-lg'>कार्यकारी सम्पादक : राम प्रसाद पौडेल</p>
-                        <p className='font-[400] text-xs sm:text-sm md:text-base lg:text-lg'>जनसम्पर्क अधिकृत : श्रीशा शर्मा</p>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12'>
+                    {/* Our Team */}
+                    <div className='space-y-4 text-center md:text-left'>
+                        <h3 className='text-lg font-semibold text-gray-900'>हाम्रो टिम</h3>
+                        <ul className='space-y-2 text-gray-600'>
+                            {[
+                                'अध्यक्ष तथा निर्देशक : सुधीर नेपाल',
+                                'प्रमुख प्राविधिक अधिकृत : प्रकाश शर्मा',
+                                'खाता : निरन्जन थापा',
+                                'कार्यकारी सम्पादक : राम प्रसाद पौडेल',
+                                'जनसम्पर्क अधिकृत : श्रीशा शर्मा'
+                            ].map((item, index) => (
+                                <li key={index} className='text-sm md:text-base'>{item}</li>
+                            ))}
+                        </ul>
                     </div>
 
-                    <div className='flex flex-col items-center md:text-start text-center'>
-                        <div className='flex flex-col gap-2 items-center md:items-start'>
-                            <p className='font-inter font-[700] text-[22px] text-center md:text-left'>सम्पर्क</p>
-
-                            <div className='font-inter font-[400] text-xs sm:text-sm md:text-base lg:text-lg flex items-center gap-2'>
-                                <div className='w-[30px] h-[30px] bg-[#F9F8F8] rounded-full' />
-                                <p>सूचना विभाग दर्ता नं. १२३-०८१/८२</p>
-                            </div>
-
-                            <div className='font-inter font-[400] text-xs sm:text-sm md:text-base lg:text-lg flex items-center gap-2'>
-                                <div className='w-[30px] h-[30px] bg-[#d9d9d9] rounded-full flex items-center justify-center'>
-                                    <MapPinIcon size={15} />
+                    {/* Contact */}
+                    <div className='space-y-4'>
+                        <h3 className='text-lg font-semibold text-gray-900 text-center md:text-left'>सम्पर्क</h3>
+                        <ul className='space-y-3 text-gray-600 flex flex-col items-center md:items-start'>
+                            <li className='flex items-start gap-3'>
+                                <div className='w-6 h-6 bg-[#F9F8F8] rounded-full flex-shrink-0'></div>
+                                <p className='text-sm md:text-base text-center md:text-left'>सूचना विभाग दर्ता नं. १२३-०८१/८२</p>
+                            </li>
+                            <li className='flex items-center gap-3'>
+                                <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
+                                    <MapPinIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p>कमलपोखरी, काठमाडौं, नेपाल</p>
-                            </div>
-
-                            <div className='font-inter font-[400] text-xs sm:text-sm md:text-base lg:text-lg flex items-center gap-2'>
-                                <div className='w-[30px] h-[30px] bg-[#d9d9d9] rounded-full flex items-center justify-center'>
-                                    <PhoneCallIcon size={15} />
+                                <p className='text-sm md:text-base text-center md:text-left'>कमलपोखरी, काठमाडौं, नेपाल</p>
+                            </li>
+                            <li className='flex items-center gap-3'>
+                                <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
+                                    <PhoneCallIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p>+९७७-१-१२३४५६७८</p>
-                            </div>
-
-                            <div className='font-inter font-[400] text-xs sm:text-sm md:text-base lg:text-lg flex items-center gap-2'>
-                                <div className='w-[30px] h-[30px] bg-[#d9d9d9] rounded-full flex items-center justify-center'>
-                                    <MailIcon size={15} />
+                                <p className='text-sm md:text-base text-center md:text-left'>+९७७-१-१२३४५६७८</p>
+                            </li>
+                            <li className='flex items-center gap-3'>
+                                <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
+                                    <MailIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p>info@biratinfo.com</p>
-                            </div>
+                                <p className='text-sm md:text-base text-center md:text-left'>info@biratinfo.com</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* App Downloads */}
+                    <div className='space-y-4 flex flex-col items-center md:items-start'>
+                        <h3 className='text-lg font-semibold text-gray-900'>Download Our App</h3>
+                        <div className='flex flex-col gap-3'>
+                            <Link href="#" className='hover:opacity-90 transition-opacity'>
+                                <Image
+                                    src='/images/homepage/GooglePlay.png'
+                                    alt='Get it on Google Play'
+                                    width={200}
+                                    height={56}
+                                    className='rounded-sm'
+                                />
+                            </Link>
+                            <Link href="#" className='hover:opacity-90 transition-opacity'>
+                                <Image
+                                    src='/images/homepage/AppStore.png'
+                                    alt='Download on the App Store'
+                                    width={205}
+                                    height={56}
+                                    className='rounded-sm'
+                                />
+                            </Link>
                         </div>
                     </div>
-
-                    <div className='text-white text-center font-jost font-semibold text-lg flex flex-col gap-4'>
-                        <Image
-                            src='/images/homepage/GooglePlay.png'
-                            alt='Google Play'
-                            height={56}
-                            width={200}
-                            className='rounded-sm mx-auto'
-                        />
-                        <Image
-                            src='/images/homepage/AppStore.png'
-                            alt='App Store'
-                            height={56}
-                            width={205}
-                            className='rounded-sm mx-auto'
-                        />
-                    </div>
                 </div>
-            </div>
 
-            {/* COPYRIGHT */}
-            <div className='flex flex-col gap-2'>
-                <div className='w-full h-0.5 bg-text-color' />
-                <div className='flex flex-col md:flex-row justify-between items-center gap-2 text-center md:text-left font-inter font-[400] text-[16px]'>
-                    <p>Copyright 2025 BIRAT Informatics Pvt. Ltd.&nbsp;&nbsp;|&nbsp;&nbsp;A Product of SRIYOG Consulting</p>
-                    <p>Terms & Conditions&nbsp;&nbsp;|&nbsp;&nbsp;Privacy Policy&nbsp;&nbsp;|&nbsp;&nbsp;Advertise</p>
+                {/* Copyright */}
+                <div className='pt-6 border-t border-gray-300'>
+                    <div className='flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-gray-500 text-center md:text-left'>
+                        <p>Copyright © 2025 BIRAT Informatics Pvt. Ltd. | A Product of SRIYOG Consulting</p>
+                        <div className='flex flex-wrap justify-center gap-3 md:gap-4'>
+                            <Link href="#" className='hover:text-gray-700 transition-colors'>Terms & Conditions</Link>
+                            <Link href="#" className='hover:text-gray-700 transition-colors'>Privacy Policy</Link>
+                            <Link href="#" className='hover:text-gray-700 transition-colors'>Advertise</Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
     )
 }
 
