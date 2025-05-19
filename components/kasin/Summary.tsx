@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useFetchArticles } from '@/hooks/useFetchArticles'
 
 function Summary() {
-    const { articles, loading, error } = useFetchArticles();
+    // const { articles, loading, error } = useFetchArticles();
     // const Summary = articles.map(article => ({
     //     minititle: article.fields.Categories,
     //     title: article.fields.Title!,
