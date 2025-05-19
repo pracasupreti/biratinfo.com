@@ -5,7 +5,7 @@ import { MailIcon, MapPinIcon, PhoneCallIcon } from 'lucide-react'
 
 function Footer() {
     return (
-        <div className='w-full px-4 lg:px-20 md:px-6 py-12 bg-[#F9F8F8]'>
+        <div className='w-full px-4 lg:px-20 md:px-6 py-12 bg-[#D9D9D9]'>
             <div className='max-w-7xl mx-auto flex flex-col gap-12'>
                 <div className='flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left'>
                     <h2 className='text-2xl font-bold text-gray-900'>विराट इन्फर्म्याटिक्स प्रा. लि.</h2>
@@ -14,7 +14,7 @@ function Footer() {
                             <Link
                                 key={icon}
                                 href="#"
-                                className='w-10 h-10 bg-[#d9d9d9] rounded-full flex items-center justify-center shadow-sm hover:bg-gray-300 transition-colors'
+                                className='w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center shadow-sm hover:bg-gray-300 transition-colors'
                                 aria-label={`Follow us on ${icon}`}
                             >
                                 <Image
@@ -51,7 +51,7 @@ function Footer() {
                         <h3 className='text-lg font-semibold text-gray-900 text-center md:text-left'>सम्पर्क</h3>
                         <ul className='space-y-3 text-gray-600 flex flex-col items-center md:items-start'>
                             <li className='flex items-start gap-3'>
-                                <div className='w-6 h-6 bg-[#F9F8F8] rounded-full flex-shrink-0'></div>
+                                <div className='w-6 h-6 bg-[#D9D9D9] rounded-full flex-shrink-0'></div>
                                 <p className='text-sm md:text-base text-center md:text-left'>सूचना विभाग दर्ता नं. १२३-०८१/८२</p>
                             </li>
                             <li className='flex items-center gap-3'>
@@ -102,10 +102,10 @@ function Footer() {
                 </div>
 
                 {/* Copyright */}
-                <div className='pt-6 border-t border-gray-300'>
+                <div className='pt-6 border-t-[0.3px] border-[#444444]'>
                     <div className='flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-gray-500 text-center md:text-left'>
-                        <p>Copyright © 2025 BIRAT Informatics Pvt. Ltd. | A Product of SRIYOG Consulting</p>
-                        <div className='flex flex-wrap justify-center gap-3 md:gap-4'>
+                        <p className='text-[#444444]'>Copyright © 2025 BIRAT Informatics Pvt. Ltd. | A Product of SRIYOG Consulting</p>
+                        <div className='flex flex-wrap justify-center gap-3 md:gap-4 text-[#444444]'>
                             <Link href="#" className='hover:text-gray-700 transition-colors'>Terms & Conditions</Link>
                             <Link href="#" className='hover:text-gray-700 transition-colors'>Privacy Policy</Link>
                             <Link href="#" className='hover:text-gray-700 transition-colors'>Advertise</Link>

@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { MessageSquareIcon, TrendingUpIcon } from 'lucide-react'
 import { FaDribbble, FaFacebookF, FaTwitter, FaYoutube } from 'react-icons/fa'
 import BottomBar from '@/components/author/BottomBar'
+import Header from '@/components/homepage/Header'
+import Footer from '@/components/homepage/Footer'
 
 
 function page() {
@@ -74,45 +76,79 @@ function page() {
         }
     ]
     return (
-        <div className='flex flex-col gap-16 mb-10'>
-            <div className='bg-[#eff5f5] h-[550px] flex justify-center items-center gap-80 relative'>
-                <div className='w-[319px] h-[319px] bg-[#d9d9d9] rounded-full '></div>
-                <div className='font-jost font-[400] w-[629px] flex flex-col gap-3'>
-                    <p className='text-[96px] text-[#9e9e9e]'>Sandeep Thapa</p>
-                    <p className='text-[#545657] text-[16px]'>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using &apos;Content here, content here&apos;, making it look like readable English.</p>
-                    <div className='flex gap-6 absolute mt-60 ml-96'>
-                        <div className='p-2 bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center border-2 border-black'><FaFacebookF size={20} /></div>
-                        <div className='p-2 bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center border-2 border-black'><FaTwitter /></div>
-                        <div className='p-2 bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center border-2 border-black'> <FaYoutube /></div>
-                        <div className='p-2 bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center border-2 border-black'> <FaDribbble /></div>
-                    </div>
-                    <p className='text-[#545657] text-[16px]'>Total Post :12,394  |   Category : Politics </p>
-                    <p className='text-[#545657] text-[16px]'>Writing Since : 13 April 2025,Monday</p>
-                </div>
-            </div>
-            <div>
-                {/* GRID1 */}
-                <div className='flex flex-col gap-16 pb-10'>
-                    <div>
-                        <div className='w-[90%] mx-auto h-[3px] bg-[#ebebeb]' />
-                    </div>
-                    <div className='md:flex-row flex flex-col px-20 md:px-60 gap-20'>
-                        <div className='flex flex-col items-start gap-5 md:w-[673px] w-[373px]'>
-                            <div className='md:w-[673px] md:h-[448px] w-[373px] h-[248px] bg-[url(/images/homepage/PoliticsImage1.png)] bg-cover bg-no-repeat bg-center' />
-                            <p className='text-black font-ibm_plex_serif font-[700] text-[30px] '>How Liberty Mutual was able to jump into
-                                generative AI thanks to a clear data strategy
-                                and FinOps</p>
-                            <p className='text-[#808080] font-roboto font-[500] text-[13px] flex items-center gap-x-2'>
-                                <span>TOM KRAZIT</span>
-                                <span>.</span>
-                                <span>FEB 18, 2025</span>
-                            </p>
+        <div>
+            <Header />
+            <div className='flex flex-col gap-16 mb-10'>
+                <div className='bg-[#eff5f5] h-[550px] flex justify-center items-center gap-80 relative'>
+                    <div className='w-[319px] h-[319px] bg-[#d9d9d9] rounded-full '></div>
+                    <div className='font-jost font-[400] w-[629px] flex flex-col gap-3'>
+                        <p className='text-[96px] text-[#9e9e9e]'>Sandeep Thapa</p>
+                        <p className='text-[#545657] text-[16px]'>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using &apos;Content here, content here&apos;, making it look like readable English.</p>
+                        <div className='flex gap-6 absolute mt-60 ml-96'>
+                            <div className='p-2 bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center border-2 border-black'><FaFacebookF size={20} /></div>
+                            <div className='p-2 bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center border-2 border-black'><FaTwitter /></div>
+                            <div className='p-2 bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center border-2 border-black'> <FaYoutube /></div>
+                            <div className='p-2 bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center border-2 border-black'> <FaDribbble /></div>
                         </div>
+                        <p className='text-[#545657] text-[16px]'>Total Post :12,394  |   Category : Politics </p>
+                        <p className='text-[#545657] text-[16px]'>Writing Since : 13 April 2025,Monday</p>
+                    </div>
+                </div>
+                <div>
+                    {/* GRID1 */}
+                    <div className='flex flex-col gap-16 pb-10'>
                         <div>
-                            <div className='flex flex-col gap-y-12'>
-                                {Politics.map((items, index) =>
-                                    <div key={index} className='flex gap-4 '>
-                                        <div className='min-w-[309px] h-[174px] relative'>
+                            <div className='w-[90%] mx-auto h-[3px] bg-[#ebebeb]' />
+                        </div>
+                        <div className='md:flex-row flex flex-col px-20 md:px-60 gap-20'>
+                            <div className='flex flex-col items-start gap-5 md:w-[673px] w-[373px]'>
+                                <div className='md:w-[673px] md:h-[448px] w-[373px] h-[248px] bg-[url(/images/homepage/PoliticsImage1.png)] bg-cover bg-no-repeat bg-center' />
+                                <p className='text-black font-ibm_plex_serif font-[700] text-[30px] '>How Liberty Mutual was able to jump into
+                                    generative AI thanks to a clear data strategy
+                                    and FinOps</p>
+                                <p className='text-[#808080] font-roboto font-[500] text-[13px] flex items-center gap-x-2'>
+                                    <span>TOM KRAZIT</span>
+                                    <span>.</span>
+                                    <span>FEB 18, 2025</span>
+                                </p>
+                            </div>
+                            <div>
+                                <div className='flex flex-col gap-y-12'>
+                                    {Politics.map((items, index) =>
+                                        <div key={index} className='flex gap-4 '>
+                                            <div className='min-w-[309px] h-[174px] relative'>
+                                                <Image
+                                                    src={items.imageUrl}
+                                                    alt=''
+                                                    fill
+                                                    objectFit='contain'
+                                                />
+                                            </div>
+                                            <div className='flex flex-col gap-4'>
+                                                <p className='text-black font-ibm_plex_serif font-[700] text-[20px] '>{items.description}</p>
+                                                <p className='text-[#808080] font-roboto font-[500] text-[13px] flex items-center gap-x-2'>
+                                                    <span>TOM KRAZIT</span>
+                                                    <span>.</span>
+                                                    <span>FEB 18, 2025</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* GRID2 */}
+                    <div className='flex flex-col gap-16 pb-10'>
+                        <div className=''>
+                            <div className='w-[90%] mx-auto h-[3px] bg-[#ebebeb]' />
+                        </div>
+                        <div className='flex flex-col gap-20'>
+                            <div className='grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-24 mx-auto'>
+                                {Economy.map((items, index) =>
+                                    <div key={index} className='flex gap-4'>
+                                        <div className='min-w-[318px] h-[165px] relative'>
                                             <Image
                                                 src={items.imageUrl}
                                                 alt=''
@@ -121,7 +157,7 @@ function page() {
                                             />
                                         </div>
                                         <div className='flex flex-col gap-4'>
-                                            <p className='text-black font-ibm_plex_serif font-[700] text-[20px] '>{items.description}</p>
+                                            <p className='text-black font-ibm_plex_serif font-[700] text-[20px] max-w-[309px] max-h-[105px] '>{items.description}</p>
                                             <p className='text-[#808080] font-roboto font-[500] text-[13px] flex items-center gap-x-2'>
                                                 <span>TOM KRAZIT</span>
                                                 <span>.</span>
@@ -133,18 +169,13 @@ function page() {
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {/* GRID2 */}
-                <div className='flex flex-col gap-16 pb-10'>
-                    <div className=''>
-                        <div className='w-[90%] mx-auto h-[3px] bg-[#ebebeb]' />
-                    </div>
-                    <div className='flex flex-col gap-20'>
-                        <div className='grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-24 mx-auto'>
-                            {Economy.map((items, index) =>
-                                <div key={index} className='flex gap-4'>
-                                    <div className='min-w-[318px] h-[165px] relative'>
+                    {/* GRID3 */}
+                    <div className='flex flex-col gap-16 pb-10 pt-10'>
+                        <div className='flex items-center justify-between px-60'>
+                            {employment.map((items, index) =>
+                                <div className='flex flex-col gap-3' key={index}>
+                                    <div className='w-[322px] h-[183px] relative '>
                                         <Image
                                             src={items.imageUrl}
                                             alt=''
@@ -152,60 +183,36 @@ function page() {
                                             objectFit='contain'
                                         />
                                     </div>
-                                    <div className='flex flex-col gap-4'>
-                                        <p className='text-black font-ibm_plex_serif font-[700] text-[20px] max-w-[309px] max-h-[105px] '>{items.description}</p>
-                                        <p className='text-[#808080] font-roboto font-[500] text-[13px] flex items-center gap-x-2'>
-                                            <span>TOM KRAZIT</span>
-                                            <span>.</span>
-                                            <span>FEB 18, 2025</span>
-                                        </p>
+                                    <div className='flex gap-2'>
+                                        {items.index === 3 ? <span className='font-roboto font-[600] text-[13px] bg-black text-white px-2 rounded-lg'>EXCLUSIVE</span> : ''}
+                                        <p className='text-[#808080] font-roboto font-[600] text-[13px]'>{items.miniTitle}</p>
+                                    </div>
+                                    <p className='font-ibm_plex_serif font-[500] text-[19px] max-w-[314px] max-h-[54px]'>{items.title}</p>
+                                    <p className='text-[#808080] font-inter font-[500] text-[13px] max-w-[308px] max-h-[96px]'>{items.description}</p>
+                                    <div className='flex items-center gap-2'>
+                                        {items.index === 1 ? '' : <MessageSquareIcon size={16} stroke='#808080' />}
+                                        {items.index === 1 ? '' : <p className='text-[#808080] font-inter font-[500] text-[13px]'>{items.comment}</p>}
+
+                                        {items.index === 3 || items.index === 4 ? <TrendingUpIcon size={16} stroke='#808080' /> : ''}
+
                                     </div>
                                 </div>
                             )}
+
+                        </div>
+                        <div>
+                            <div className='w-[90%] mx-auto h-[3px] bg-[#ebebeb]' />
                         </div>
                     </div>
                 </div>
+                <div >
+                    <BottomBar />
 
-                {/* GRID3 */}
-                <div className='flex flex-col gap-16 pb-10 pt-10'>
-                    <div className='flex items-center justify-between px-60'>
-                        {employment.map((items, index) =>
-                            <div className='flex flex-col gap-3' key={index}>
-                                <div className='w-[322px] h-[183px] relative '>
-                                    <Image
-                                        src={items.imageUrl}
-                                        alt=''
-                                        fill
-                                        objectFit='contain'
-                                    />
-                                </div>
-                                <div className='flex gap-2'>
-                                    {items.index === 3 ? <span className='font-roboto font-[600] text-[13px] bg-black text-white px-2 rounded-lg'>EXCLUSIVE</span> : ''}
-                                    <p className='text-[#808080] font-roboto font-[600] text-[13px]'>{items.miniTitle}</p>
-                                </div>
-                                <p className='font-ibm_plex_serif font-[500] text-[19px] max-w-[314px] max-h-[54px]'>{items.title}</p>
-                                <p className='text-[#808080] font-inter font-[500] text-[13px] max-w-[308px] max-h-[96px]'>{items.description}</p>
-                                <div className='flex items-center gap-2'>
-                                    {items.index === 1 ? '' : <MessageSquareIcon size={16} stroke='#808080' />}
-                                    {items.index === 1 ? '' : <p className='text-[#808080] font-inter font-[500] text-[13px]'>{items.comment}</p>}
-
-                                    {items.index === 3 || items.index === 4 ? <TrendingUpIcon size={16} stroke='#808080' /> : ''}
-
-                                </div>
-                            </div>
-                        )}
-
-                    </div>
-                    <div>
-                        <div className='w-[90%] mx-auto h-[3px] bg-[#ebebeb]' />
-                    </div>
                 </div>
             </div>
-            <div >
-                <BottomBar />
-
-            </div>
+            <Footer />
         </div>
+
     )
 }
 

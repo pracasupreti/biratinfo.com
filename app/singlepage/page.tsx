@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Footer from '@/components/homepage/Footer';
+import { Clock2Icon, TagIcon } from 'lucide-react';
+import Header from '@/components/homepage/Header';
 
 function Page() {
 
@@ -31,6 +33,7 @@ function Page() {
 
     return (
         <div>
+            <Header />
             <div className="flex flex-col gap-12 max-w-7xl mx-auto">
                 <div className='relative w-full h-[60vh] md:h-[80vh] overflow-hidden'>
                     <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10' />
@@ -40,26 +43,46 @@ function Page() {
                         fill
                         className='object-cover'
                     />
-                    <div className='absolute bottom-0 left-0 right-0 z-20 px-6 pb-8 md:px-12 md:pb-12 mb-16'>
-                        <h1 className='text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight text-center'>
-                            Trump&apos;s Middle East tour has more substance than the White House let on
-                        </h1>
-                    </div>
                 </div>
 
                 <article className='px-6 md:px-12 lg:px-24'>
-                    <div className='relative -mt-10 md:-mt-34 mb-10 z-30'>
+                    <div className='relative -mt-10 md:-mt-55 lg:-mt-50 mb-10 z-30'>
                         <div className='bg-white p-6 md:p-8 rounded-xl shadow-lg max-w-4xl mx-auto'>
-                            <p className='text-lg md:text-xl leading-relaxed text-gray-700 mb-6 text-center md:text-start'>
+                            <p className='text-2xl md:text-4xl font-bold leading-tight text-text-color mb-2 text-center '>
+                                Trump&apos;s Middle East tour has more substance than the White House let on
+                            </p>
+                            <p className='text-lg md:text-lg leading-relaxed text-gray-700 mb-2 text-center md:text-start'>
                                 There’s more to Donald Trump’s Middle East trip than billion-dollar contracts, parades of camels and a storm back home over Qatar’s offer to give the president a new Air Force One.
                             </p>
-                            <div className='flex flex-wrap gap-4 justify-center'>
+                            <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-5 md:gap-6 xl:gap-16 xl:text-lg text-xs sm:text-sm md:text-base font-normal text-text-color mb-2">
+                                <p className="flex items-center gap-2">
+                                    <Avatar>
+                                        <AvatarImage src="/images/homepage/author.webp" />
+                                        <AvatarFallback>CN</AvatarFallback>
+                                    </Avatar>
+
+                                    Ismaeel Naar
+                                </p>
+                                <p className="flex items-center gap-2">
+                                    <Clock2Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    6 Minutes Read
+                                </p>
+                                <p className="flex items-center gap-2">
+                                    <TagIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    Politics
+                                </p>
+                            </div>
+                            <div className='flex justify-end'>
+                                <p className='text-gray-700 md:text-[12px] text-[10px]'>Updated 5:01 AM EDT, Thu May 15, 2025</p>
+
+                            </div>
+                            {/* <div className='flex flex-wrap gap-4 justify-center'>
                                 {['#Global', '#News', '#Politics', '#USA'].map((tag, i) => (
                                     <span key={i} className='px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm'>
                                         {tag}
                                     </span>
                                 ))}
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 
@@ -133,7 +156,7 @@ function Page() {
                         </div>
                     </div>
 
-                    <div className='flex items-center gap-4 p-6 bg-gray-50 rounded-lg mb-12'>
+                    {/* <div className='flex items-center gap-4 p-6 bg-gray-50 rounded-lg mb-12'>
                         <div className='w-16 h-16 rounded-full overflow-hidden flex items-center'>
                             <Avatar >
                                 <AvatarImage src="/images/homepage/author.webp" />
@@ -145,7 +168,7 @@ function Page() {
                             <p className='text-gray-600 text-sm'> 7 minute read</p>
                             <p className='text-gray-700 mt-1 text-sm'>Updated 5:01 AM EDT, Thu May 15, 2025</p>
                         </div>
-                    </div>
+                    </div> */}
                 </article>
             </div>
 

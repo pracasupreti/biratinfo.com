@@ -9,12 +9,12 @@ import MobileNav from '../MobileNav';
 function Header() {
     const nav = [
         { name: <HomeIcon />, path: "/kasin" },
-        { name: "ताजा समाचार", path: "/politics" },
-        { name: "समाचार", path: "/society" },
+        // { name: "ताजा समाचार", path: "/politics" },
+        // { name: "समाचार", path: "/society" },
         { name: "राजनीति", path: "/startups" },
-        { name: "विज्ञान र प्रबिधि", path: "/economy" },
+        { name: "प्रबिधि", path: "/economy" },
         { name: "साहित्य", path: "/tourism" },
-        { name: "अर्थ/कारोवार", path: "/employment" },
+        { name: "अर्थ", path: "/employment" },
         { name: "सम्पादकीय ", path: "/sports" },
         { name: "बिचार", path: "/world" },
         { name: "प्रदेश", path: "/health" },
@@ -62,8 +62,8 @@ function Header() {
                     </div>
                 </div>
 
-                <nav className='w-full bg-text-color hidden lg:flex items-center overflow-x-auto whitespace-nowrap scrollbar-hide px-4 md:px-6 lg:px-12 xl:px-24 font-alata text-white'>
-                    <div className='mx-auto flex gap-4 md:gap-6 xl:gap-14'>
+                <nav className='w-full bg-text-color hidden md:flex items-center overflow-x-auto whitespace-nowrap scrollbar-hide px-4 lg:px-12 xl:px-24 font-alata text-white'>
+                    <div className='mx-auto flex md:gap-0 lg:gap-4'>
                         {nav.map((item, index) => {
                             const isActive = pathname === item.path;
                             return (
@@ -73,7 +73,7 @@ function Header() {
                                 >
                                     <Link
                                         href={item.path}
-                                        className='shrink-0 transition duration-200 text-[15px] sm:text-[17px] md:text-[19px] lg:text-[20px] xl:text-[22px]'
+                                        className='shrink-0 transition duration-200 text-[15px] sm:text-[14px] md:text-[14px] lg:text-[20px] xl:text-[22px]'
                                     >
                                         {item.name}
                                     </Link>
