@@ -25,7 +25,9 @@ export async function GET() {
 
         const data = await response.json()
         return NextResponse.json({ data: data }, { status: 200 })
-    } catch (error: any) {
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    catch (error: any) {
         console.error("Server-side fetch error:", error);
         return NextResponse.json({ error: `Server-side Fetching error: ${error.message}` }, { status: 500 })
 

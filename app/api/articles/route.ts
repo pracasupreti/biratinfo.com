@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET() {
     const endpoint: string = process.env.AIRTABLE_ARTICLE_ENDPOINT!;
     const token: string = process.env.AIRTABLE_TOKEN!;
 
@@ -22,7 +22,9 @@ export async function GET(req: Request) {
         const data = await response.json();
         return NextResponse.json({ data: data }, { status: 200 })
 
-    } catch (error: any) {
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    catch (error: any) {
         console.error("Server-side fetch error:", error);
         return NextResponse.json({ error: `Server-side Fetching error: ${error.message}` }, { status: 500 })
 
