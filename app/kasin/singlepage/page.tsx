@@ -34,13 +34,13 @@ function Page() {
         <div>
             <Header />
             <div className="flex flex-col gap-12 max-w-7xl mx-auto">
-                <div className='relative w-full h-[60vh] md:h-[80vh] overflow-hidden'>
+                <div className='relative w-full h-[40vh] md:h-[60vh] lg:h-[80vh] overflow-hidden'>
                     <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10' />
                     <Image
                         src="/images/kasinHomepage/SummaryImage1.png"
                         alt="News headline image"
                         fill
-                        className='object-cover'
+                        className='object-cover '
                     />
                     {/* <div className='absolute bottom-0 left-0 right-0 z-20 px-6 pb-8 md:px-12 md:pb-12 mb-16'>
                         <h1 className='text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight text-center'>
@@ -50,14 +50,12 @@ function Page() {
                 </div>
 
                 <article className='px-6 md:px-12 lg:px-24'>
-                    <div className='relative -mt-10 md:-mt-55 lg:-mt-50 mb-10 z-30'>
-                        <div className='bg-white p-6 md:p-8 rounded-xl shadow-lg max-w-4xl mx-auto'>
-                            <h1 className='text-2xl md:text-4xl font-bold leading-tight text-text-color mb-2 text-center '>
+                    <div className='relative -mt-32 md:-mt-40 lg:-mt-40 mb-10 z-30'>
+                        <div className='bg-white p-4 md:p-8 rounded-xl shadow-lg max-w-4xl mx-auto'>
+                            <h1 className='text-[18px] md:text-4xl font-bold leading-tight text-text-color mb-2 text-center '>
                                 प्रधानमन्त्री ओलीको राजनीतिक चर्तुयाँईको घेरोमा सभापति देउवा : गर्भनरका कारण भित्रि मनमुटाव
                             </h1>
-                            <p className='text-lg md:text-lg leading-relaxed text-gray-700 mb-2 text-center md:text-start'>
-                                नेपालको राजनीति अहिले तरंगित अवस्थामा छ । नेपाली कांग्रेस र नेकपा एमालेको गठबन्धन सरकारको अहिले चौतर्फी आलोचना भैरहेको छ । देशले अहिले सम्म नयाँ गतिभिर पाउन सकेको छैन् ।
-                            </p>
+
                             <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-5 md:gap-6 xl:gap-16 xl:text-lg text-xs sm:text-sm md:text-base font-normal text-text-color mb-2">
                                 <p className="flex items-center gap-2">
                                     <Avatar>
@@ -75,7 +73,7 @@ function Page() {
                                     दुर्घटना
                                 </p>
                             </div>
-                            <div className='flex justify-end'>
+                            <div className='flex md:justify-end justify-center'>
                                 <p className='text-gray-700 md:text-[12px] text-[10px]'>अपडेट गरिएको ५:०१ बिहान EDT, बिहीबार जेठ १, २०२५</p>
 
                             </div>
@@ -162,34 +160,36 @@ function Page() {
             </div>
 
             {/* Related News */}
-            <div className='mb-20 flex flex-col gap-6'>
-                <p className='font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl text-center'>
+            <div className="mb-20 flex flex-col gap-6">
+                <p className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl text-center">
                     सम्बन्धित खबर
                 </p>
 
-                <div className='max-w-screen-3xl w-full flex flex-col md:flex-row md:flex-wrap gap-8 md:gap-4 px-6 md:px-24 xl:px-32 items-center md:items-stretch justify-center'>
+                <div className="max-w-screen-3xl w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-24 xl:px-32">
                     {relatedNews.map((items, index) => (
                         <div
                             key={index}
-                            className='w-full md:w-[calc(25%-16px)] flex flex-col gap-3 group border rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 bg-white'
+                            className="flex flex-col gap-3 group border rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 bg-white"
                         >
-                            <div className='w-full h-[30vh] sm:h-[25vh] md:h-[18vh] lg:h-[25vh] relative overflow-hidden rounded-t-xl'>
+                            <div className="w-full h-[30vh] sm:h-[25vh] md:h-[22vh] lg:h-[20vh] xl:h-[25vh] relative overflow-hidden rounded-t-xl">
                                 <Image
                                     src={items.path}
-                                    alt='image'
+                                    alt="image"
                                     fill
-                                    className='object-cover group-hover:scale-105 transition-transform duration-300'
+                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
                             </div>
-                            <div className='p-4 md:p-3 flex flex-col gap-2'>
-                                <p className='font-semibold text-base md:text-sm lg:text-base leading-snug text-text-color cursor-pointer'>
+                            <div className="p-4 flex flex-col gap-2">
+                                <p className="font-semibold text-sm sm:text-base md:text-sm lg:text-base leading-snug text-text-color cursor-pointer">
                                     {items.title}
                                 </p>
-                                <p className='font-[400] text-sm md:text-xs lg:text-sm text-zinc-500'>
+                                <p className="font-[400] text-xs sm:text-sm md:text-xs lg:text-sm text-zinc-500">
                                     {items.description}
                                 </p>
                                 <div>
-                                    <Button className='font-[400] text-sm font-inter bg-white text-black border border-zinc-400 shadow-lg'>थप पढ्नुहोस्</Button>
+                                    <Button className="font-[400] text-sm font-inter bg-white text-black border border-zinc-400 shadow-lg">
+                                        थप पढ्नुहोस्
+                                    </Button>
                                 </div>
                             </div>
                         </div>
