@@ -41,7 +41,7 @@ function Footer() {
                                 'कार्यकारी सम्पादक : राम प्रसाद पौडेल',
                                 'जनसम्पर्क अधिकृत : श्रीशा शर्मा'
                             ].map((item, index) => (
-                                <li key={index} className='text-sm md:text-base'>{item}</li>
+                                <li key={index} className='text-base'>{item}</li>
                             ))}
                         </ul>
                     </div>
@@ -52,25 +52,25 @@ function Footer() {
                         <ul className='space-y-3 text-gray-600 flex flex-col items-center md:items-start'>
                             <li className='flex items-start gap-3'>
                                 <div className='w-6 h-6 bg-[#D9D9D9] rounded-full flex-shrink-0'></div>
-                                <p className='text-sm md:text-base text-center md:text-left'>सूचना विभाग दर्ता नं. १२३-०८१/८२</p>
+                                <p className='text-base text-center md:text-left'>सूचना विभाग दर्ता नं. १२३-०८१/८२</p>
                             </li>
                             <li className='flex items-center gap-3'>
                                 <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
                                     <MapPinIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p className='text-sm md:text-base text-center md:text-left'>कमलपोखरी, काठमाडौं, नेपाल</p>
+                                <p className='text-base text-center md:text-left'>कमलपोखरी, काठमाडौं, नेपाल</p>
                             </li>
                             <li className='flex items-center gap-3'>
                                 <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
                                     <PhoneCallIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p className='text-sm md:text-base text-center md:text-left'>+९७७-१-१२३४५६७८</p>
+                                <p className='text-base text-center md:text-left'>+९७७-१-१२३४५६७८</p>
                             </li>
                             <li className='flex items-center gap-3'>
                                 <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
                                     <MailIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p className='text-sm md:text-base text-center md:text-left'>info@biratinfo.com</p>
+                                <p className='text-base text-center md:text-left'>info@biratinfo.com</p>
                             </li>
                         </ul>
                     </div>
@@ -104,7 +104,10 @@ function Footer() {
                 {/* Copyright */}
                 <div className='pt-6 border-t-[0.3px] border-[#444444]'>
                     <div className='flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-gray-500 text-center md:text-left'>
-                        <p className='text-[#444444]'>Copyright © 2025 BIRAT Informatics Pvt. Ltd. | A Product of SRIYOG Consulting</p>
+                        <div className='flex gap-3 md:flex-row flex-col'>
+                            <p className='text-[#444444]'>Copyright © 2025 BIRAT Informatics Pvt. Ltd. | </p>
+                            <p className='text-[#444444]'> A Product of SRIYOG Consulting</p>
+                        </div>
                         <div className='flex flex-wrap justify-center gap-3 md:gap-4 text-[#444444]'>
                             <Link href="#" className='hover:text-gray-700 transition-colors'>Terms & Conditions</Link>
                             <Link href="#" className='hover:text-gray-700 transition-colors'>Privacy Policy</Link>

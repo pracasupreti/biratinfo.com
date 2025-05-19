@@ -112,7 +112,7 @@ function Page() {
                             </div>
                             <div className='w-full md:w-[502px] max-w-full relative mx-auto md:mx-0 h-auto' >
                                 {/* SIDE IMAGE */}
-                                <div className='relative w-full h-[700px] max-h-[100vh] bg-[url(/images/kasinSinglepage/SinglePage1.png)] rounded-md bg-cover bg-no-repeat' />
+                                <div className='relative w-full h-[700px] max-h-[100vh] bg-[url(/images/kasinSinglepage/advertisement.avif)] rounded-md bg-cover bg-no-repeat' />
                             </div>
                         </div>
 
@@ -182,10 +182,10 @@ function Page() {
                                 />
                             </div>
                             <div className='p-4 md:p-3 flex flex-col gap-2'>
-                                <p className='font-semibold text-sm sm:text-base md:text-sm lg:text-base leading-snug text-text-color cursor-pointer'>
+                                <p className='font-semibold text-base md:text-sm lg:text-base leading-snug text-text-color cursor-pointer'>
                                     {items.title}
                                 </p>
-                                <p className='font-[400] text-xs sm:text-sm md:text-xs lg:text-sm text-zinc-500'>
+                                <p className='font-[400] text-sm md:text-xs lg:text-sm text-zinc-500'>
                                     {items.description}
                                 </p>
                                 <div>

@@ -193,10 +193,10 @@ function Page() {
                                 />
                             </div>
                             <div className='p-4 flex flex-col gap-2'>
-                                <p className='font-semibold text-sm sm:text-base md:text-lg leading-snug text-text-color cursor-pointer '>
+                                <p className='font-semibold text-base md:text-sm lg:text-base leading-snug text-text-color cursor-pointer'>
                                     {items.title}
                                 </p>
-                                <p className='font-[400] text-xs sm:text-sm md:text-base text-zinc-500'>
+                                <p className='font-[400] text-sm md:text-xs lg:text-sm text-zinc-500'>
                                     {items.description}
                                 </p>
                                 <div>

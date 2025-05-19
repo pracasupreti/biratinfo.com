@@ -41,7 +41,7 @@ function Footer1() {
                                 'Executive Editor : Ram Prasad Poudel',
                                 'PRO : Srisha Sharma'
                             ].map((item, index) => (
-                                <li key={index} className='text-sm md:text-base'>{item}</li>
+                                <li key={index} className='text-base'>{item}</li>
                             ))}
                         </ul>
                     </div>
@@ -52,25 +52,25 @@ function Footer1() {
                         <ul className='space-y-3 text-gray-600 flex flex-col items-center md:items-start'>
                             <li className='flex items-start gap-3'>
                                 <div className='w-6 h-6 bg-[#F9F8F8] rounded-full flex-shrink-0'></div>
-                                <p className='text-sm md:text-base text-center md:text-left'>Suchana Bibhag Darta # 123-081/82</p>
+                                <p className='text-base text-center md:text-left'>Suchana Bibhag Darta # 123-081/82</p>
                             </li>
                             <li className='flex items-center gap-3'>
                                 <div className='w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0'>
                                     <MapPinIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p className='text-sm md:text-base text-center md:text-left'>Kamalpokhari, Kathmandu, Nepal</p>
+                                <p className='text-base text-center md:text-left'>Kamalpokhari, Kathmandu, Nepal</p>
                             </li>
                             <li className='flex items-center gap-3'>
                                 <div className='w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0'>
                                     <PhoneCallIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p className='text-sm md:text-base text-center md:text-left'>+977-1-12345678</p>
+                                <p className='text-base text-center md:text-left'>+977-1-12345678</p>
                             </li>
                             <li className='flex items-center gap-3'>
                                 <div className='w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0'>
                                     <MailIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p className='text-sm md:text-base text-center md:text-left'>info@biratinfo.com</p>
+                                <p className='text-base text-center md:text-left'>info@biratinfo.com</p>
                             </li>
                         </ul>
                     </div>
@@ -104,7 +104,10 @@ function Footer1() {
                 {/* Copyright */}
                 <div className='pt-6 border-t border-gray-300'>
                     <div className='flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-gray-500 text-center md:text-left'>
-                        <p>Copyright © 2025 BIRAT Informatics Pvt. Ltd. | A Product of SRIYOG Consulting</p>
+                        <div className='flex gap-3 md:flex-row flex-col'>
+                            <p className='text-[#444444]'>Copyright © 2025 BIRAT Informatics Pvt. Ltd. | </p>
+                            <p className='text-[#444444]'> A Product of SRIYOG Consulting</p>
+                        </div>
                         <div className='flex flex-wrap justify-center gap-3 md:gap-4'>
                             <Link href="#" className='hover:text-gray-700 transition-colors'>Terms & Conditions</Link>
                             <Link href="#" className='hover:text-gray-700 transition-colors'>Privacy Policy</Link>
