@@ -2,7 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useFetchArticles } from '@/hooks/useFetchArticles'
+// import { useFetchArticles } from '@/hooks/useFetchArticles'
 
 function Summary() {
     // const { articles, loading, error } = useFetchArticles();
