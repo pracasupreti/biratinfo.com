@@ -72,7 +72,7 @@ function Economy() {
                 </div>
 
                 <Button className="w-full max-w-[344px] h-[42px] bg-white border border-[#c9c9c9] text-[#939393] font-roboto font-semibold text-[20px] text-center mx-auto">
-                    Browse More
+                    थप पढ्नुहोस्
                 </Button>
             </div>
         </section>
