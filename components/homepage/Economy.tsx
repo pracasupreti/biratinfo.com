@@ -35,45 +35,47 @@ function Economy() {
     ]
 
     return (
-        <section className="flex flex-col gap-12 pb-10 px-4 sm:px-8 md:px-20">
-            <div className="flex flex-col gap-2 max-w-screen-4xl w-full mx-auto">
-                <p className="text-[#939393] font-orienta text-[20px] font-[700]">Economy</p>
-                <div className="w-full h-[3px] bg-[#ebebeb]" />
-            </div>
-
-            <div className="flex flex-col gap-20 max-w-screen-2xl w-full mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-16">
-                    {economy.map((item, index) => (
-                        <div key={index} className="flex flex-col lg:flex-row gap-6 group">
-                            <div className="w-full aspect-[3/2] relative md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl overflow-hidden">
-                                <Image
-                                    src={item.imageUrl}
-                                    alt=""
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-
-                            <div className="flex flex-col gap-4 w-full" >
-                                <p className="text-text-color font-ibm_plex_serif font-bold text-[18px] md:text-[20px] leading-snug md:mt-1 cursor-pointer">
-                                    {item.title}
-                                </p>
-                                <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm ">
-                                    {item.description}
-                                </p>
-                                <p className="text-[#808080] font-roboto font-medium text-[13px] flex items-center gap-x-2">
-                                    <span>{item.author}</span>
-                                    <span>.</span>
-                                    <span>{item.publishedDate}</span>
-                                </p>
-                            </div>
-                        </div>
-                    ))}
+        <section className="w-full px-4 lg:px-20 md:px-6 py-12">
+            <div className="max-w-7xl mx-auto flex flex-col gap-12">
+                <div className="flex flex-col gap-2">
+                    <p className="text-[#939393] font-orienta text-[20px] font-[700]">Economy</p>
+                    <div className="w-full h-[3px] bg-[#ebebeb]" />
                 </div>
 
-                <Button className="w-full max-w-[344px] h-[42px] bg-white border border-[#c9c9c9] text-[#939393] font-roboto font-semibold text-[20px] text-center mx-auto">
-                    Browse More
-                </Button>
+                <div className="flex flex-col gap-20">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-16">
+                        {economy.map((item, index) => (
+                            <div key={index} className="flex flex-col lg:flex-row gap-6 group">
+                                <div className="w-full lg:w-[40%] aspect-[3/2] relative md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl overflow-hidden">
+                                    <Image
+                                        src={item.imageUrl}
+                                        alt=""
+                                        fill
+                                        className="object-cover"
+                                    />
+                                </div>
+
+                                <div className="flex flex-col gap-4 lg:w-[60%]">
+                                    <p className="text-text-color font-ibm_plex_serif font-bold text-[18px] md:text-[20px] leading-snug cursor-pointer line-clamp-2 hover:underline">
+                                        {item.title}
+                                    </p>
+                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm line-clamp-3">
+                                        {item.description}
+                                    </p>
+                                    <p className="text-[#808080] font-roboto font-medium text-[13px] flex items-center gap-x-2">
+                                        <span>{item.author}</span>
+                                        <span>·</span>
+                                        <span>{item.publishedDate}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <Button className="w-full max-w-[344px] h-[42px] bg-white border border-[#c9c9c9] text-[#939393] font-roboto font-semibold text-[20px] text-center mx-auto hover:bg-gray-50 transition-colors">
+                        Browse More
+                    </Button>
+                </div>
             </div>
         </section>
     )

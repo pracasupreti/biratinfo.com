@@ -43,47 +43,49 @@ const Security = () => {
     ]
 
     return (
-        <section className='flex flex-col gap-12 pb-20 px-4 sm:px-8 md:px-20'>
-            <div className='flex flex-col gap-2'>
-                <p className='text-[#939393] font-orienta text-[18px] md:text-[20px] font-[700]'>सुरक्षा</p>
-                <div className='w-full h-[2px] bg-[#ebebeb]' />
-            </div>
+        <section className='w-full px-4 lg:px-20 md:px-6 py-12'>
+            <div className='max-w-7xl mx-auto flex flex-col gap-12 md:gap-16'>
+                <div className='flex flex-col gap-2'>
+                    <p className='text-[#939393] font-orienta text-[18px] md:text-[20px] font-[700]'>सुरक्षा</p>
+                    <div className='w-full h-[2px] bg-[#ebebeb]' />
+                </div>
 
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-8'>
-                {employment.map((item) => (
-                    <div className='flex flex-col gap-3 group' key={item.index}>
-                        <div className='w-full aspect-[16/9] relative md:group-hover:translate-y-[-10px] md:transition md:duration-400'>
-                            <Image
-                                src={item.imageUrl}
-                                alt='security image'
-                                fill
-                                sizes='(max-width: 768px) 100vw, 322px'
-                                className='object-cover'
-                            />
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-8'>
+                    {employment.map((item) => (
+                        <div className='flex flex-col gap-3 group' key={item.index}>
+                            <div className='w-full aspect-[16/9] relative md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-md overflow-hidden'>
+                                <Image
+                                    src={item.imageUrl}
+                                    alt='security image'
+                                    fill
+                                    style={{ objectFit: 'cover' }}
+                                    sizes='(max-width: 768px) 100vw, 322px'
+                                />
+                            </div>
+
+                            <div className='flex gap-2'>
+                                {item.index === 3 && (
+                                    <span className='font-roboto font-semibold text-[13px] bg-black text-white px-2 rounded-lg'>
+                                        EXCLUSIVE
+                                    </span>
+                                )}
+                                <p className='text-[#808080] font-roboto font-semibold text-[13px]'>{item.miniTitle}</p>
+                            </div>
+
+                            <h3 className='font-ibm_plex_serif font-medium text-[18px] leading-snug text-text-color line-clamp-2 hover:underline cursor-pointer'>
+                                {item.title}
+                            </h3>
+
+                            <p className='text-[#808080] font-inter text-[13px] line-clamp-3'>{item.description}</p>
+
+                            <div className='flex items-center gap-2'>
+                                <MessageSquareIcon size={16} stroke='#808080' />
+                                <p className='text-[#808080] font-inter text-[13px]'>{item.comment}</p>
+                                {(item.index === 3 || item.index === 4) && <TrendingUpIcon size={16} stroke='#808080' />}
+                            </div>
                         </div>
-
-                        <div className='flex gap-2 ml-2 md:ml-0'>
-                            {item.index === 3 && (
-                                <span className='font-roboto font-semibold text-[13px] bg-black text-white px-2 rounded-lg'>
-                                    EXCLUSIVE
-                                </span>
-                            )}
-                            <p className='text-[#808080] font-roboto font-semibold text-[13px]'>{item.miniTitle}</p>
-                        </div>
-
-                        <h3 className='font-ibm_plex_serif font-medium text-[18px] leading-snug ml-2 md:ml-0 text-text-color cursor-pointer'>
-                            {item.title}
-                        </h3>
-
-                        <p className='text-[#808080] font-inter text-[13px] ml-2 md:ml-0'>{item.description}</p>
-
-                        <div className='flex items-center gap-2 ml-2 md:ml-0' >
-                            <MessageSquareIcon size={16} stroke='#808080' />
-                            <p className='text-[#808080] font-inter text-[13px]'>{item.comment}</p>
-                            {(item.index === 3 || item.index === 4) && <TrendingUpIcon size={16} stroke='#808080' />}
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
         </section>
     )

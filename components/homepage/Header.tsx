@@ -17,8 +17,6 @@ function Header() {
         { name: "Sports", path: "/sports" },
         { name: "World", path: "/world" },
         { name: "Health", path: "/health" },
-        { name: "Agriculture", path: "/agriculture" },
-        { name: "Entertainment", path: "/entertainment" },
         { name: "Market", path: "/market" }
     ];
 

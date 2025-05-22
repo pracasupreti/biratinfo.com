@@ -31,41 +31,54 @@ function Summary() {
     ]
 
     return (
-        <section className="w-full px-4 sm:px-6 lg:px-20 py-10 flex flex-col lg:flex-row gap-16">
-            <div className="flex flex-col text-center items-center lg:items-start lg:text-left lg:w-1/2 gap-4">
-                <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat rounded-2xl bg-[url('/images/homepage/SummaryImage1.webp')]" />
-                <p className="text-[#939393] font-orienta text-base sm:text-lg font-[700]">Politics</p>
-                <Link href={''} className="text-text-color font-ibm_plex_serif font-bold text-xl sm:text-2xl lg:text-3xl cursor-pointer">
-                    Relief on China&apos;s factory floors as US tariffs put on hold
-                </Link>
-                <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg cursor-pointer">
-                    There&apos;s a vast empty space in the middle of the factory floor in Foshan in southern China where workers should be welding high-end air fryers for the US market. Derek Wang says his American customers were wowed by his air fryer models.
-                </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-x-6 gap-y-14 lg:w-1/2 items-end h-full">
-                {summary.map((item, index) => (
-                    <div key={index} className="flex flex-col gap-2 group md:items-center lg:items-end">
-                        <div className="relative w-full aspect-[3/2] sm:max-h-[200px]  sm:max-w-[350px] overflow-hidden md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl">
-                            <Image
-                                src={item.imageUrl}
-                                alt={item.title}
-                                fill
-                                className="object-cover"
-                            />
-                        </div>
-                        <div className='flex flex-col gap-1 h-full'>
-                            <div className="text-[#939393] font-orienta text-sm font-[700]">{item.minititle}</div>
-                            <h3 className="text-text-color font-ibm_plex_serif font-semibold text-base sm:text-lg md:max-w-[350px] max-w-full cursor-pointer text-wrap">
-                                {item.title}
-                            </h3>
-                            <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm md:max-w-[350px] max-w-full">
-                                {item.description}
-                            </p>
-                        </div>
+        <section className="w-full px-4 lg:px-20 md:px-6 py-12">
+            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-stretch">
+                <div className="flex flex-col lg:w-1/2 h-full gap-6">
+                    <div className="w-full h-[400px] lg:h-[450px] relative rounded-2xl overflow-hidden">
+                        <Image
+                            src="/images/homepage/SummaryImage1.webp"
+                            alt="Featured politics story"
+                            fill
+                            className="object-cover"
+                            priority
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                        />
                     </div>
+                    <div className="flex flex-col gap-6 text-center lg:text-left">
+                        <p className="text-[#939393] font-orienta text-base sm:text-lg font-[700]">Politics</p>
+                        <Link href={''} className="text-text-color font-ibm_plex_serif font-bold text-xl sm:text-2xl lg:text-3xl cursor-pointer hover:underline line-clamp-2">
+                            Relief on China&apos;s factory floors as US tariffs put on hold
+                        </Link>
+                        <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg line-clamp-4">
+                            There&apos;s a vast empty space in the middle of the factory floor in Foshan in southern China where workers should be welding high-end air fryers for the US market. Derek Wang says his American customers were wowed by his air fryer models.
+                        </p>
+                    </div>
+                </div>
 
-                ))}
+                <div className="grid sm:grid-cols-2 gap-x-8 gap-y-14 lg:w-1/2 h-full">
+                    {summary.map((item, index) => (
+                        <div key={index} className="flex flex-col gap-4 group h-full">
+                            <div className="relative w-full aspect-[3/2] rounded-xl overflow-hidden md:group-hover:translate-y-[-10px] md:transition md:duration-400">
+                                <Image
+                                    src={item.imageUrl}
+                                    alt={item.title}
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                                />
+                            </div>
+                            <div className='flex flex-col gap-2'>
+                                <div className="text-[#939393] font-orienta text-sm font-[700]">{item.minititle}</div>
+                                <h3 className="text-text-color font-ibm_plex_serif font-semibold text-lg hover:underline cursor-pointer line-clamp-2">
+                                    {item.title}
+                                </h3>
+                                <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm line-clamp-3">
+                                    {item.description}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </section>
     )

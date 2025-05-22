@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Alata, Jost, Orienta, IBM_Plex_Serif, Roboto, Inter } from "next/font/google";
 import "./globals.css";
+import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
+import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,12 +58,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${alata.variable} ${jost.variable} ${orienta.variable} ${ibm_plex_serif.variable} ${roboto.variable} ${inter.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} ${alata.variable} ${jost.variable} ${orienta.variable} ${ibm_plex_serif.variable} ${roboto.variable} ${inter.variable} antialiased`}
+        >
+          <>
+            <ClerkLoading>
+              <div className="flex items-center justify-center min-h-screen">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-500 border-solid" />
+              </div>
+            </ClerkLoading>
+
+            <ClerkLoaded>
+              {children}
+            </ClerkLoaded>
+          </>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

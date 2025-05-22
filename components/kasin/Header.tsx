@@ -9,20 +9,18 @@ import MobileNav from '../MobileNav';
 function Header() {
     const nav = [
         { name: <HomeIcon />, path: "/kasin" },
-        // { name: "ताजा समाचार", path: "/politics" },
-        // { name: "समाचार", path: "/society" },
-        { name: "राजनीति", path: "/startups" },
-        { name: "प्रबिधि", path: "/economy" },
-        { name: "साहित्य", path: "/tourism" },
-        { name: "अर्थ", path: "/employment" },
-        { name: "सम्पादकीय ", path: "/sports" },
-        { name: "बिचार", path: "/world" },
-        { name: "प्रदेश", path: "/health" },
-        { name: "खेलकुद", path: "/agriculture" },
-        { name: "रोजगार", path: "/entertainment" },
-        { name: "मनोरंजन", path: "/markeWorldt" },
-        { name: "सुरक्षा", path: "/markeWorldt" },
-        { name: "अन्य", path: "/markeWorldt" }
+        { name: "राजनीति", path: "/" },
+        { name: "प्रबिधि", path: "/" },
+        { name: "साहित्य", path: "/" },
+        { name: "अर्थ", path: "/" },
+        { name: "सम्पादकीय ", path: "/" },
+        { name: "बिचार", path: "/" },
+        { name: "प्रदेश", path: "/" },
+        { name: "खेलकुद", path: "/" },
+        { name: "रोजगार", path: "/" },
+        { name: "मनोरंजन", path: "/" },
+        { name: "सुरक्षा", path: "/" },
+        { name: "अन्य", path: "/" }
     ];
 
     const pathname = usePathname();
@@ -44,7 +42,7 @@ function Header() {
                 <div className='flex flex-col md:flex-row items-center justify-between w-full px-3 md:px-9 lg:px-12 xl:px-24 pt-2 gap-4 md:gap-10'>
                     <div className='relative w-full max-w-[180px] md:max-w-[280px] lg:max-w-[320px] xl:max-w-[380px] aspect-[4/1]'>
                         <Image
-                            src='/images/homepage/Logo.png'
+                            src='/images/homepage/biratinfo-logo.svg'
                             alt='Site Logo'
                             fill
                             className='object-contain'
@@ -62,8 +60,8 @@ function Header() {
                     </div>
                 </div>
 
-                <nav className='w-full bg-text-color hidden md:flex items-center overflow-x-auto whitespace-nowrap scrollbar-hide px-4 lg:px-12 xl:px-24 font-alata text-white'>
-                    <div className='mx-auto flex md:gap-0 lg:gap-4'>
+                <nav className='w-full bg-text-color hidden md:flex items-center overflow-x-auto whitespace-nowrap scrollbar-hide px-2 lg:px-10 xl:px-24 font-alata text-white'>
+                    <div className='mx-auto flex md:gap-0 lg:gap-4 min-w-fit'>
                         {nav.map((item, index) => {
                             const isActive = pathname === item.path;
                             return (
@@ -73,7 +71,8 @@ function Header() {
                                 >
                                     <Link
                                         href={item.path}
-                                        className='shrink-0 transition duration-200 text-[15px] sm:text-[14px] md:text-[14px] lg:text-[20px] xl:text-[22px]'
+                                        className='shrink-0 transition duration-200 text-sm md:text-[14px] lg:text-[20px] xl:text-[22px]'
+                                        aria-label={`Navigate to ${typeof item.name === 'string' ? item.name : 'section'}`}
                                     >
                                         {item.name}
                                     </Link>
@@ -82,19 +81,16 @@ function Header() {
                         })}
                     </div>
                 </nav>
-
-
             </div>
-
 
             {/* MOBILE NAV */}
             <div className='md:hidden'>
                 <div className='flex items-center justify-between px-4 py-1'>
-                    <div className='h-9 w-9 border-1 border-gray-400 rounded-full flex items-center justify-center'>
-                        <X />
+                    <div className='h-9 w-9 border border-gray-400 rounded-full flex items-center justify-center'>
+                        <X size={20} />
                     </div>
                     <p className='text-2xl font-inter font-[700]'>Birat Info</p>
-                    <div className=' h-10'>
+                    <div className='h-10'>
                         <MobileNav />
                     </div>
                 </div>

@@ -27,54 +27,60 @@ function Sports() {
     ]
 
     return (
-        <div className="flex flex-col gap-12 px-4 sm:px-6 lg:px-20 pb-10">
-            <div className="flex flex-col gap-2">
-                <p className="text-[#939393] font-orienta text-xl font-[700]">खेलकुद</p>
-                <div className="w-full h-[3px] bg-[#ebebeb]" />
-            </div>
-
-            <div className="flex flex-col lg:flex-row gap-12">
-                <div className="flex-1 flex flex-col gap-5">
-                    <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url(/images/kasinHomepage/SportsImage1.png)] rounded-xl"
-                    />
-                    <p className="text-text-color font-ibm_plex_serif font-bold text-2xl lg:text-3xl cursor-pointer">
-                        आइसीसी यू-१९ विश्वकप एसिया छनोट अन्तर्गत नेपाल र अफगानिस्तानबीचको खेल रद्द भए नेपाल विश्वकपबाट बञ्चित भएपछि समर्थकहरु आक्रोशित बनेका छन् ।
-                    </p>
-                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg">
-                        नेपाली महिला क्रिकेट टोलीले शुक्रबार मलेसियामा टि ट्वान्टी विश्वकप २०२४ को छनोट खेलेको छ। छनोटको दोस्रो खेलमा घरेलु टोलीसँग प्रतिस्पर्धा गरेको छ।
-                    </p>
-                    <p className="text-[#808080] font-roboto text-sm flex items-center gap-2">
-                        <span>प्रकाश थापा</span>
-                        <span>·</span>
-                        <span>बैशाख २५, २०८२</span>
-                    </p>
+        <div className="w-full px-4 lg:px-20 md:px-6 py-12">
+            <div className="max-w-7xl mx-auto flex flex-col gap-12">
+                <div className="flex flex-col gap-2">
+                    <p className="text-[#939393] font-orienta text-xl font-[700]">खेलकुद</p>
+                    <div className="w-full h-[3px] bg-[#ebebeb]" />
                 </div>
 
-                <div className="flex-1 flex flex-col gap-10 md:gap-6 lg:gap-4">
-                    {Sports.map((item, index) => (
-                        <div key={index} className="flex flex-col sm:flex-row gap-4 group">
-                            {/* Image */}
-                            <div className="relative w-full sm:w-[40%] aspect-[3/2] overflow-hidden md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl">
-                                <Image
-                                    src={item.imageUrl}
-                                    alt=""
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                            <div className="flex flex-col gap-1 sm:w-[60%]">
-                                <p className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color">{item.title}</p>
-                                <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm ">
-                                    {item.description}
-                                </p>
-                                <p className="text-[#808080] font-roboto text-sm mt-2 flex items-center gap-2">
-                                    <span>{item.author}</span>
-                                    <span>·</span>
-                                    <span>{item.publishedDate}</span>
-                                </p>
-                            </div>
+                <div className="flex flex-col lg:flex-row gap-12 items-stretch">
+                    {/* COLUMN-1 */}
+                    <div className="flex-1 flex flex-col gap-5 h-full justify-between">
+                        <div>
+                            <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url(/images/kasinHomepage/SportsImage1.png)] rounded-xl" />
+                            <p className="font-ibm_plex_serif font-bold text-2xl lg:text-3xl cursor-pointer text-text-color mt-4 hover:underline line-clamp-2">
+                                आइसीसी यू-१९ विश्वकप एसिया छनोट अन्तर्गत नेपाल र अफगानिस्तानबीचको खेल रद्द भए नेपाल विश्वकपबाट बञ्चित भएपछि समर्थकहरु आक्रोशित बनेका छन् ।
+                            </p>
+                            <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg mt-2">
+                                नेपाली महिला क्रिकेट टोलीले शुक्रबार मलेसियामा टि ट्वान्टी विश्वकप २०२४ को छनोट खेलेको छ। छनोटको दोस्रो खेलमा घरेलु टोलीसँग प्रतिस्पर्धा गरेको छ।
+                            </p>
                         </div>
-                    ))}
+                        <p className="text-[#808080] font-roboto text-sm flex items-center gap-2">
+                            <span>प्रकाश थापा</span>
+                            <span>·</span>
+                            <span>बैशाख २५, २०८२</span>
+                        </p>
+                    </div>
+
+                    {/* COLUMN-2 */}
+                    <div className="flex-1 flex flex-col gap-6 justify-between">
+                        {Sports.map((item, index) => (
+                            <div key={index} className="flex flex-col sm:flex-row gap-4 group items-start">
+                                <div className="relative w-full sm:w-[40%] aspect-[4/3] overflow-hidden md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl">
+                                    <Image
+                                        src={item.imageUrl}
+                                        alt=""
+                                        fill
+                                        className="object-cover"
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-1 sm:w-[60%]">
+                                    <p className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color hover:underline line-clamp-1">
+                                        {item.title}
+                                    </p>
+                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm line-clamp-2">
+                                        {item.description}
+                                    </p>
+                                    <p className="text-[#808080] font-roboto text-sm mt-2 flex items-center gap-2">
+                                        <span>{item.author}</span>
+                                        <span>·</span>
+                                        <span>{item.publishedDate}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
