@@ -6,7 +6,7 @@ import React from 'react'
 
 function page() {
   return (
-    <div className=' bg-white'>
+    <div>
       <Header />
       <Hero />
       <Body />

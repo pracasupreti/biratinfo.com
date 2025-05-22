@@ -5,43 +5,45 @@ import Image from 'next/image'
 function Economy() {
     const economy = [
         {
-            title: 'Jaguar says it has no plans to build cars in the US',
-            description: 'UK-based carmaker Jaguar Land Rover has said it does not intend to produce vehicles in the US, as President Donald Trump\'s tariffs impact the motor industry.',
-            imageUrl: '/images/homepage/EconomyImage1.webp',
-            author: 'Peter Hoskins',
-            publishedDate: '15 May, 2025'
+            title: '१ तोला सुनको मूल्य रु १ लाख ९० हजार ५ सय रुपैंया कायम',
+            description: 'अन्तर्राष्ट्रिय बजारमा सुनको मूल्य सामान्य गिरावट आएको छ। त्यसको प्रभाव स्थानीय बजारमा पनि परेको छ। गत शुक्रबारको तुलनामा आज तोलामा रू ३ सयले सुनको मूल्य घटेको छ। चाँदीमा भने प्रति तोला रू १० ले वृद्धि भएको छ।',
+            imageUrl: '/images/kasinHomepage/EconomyImage1.png',
+            author: 'प्रकाश थापा',
+            publishedDate: 'बैशाख २८, २०८२'
         },
         {
-            title: 'Trump touts \'record\' Boeing-Qatar Airways deal',
-            description: 'Qatar Airways has agreed to buy up to 210 jets from American manufacturing giant Boeing, according to US President Donald Trump, who announced the $96bn (£72.4bn) order.',
-            imageUrl: '/images/homepage/EconomyImage2.webp',
-            author: 'Natalie Sherman',
-            publishedDate: '15 May, 2025'
+            title: 'एक तोला सुनको मूल्य रु १ लाख ९० हजार ८ सय कायम',
+            description: 'अन्तर्राष्ट्रिय बजारमा सुनको मूल्य सामान्य कमी आएको छ। त्यसको प्रभाव स्थानीय बजारमा पनि परेको छ। बिहीबारको तुलनामा शुक्रबार तोलामा रू १ हजार ५ सयले घटेको छ। चाँदीमा भने प्रति तोला रू पाँचले वृद्धि भएको छ।',
+            imageUrl: '/images/kasinHomepage/EconomyImage2.png',
+            author: 'प्रकाश थापा',
+            publishedDate: 'बैशाख २६, २०८२'
         },
         {
-            title: 'UK hits back at claims US tariff deal bad for China',
-            description: 'The UK government has hit back at suggestions the tariff agreement it reached with the US last week could be damaging to China.',
-            imageUrl: '/images/homepage/EconomyImage3.webp',
-            author: 'Karen Hoggan',
-            publishedDate: '15 May, 2025'
+            title: 'अंक घट्यो / कारोबार बढ्यो : रू ११ अर्ब ६५ करोड १७ हजार ८ सय ५१ बराबरको कारोबार',
+            description: 'नेपाल स्टक एक्सचेञ्ज (नेप्से) परिसूचक दोहोरो अङ्कले गिरावट देखिएको छ। बिहीबार नेप्से परिसूचक १२ दशमलव शून्य चार अङ्कले घटेर दुई हजार ६ सय ६१ दशमलव ८६ को बिन्दुमा कायम भएको हो।',
+            imageUrl: '/images/kasinHomepage/EconomyImage3.jpg',
+            author: 'प्रकाश थापा',
+            publishedDate: 'बैशाख २५, २०८२'
         },
         {
-            title: 'Nissan to cut 11,000 more jobs and shut seven factories',
-            description: 'Japanese carmaker Nissan has said it will cut another 11,000 jobs globally and shut seven factories as it shakes up the business.',
-            imageUrl: '/images/homepage/EconomyImage4.webp',
-            author: 'Mariko Oi & Tom Espiner',
-            publishedDate: '15 May, 2025'
+            title: 'राष्ट्र बैंकद्वारा पूर्व बजेटकालीन समीक्षा प्रतिवेदन अर्थ मन्त्रालयमा पेस',
+            description: 'नेपाल राष्ट्र बैंकले आगामी आर्थिक वर्ष २०८२/८३ को पूर्वबजेटकालीन समीक्षा प्रतिवेदन अर्थ मन्त्रालयलाई बुझाएको छ। नेपाल राष्ट्र बैंकका कायम मुकायम गभर्नर डा. नीलम ढुङ्गाना तिम्सिना। ',
+            imageUrl: '/images/kasinHomepage/EconomyImage4.png',
+            author: 'प्रकाश थापा',
+            publishedDate: 'बैशाख २४, २०८२'
         },
     ]
 
     return (
         <section className="w-full px-4 lg:px-20 md:px-6 py-12">
             <div className="max-w-7xl mx-auto flex flex-col gap-12">
+                {/* Header */}
                 <div className="flex flex-col gap-2">
-                    <p className="text-[#939393] font-orienta text-[20px] font-[700]">Economy</p>
+                    <p className="text-[#939393] font-orienta text-[20px] font-[700]">अर्थ / कारोबार</p>
                     <div className="w-full h-[3px] bg-[#ebebeb]" />
                 </div>
 
+                {/* Articles */}
                 <div className="flex flex-col gap-20">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-16">
                         {economy.map((item, index) => (
@@ -73,7 +75,7 @@ function Economy() {
                     </div>
 
                     <Button className="w-full max-w-[344px] h-[42px] bg-white border border-[#c9c9c9] text-[#939393] font-roboto font-semibold text-[20px] text-center mx-auto hover:bg-gray-50 transition-colors">
-                        Browse More
+                        थप पढ्नुहोस्
                     </Button>
                 </div>
             </div>

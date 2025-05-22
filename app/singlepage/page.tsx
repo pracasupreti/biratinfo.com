@@ -1,140 +1,127 @@
 import React from 'react';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import Footer from '@/components/homepage/Footer';
-import { Clock2Icon, TagIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import Header from '@/components/homepage/Header';
+import { Clock2Icon, TagIcon } from 'lucide-react';
 
 function Page() {
-
     const relatedNews = [
         {
-            title: 'Trump gets the royal-purple-carpet treatment in the Middle East, belying thorny geopolitical challenges',
-            path: '/images/homepage/RelatedImage2.webp',
-            description: 'President Donald Trump arrived in Riyadh on Tuesday to a royal-purple-carpet ......'
+            title: 'ताप बढे सँगै बजारमा फलफूलको माग बढ्न थाल्यो(मूल्यसूची सहित)',
+            path: '/images/kasinSinglepage/RelatedImage1.png',
+            description: 'तापक्रममा भएको वृद्धिसँगै उपभोक्ताहरूले मौसमी फलफूलमा देखाएको आकर्षणले बजारमा माग बढाएको छ, जसको ......'
         },
         {
-            title: 'Trump is Middle East-bound for his first major international trip of his second term. Here’s what to watch',
-            path: '/images/homepage/RelatedImage3.webp',
-            description: 'President Donald Trump embarks Monday on the first major international trip of ......'
+            title: 'उपत्यकाको तापक्रम बढ्ने क्रममा : अरब सागरबाट भित्रिरहेको जलवाष्पयुक्त हावाको आंशिक प्रभाव',
+            path: '/images/kasinSinglepage/RelatedImage2.jpg',
+            description: 'उपत्यकामा तापक्रम वृद्धि जारी: अरब सागरबाट भित्रिएको जलवाष्पयुक्त हावाको आंशिक प्रभावले मौसममा ......'
         },
         {
-            title: 'Trump’s Middle East trip leaves Netanyahu watching from the sidelines again',
-            path: '/images/homepage/RelatedImage4.webp',
-            description: 'Just a few months into his new administration, the president of the United States ......'
+            title: 'गाउँ गाउँमा रहेका भूमेस्थानमा राम्रोसँग काम होस् भनी प्रकृतिको पूजा आराधना गर्ने प्रचलन',
+            path: '/images/kasinSinglepage/RelatedImage3.jpg',
+            description: 'ग्रामीण भेगमा भूमेस्थानको धार्मिक र सांस्कृतिक महत्व: राम्रो फसल र शान्तिको कामना गर्दै प्रकृतिलाई गरिने ......'
         },
         {
-            title: 'Trump’s embrace of Syria and its jihadist-turned-president could shake up the Middle East',
-            path: '/images/homepage/RelatedImage5.webp',
-            description: 'Interim Syrian President Ahmed al-Sharaa, once known by his militant nom de guerre ......'
+            title: 'अहिंसा नै शान्ति र मैत्रीको आधारशिला हो : भगवान् गौतम बुद्ध',
+            path: '/images/kasinSinglepage/RelatedImage4.png',
+            description: 'संसारलाई शान्तिको बाटो: भगवान् गौतम बुद्धको कालजयी दर्शन - अहिंसा, प्रेम र करुणा नै मानव कल्याण र विश्व ......'
         },
     ]
-
     return (
         <div>
             <Header />
-            <div className="flex flex-col gap-12 max-w-7xl mx-auto">
-                <div className='relative w-full h-[60vh] md:h-[80vh] overflow-hidden'>
-                    <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10' />
-                    <Image
-                        src="/images/homepage/SinglePageImage1.webp"
-                        alt="News headline image"
-                        fill
-                        className='object-cover'
-                    />
-                </div>
+            <div className='relative w-full h-[40vh] md:h-[60vh] lg:h-[82vh] overflow-hidden'>
+                <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10' />
+                <Image
+                    src="/images/kasinHomepage/SummaryImage1.png"
+                    alt="News headline image"
+                    fill
+                    className='object-cover w-full'
+                />
+            </div>
 
-                <article className='px-6 md:px-12 lg:px-24'>
-                    <div className='relative -mt-10 md:-mt-55 lg:-mt-50 mb-10 z-30'>
-                        <div className='bg-white p-6 md:p-8 rounded-xl shadow-lg max-w-4xl mx-auto'>
-                            <p className='text-2xl md:text-4xl font-bold leading-tight text-text-color mb-2 text-center '>
-                                Trump&apos;s Middle East tour has more substance than the White House let on
-                            </p>
-                            <p className='text-lg md:text-lg leading-relaxed text-gray-700 mb-2 text-center md:text-start'>
-                                There’s more to Donald Trump’s Middle East trip than billion-dollar contracts, parades of camels and a storm back home over Qatar’s offer to give the president a new Air Force One.
-                            </p>
+            <div className="flex flex-col gap-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <article className='mt-6 md:mt-12'>
+                    <div className='relative -mt-24 md:-mt-40 lg:-mt-40 mb-10 z-30'>
+                        <div className='bg-white p-4 md:p-8 rounded-xl shadow-lg max-w-4xl mx-auto'>
+                            <h1 className='text-[18px] md:text-4xl font-bold leading-tight text-text-color mb-2 text-center '>
+                                प्रधानमन्त्री ओलीको राजनीतिक चर्तुयाँईको घेरोमा सभापति देउवा : गर्भनरका कारण भित्रि मनमुटाव
+                            </h1>
+
                             <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-5 md:gap-6 xl:gap-16 xl:text-lg text-xs sm:text-sm md:text-base font-normal text-text-color mb-2">
                                 <p className="flex items-center gap-2">
                                     <Avatar>
-                                        <AvatarImage src="/images/homepage/author.webp" />
+                                        <AvatarImage src="/images/kasinHomepage/author.png" />
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
-
-                                    Ismaeel Naar
+                                    प्रकाश थापा
                                 </p>
                                 <p className="flex items-center gap-2">
                                     <Clock2Icon className="w-5 h-5 sm:w-6 sm:h-6" />
-                                    6 Minutes Read
+                                    ६ मिनेटमा पढ्नुहोस
                                 </p>
                                 <p className="flex items-center gap-2">
                                     <TagIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                                    Politics
+                                    दुर्घटना
                                 </p>
                             </div>
-                            <div className='flex justify-end'>
-                                <p className='text-gray-700 md:text-[12px] text-[10px]'>Updated 5:01 AM EDT, Thu May 15, 2025</p>
-
+                            <div className='flex justify-center'>
+                                <p className='text-gray-700 md:text-[12px] text-[10px]'>अपडेट गरिएको ५:०१ बिहान EDT, बिहीबार जेठ १, २०२५</p>
                             </div>
-                            {/* <div className='flex flex-wrap gap-4 justify-center'>
-                                {['#Global', '#News', '#Politics', '#USA'].map((tag, i) => (
-                                    <span key={i} className='px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm'>
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div> */}
                         </div>
                     </div>
 
                     <div className='prose prose-lg max-w-none md:prose-xl prose-p:text-gray-700 prose-headings:text-gray-900 text-center md:text-start'>
                         <p className='text-lg md:text-xl leading-relaxed text-gray-700'>
-                            A tour narrowly billed by the White House as a chance for Trump to show he’s a master dealmaker is jumbling the region’s geopolitical jigsaw puzzle. Wherever he goes, Trump brings disruption that can forge possibilities. And he takes risks – for instance, his decision on this trip to lift sanctions on Syria to give a war-ravaged nation a second chance.
+                            नेपालको राजनीति अहिले तरंगित अवस्थामा छ । नेपाली कांग्रेस र नेकपा एमालेको गठबन्धन सरकारको अहिले चौतर्फी आलोचना भैरहेको छ । देशले अहिले सम्म नयाँ गर्भर पाउन सकेको छैन । जसका कारण आर्थिक चलखेलका कुराहरु राम्ररी चलायमान हुन सकेको छैन । गठबन्धन सरकारको गृहमन्त्री रहेका रमेश लेखकले आफूले चाहेको जस्तो निर्णय गर्न सकेनन् । कांग्रेस सभापति शेरबहादुर देउवाको चाहनामा रहेको गर्भर पदले गर्दा अहिले कांग्रेसको मात्र नभई गृहमन्त्री लेखकको पनि आलोचना भैरहेको छ ।
                         </p>
 
-                        <div className='my-12 grid md:grid-cols-2 gap-8 items-center'>
+                        <div className='my-12 grid md:grid-cols-2 gap-8 md:gap-32 items-center'>
                             <div>
-                                <h2 className='text-3xl md:text-4xl font-bold mb-6 text-text-color'>Trump’s regional diplomatic ambitions are expanding</h2>
+                                <h2 className='text-3xl md:text-4xl font-bold mb-6 text-text-color'>कहाँ जाँदै छ राज्य ? : प्रमुख क्षेत्र अर्थ, चिकित्सा , शिक्षा देखी हरेक क्षेत्र तनावग्रस्त</h2>
                                 <p className='mb-4 text-lg md:text-xl leading-relaxed text-gray-700'>
-                                    Trump’s geopolitical shake-up doesn’t end in Syria. He’s used the trip to build new pressure on Iran to agree to restrictions on its nuclear program – warning of military action if it refuses but clearly trying to head off the dire prospect of a new Middle East war.
+                                    राज्य अहिले तहसनहस अवस्थामा पुगेको छ। प्रधानमन्त्री केपी शर्मा ओली नेतृत्वको गठबन्धन सरकार जनताको चाहनाको विपक्ष भन्दा पनि धेरै ध्यानकेन्द्रित गरिंदैछ। राजयमा अहिले प्रमुख विषय भनेको शिक्षक आन्दोलन भएको छ। आफ्नो माग पूरा नभएसम्म आन्दोलनलाई नरोक्ने घोषणा सडकमा उत्रिएका गुरु गुरुआमाहरुको मागलाई सम्बोधन गर्न भन्दा पनि आन्दोलनलाई कसरी तितरबितर पार्न दाउमा सरकार पक्ष लागेको देखिन थालेको छ।
                                 </p>
                                 <p className='mb-4 text-lg md:text-xl leading-relaxed text-gray-700'>
-                                    His journey has also highlighted growing daylight with Israeli Prime Minister Benjamin Netanyahu – who was seen as an ideological soulmate of the 47th president but who is increasingly an object of Trump’s frustration.
+                                    गुरु गुरुआमाहरुको मागलाई सरकारले त्यति धेरै वास्ता नगर्नुको प्रमुख कारण शैक्षिक क्षेत्रमा लादिएको राजनीति पनि हो। शिक्षा संग सम्बन्धित एक शिक्षा विज्ञ भन्छन्, प्राय शिक्षकहरु कुनै न कुनै राजनीतिक दल संग सरोकार राख्ने हुँदा सरकारले उनीहरुको मागलाई त्यति गंभीरताका साथ लिएको नहो।
                                 </p>
                                 <p className='text-lg md:text-xl leading-relaxed text-gray-700'>
-                                    Behind the scenes, Trump’s team has been talking with Qatari and Saudi officials about how to alleviate a humanitarian crisis in Gaza caused by Israel’s blockade and an onslaught that has killed tens of thousands of civilians.
+                                    हो उनको भनाईलाई मात्रै हो भने अहिले गठबन्धन सरकारका नेतृत्वकर्ता प्रधानमन्त्री ओली देखी सत्ता साझेदार दल नेपाल कांग्रेसका नेताहरु स्वयं पनि शिक्षक आन्दोलनमा लागेको गुरु गुरुआमाहरुलाई शिक्षक होइन कि आफ्नो दलका कार्यकर्ताहरुको रुपमा चित्रित गर्न हुँदा पनि यो अवस्था उब्जिएको हो।
                                 </p>
                                 <p className='text-lg md:text-xl leading-relaxed text-gray-700'>
-                                    There’s no sense that the US alliance with Israel is at risk. But gaps between Trump and Netanyahu have also opened over a US pact to halt rocket attacks by Houthi rebels in Yemen that did not include Israel; Trump’s bypassing of the Israelis in a deal this week to free the last living American hostage in Gaza; and on the Syria sanctions decision.
+                                    प्रहरीको ज्यादतीको विरोध स्वरुप शिक्षकहरुले आन्दोलन थप सशक्त बनाउदै भएका छन्। आन्दोलनको अगुवाई गरिरहेको नेपाल शिक्षक महासंघ राष्ट्रिय समितिले अन्तिम लडाईंका लागि अनिवार्य काठमाडौं आउन देशभरका शिक्षकलाई आह्वान गरेको छ।
                                 </p>
                             </div>
                             <div className='w-full md:w-[502px] max-w-full relative mx-auto md:mx-0 h-auto' >
                                 {/* SIDE IMAGE */}
-                                <div className='relative w-full h-[700px] max-h-[100vh] bg-[url(/images/homepage/SinglePageImage2.webp)] rounded-md bg-cover bg-no-repeat' />
+                                <div className='relative w-full h-[700px] max-h-[100vh] bg-[url(/images/kasinSinglepage/advertisement.png)] rounded-md bg-cover bg-no-repeat' />
                             </div>
                         </div>
 
-                        <h2 className='text-3xl md:text-4xl font-bold my-8 text-text-color'>Trump’s big Syria gamble</h2>
+                        <h2 className='text-3xl md:text-4xl font-bold my-8 text-text-color'>प्रधानमन्त्री ओली : न सत्ता नेतृत्वमा सफल न पार्टी नेतृत्वमा : बोल्यो कि पोल्यो को बाटोमा ओली नेतृत्व</h2>
                         <p className='text-lg md:text-xl leading-relaxed text-gray-700'>
-                            Details of the intricate diplomacy that must have led up to this decision have not yet been revealed. But the move reflects an understanding that Syria, devastated by years of civil war, is at a turning point, occupies a vital place on the map of the region and has the potential to tip into greater chaos if it deteriorates further.
+                            बुधवारप्रतिनिधिसभामा प्रतिपक्षी दलहरुले उनको राजीनामाको कुरा उठाए। भने अहिले आफ्नै दल नेकपा एमालेमा एउटा तानाशाही प्रवृत्तिको अध्यक्षको परिचय हुन थालेको छ। सत्ताको नेतृत्वकर्ता प्रधानमन्त्री ओलीले जसरी तानाशाही प्रवृत्ति लाद्दै छन्। त्यसरी पार्टीमा पनि उनको शैली त्यस्तै छ।
                         </p>
 
                         <blockquote className='border-l-4 border-gray-300 pl-6 my-8 italic text-lg md:text-xl leading-relaxed text-gray-700'>
-                            &quot;It’s their time to shine,” he said. “Good luck, Syria. Show something very special.&quot;
+                            &quot;कार्यकारी प्रमुखको गहन भूमिकामा रहेका प्रधानमन्त्री केपी ओली चौतर्फी बिरोधका पात्र &quot;
                         </blockquote>
 
                         <p className='text-lg md:text-xl leading-relaxed text-gray-700'>
-                            The president told reporters that he believed that al-Sharaa has “got a real shot at holding it together.” Officials said later that Trump wants Syria to eventually recognize Israel. This would represent an extraordinary transformation in a region wracked by hate.
+                            यसरी शिक्षक आन्दोलनको पक्षमा बोलेकै भन्दै पूर्व शिक्षामन्त्री धनिराम पौडेललाई राजिनामा दिन बाध्य पारे। पूर्व मन्त्री भट्टराई शिक्षक बिधेयकलाई पास गर्नुपर्ने कुरा उठाउँछन्। अहिले एमालेमा अर्कोतिर तानाशाह बनिरहेका प्रधानमन्त्री ओली आफ्नो बिरोधको स्वर सुन्न नचाहने हठ्ठमाबादी सोचलाई अहिले पुनरवृत्ति गरिरहेका प्रधानमन्त्री ओलीले आफ्नो नेतृत्वको सत्ता र दलमा भरपूर पकड लिइरहेका छन्।
                         </p>
 
-                        <h2 className='text-3xl md:text-4xl font-bold my-8 text-text-color'>Conclusion</h2>
+                        <h2 className='text-3xl md:text-4xl font-bold my-8 text-text-color'>निष्कर्ष</h2>
                         <p className='text-lg md:text-xl leading-relaxed text-gray-700'>
-                            History is full of examples in which Washington put its trust in Middle East tough-guy leaders to keep countries torn by religious and tribal divides in one piece. In Iraq, such a bet ended up costing thousands of US lives. But Trump is more optimistic.
+                            देशका हरेक स्थान होटल, पसल देखी सार्वजनिक स्थलहरुमा प्रधानमन्त्री ओलीको क्रियाकलापलाई निकै निचो चर्चा चुलु रहेको छ। युवाहरुमाझ चर्चित रहेको टिकटक ह्यान्डिलमा ओलीको कार्य व्यवहारले गर्दा अहिले देशका विशेष गरि युवा युवतीहरुको जमात उनी विरुद्ध जुरुमुर्याउदै अनेक थरी अवस्था रहेको छ।
                         </p>
                     </div>
 
                     <div className='border-t border-b border-gray-200 py-6 my-12'>
                         <div className='flex flex-col md:flex-row items-center justify-between gap-4'>
-                            <h3 className='text-lg font-semibold text-gray-800'>Share this article:</h3>
+                            <h3 className='text-lg font-semibold text-gray-800'>सेयर गर्नुहोस्:</h3>
                             <div className='flex flex-wrap gap-3 justify-center'>
                                 {['facebook', 'twitter', 'youtube', 'instagram', 'linkedin'].map((icon, index) => (
                                     <button
@@ -155,52 +142,40 @@ function Page() {
                             </div>
                         </div>
                     </div>
-
-                    {/* <div className='flex items-center gap-4 p-6 bg-gray-50 rounded-lg mb-12'>
-                        <div className='w-16 h-16 rounded-full overflow-hidden flex items-center'>
-                            <Avatar >
-                                <AvatarImage src="/images/homepage/author.webp" />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                        </div>
-                        <div>
-                            <h4 className='font-bold text-gray-900'>Stephen Collinson</h4>
-                            <p className='text-gray-600 text-sm'> 7 minute read</p>
-                            <p className='text-gray-700 mt-1 text-sm'>Updated 5:01 AM EDT, Thu May 15, 2025</p>
-                        </div>
-                    </div> */}
                 </article>
             </div>
 
             {/* Related News */}
-            <div className='mb-20 flex flex-col gap-6'>
-                <p className='font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl text-center'>
-                    Related News
+            <div className="mb-20 flex flex-col gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <p className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl text-center">
+                    सम्बन्धित खबर
                 </p>
 
-                <div className='max-w-screen-3xl w-full flex flex-col md:flex-row md:flex-wrap gap-8 md:gap-10 px-4 md:px-16 items-center md:items-stretch justify-center'>
+                <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {relatedNews.map((items, index) => (
                         <div
                             key={index}
-                            className='w-full md:max-w-sm flex flex-col gap-3 group border rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 bg-white'
+                            className="flex flex-col gap-3 group border rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 bg-white"
                         >
-                            <div className='w-full h-[30vh] sm:h-[25vh] md:h-[20vh] lg:h-[25vh] relative overflow-hidden rounded-t-xl'>
+                            <div className="w-full h-[30vh] sm:h-[25vh] md:h-[22vh] lg:h-[20vh] xl:h-[25vh] relative overflow-hidden rounded-t-xl">
                                 <Image
                                     src={items.path}
-                                    alt='image'
+                                    alt="image"
                                     fill
-                                    className='object-cover group-hover:scale-105 transition-transform duration-300'
+                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
                             </div>
-                            <div className='p-4 flex flex-col gap-2'>
-                                <p className='font-semibold text-base md:text-sm lg:text-base leading-snug text-text-color cursor-pointer'>
+                            <div className="p-4 flex flex-col gap-2">
+                                <p className="font-semibold text-sm sm:text-base md:text-sm lg:text-base leading-snug text-text-color cursor-pointer">
                                     {items.title}
                                 </p>
-                                <p className='font-[400] text-sm md:text-xs lg:text-sm text-zinc-500'>
+                                <p className="font-[400] text-xs sm:text-sm md:text-xs lg:text-sm text-zinc-500">
                                     {items.description}
                                 </p>
                                 <div>
-                                    <Button className='font-[400] font-inter bg-white text-black border border-zinc-400 shadow-lg'>Read More</Button>
+                                    <Button className="font-[400] text-sm font-inter bg-white text-black border border-zinc-400 shadow-lg">
+                                        थप पढ्नुहोस्
+                                    </Button>
                                 </div>
                             </div>
                         </div>
@@ -209,11 +184,7 @@ function Page() {
             </div>
             <Footer />
         </div>
-
     )
 }
 
-export default Page;
-
-
-
+export default Page

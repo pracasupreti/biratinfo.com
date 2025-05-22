@@ -4,18 +4,18 @@ import Politics from './Politics'
 import Economy from './Economy'
 import Technology from './Technology'
 import Sports from './Sports'
-import Security from './Security'
-
+import Health from './Health'
 
 function Body() {
+
     return (
-        <div>
+        <div className='md:pt-14 pt-10'>
             <Summary />
             <Politics />
             <Economy />
             <Technology />
             <Sports />
-            <Security />
+            <Health />
         </div>
     )
 }

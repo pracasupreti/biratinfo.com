@@ -3,8 +3,8 @@ import Image from 'next/image'
 import { MessageSquareIcon, TrendingUpIcon } from 'lucide-react'
 import { FaDribbble, FaFacebookF, FaTwitter, FaYoutube } from 'react-icons/fa'
 import BottomBar from '@/components/author/BottomBar'
-import Header from '@/components/homepage/Header'
-import Footer from '@/components/homepage/Footer'
+import Header from '@/components/enHomepage/Header'
+import Footer from '@/components/enHomepage/Footer'
 
 
 function page() {

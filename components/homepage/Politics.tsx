@@ -5,25 +5,25 @@ import Image from 'next/image'
 function Politics() {
     const Politics = [
         {
-            title: 'Putin not on Kremlin list of officials attending Ukraine peace talks in Turkey',
-            description: 'Russian President Vladimir Putin is not among the names listed by the Kremlin as being due to attend peace talks on the war in Ukraine in Istanbul on ...',
-            imageUrl: '/images/homepage/PoliticsImage2.webp',
-            author: 'Tom Bateman',
-            publishedDate: '15 May, 2025',
+            title: 'सरकार कुकर्मको बोझले ढल्ने : अब यी बुर्जुवाहरूको वैशाखी टेकेर चुनावमा गइदैंन – अध्यक्ष दाहाल',
+            description: 'नेपाल कम्युनिष्ट पार्टी (माओवादी केन्द्र) का अध्यक्ष पुष्पकमल दाहाल प्रचण्डले वर्तमान सरकार आफ्नै कुकर्मको बोझले ढल्ने दाबी गरेका छन् । तर, आफूहरू अहिले सरकार ढाल्ने हतारोमा नरहेको उनको भनाइ ...',
+            imageUrl: '/images/kasinHomepage/PoliticsImage2.png',
+            author: 'प्रकाश थापा',
+            publishedDate: 'बैशाख २७, २०८२'
         },
         {
-            title: 'Why India could not stop IMF bailout to Pakistan',
-            description: 'Last week the International Monetary Fund (IMF) approved a $1bn (£756m) bailout to Pakistan – a move that drew sharp disapproval from India  ...',
-            imageUrl: '/images/homepage/PoliticsImage3.webp',
-            author: 'Nikhil Inamdar',
-            publishedDate: '15 May, 2025',
+            title: 'विचार / सम्भव खड्का सरकारप्रति जनताको विश्वास घट्दै : संवैधानिक मूल्य र मार्गचित्रको अवज्ञा',
+            description: 'नेपालको राजनीतिक इतिहासमा संविधानले सधैँ महत्त्वपूर्ण भूमिका खेलेको छ। नेपालको संविधान, २०७२ राष्ट्रको सर्वोच्च कानूनी दस्तावेज हो। यसले मुलुकको शासन प्रणाली, नागरिकका अधिकार, सरकारको ...',
+            imageUrl: '/images/kasinHomepage/PoliticsImage3.jpg',
+            author: 'प्रकाश थापा',
+            publishedDate: 'बैशाख २७, २०८२'
         },
         {
-            title: 'Mark Carney says Canadians are not \'impressed\' by UK\'s invite to Trump',
-            description: 'Canadian Prime Minister Mark Carney has said Canadians were not "impressed" by the UK government\'s invitation to US President Donald Trump for a second state visit ...',
-            imageUrl: '/images/homepage/PoliticsImage4.webp',
-            author: 'Ana Faguy',
-            publishedDate: '15 May, 2025',
+            title: 'एनआरएनएको दोहोरो नागरिकता,सम्पति राख्नेलगायत विषयमा सरकारले छुट्टै नीति ल्याउनुपर्ने : सांसद साउद',
+            description: 'सङ्घीय संसद्को प्रतिनिधि सभामा सरकारको वार्षिक नीति तथा कार्यक्रममाथि छलफल जारी रहेको छ । राष्ट्रपति रामचन्द्र पौडेलले यही वैशाख २९ गते सङ्घीय संसद्को दुवै सदनको संयुक्त बैठकमा प्रस्तुत गरेको ...',
+            imageUrl: '/images/kasinHomepage/PoliticsImage4.jpg',
+            author: 'प्रकाश थापा',
+            publishedDate: 'बैशाख २४, २०८२'
         },
     ]
 
@@ -32,35 +32,34 @@ function Politics() {
             <div className="max-w-7xl mx-auto flex flex-col gap-12">
                 {/* Header */}
                 <div className="flex flex-col gap-2">
-                    <p className="text-[#939393] font-orienta text-xl font-[700]">Politics</p>
+                    <p className="text-[#939393] font-orienta text-xl font-[700]">राजनीति</p>
                     <div className="w-full h-[3px] bg-[#ebebeb]" />
                 </div>
 
-                {/* Main content */}
+                {/* Content */}
                 <div className="flex flex-col lg:flex-row gap-12 items-stretch">
-                    {/* Left Column - Main Article */}
+                    {/* Main article - Left */}
                     <div className="flex-1 flex flex-col gap-5 justify-between">
                         <div>
-                            <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url(/images/homepage/PoliticsImage1.webp)] rounded-xl" />
+                            <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url('/images/kasinHomepage/PoliticsImage1.png')] rounded-xl" />
                             <p className="font-ibm_plex_serif font-bold text-2xl lg:text-3xl cursor-pointer text-text-color mt-4 hover:underline">
-                                Kennedy Clashes With Top Democrat Who Accused Him of &apos;Destroying&apos; Health Agencies
+                                प्राप्त उपलब्धिको रक्षा एवं प्रवद्र्धन गर्न प्रस्तुत नीतिमा सदन एक हुने : प्रधानमन्त्री ओली (पूर्ण पाठ सहित)
                             </p>
                             <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg mt-2">
-                                Health Secretary Robert F. Kennedy Jr., whose drastic overhaul of the federal health apparatus has left scientists and patients reeling, clashed on Wednesday with a senior House Democrat.
+                                प्रतिनिधिसभाको आइतबारको बैठकमा सरकार गठनका बेला संविधानको समीक्षा गर्ने प्रतिबद्धता, त्यसका सबल पक्षलाई सुदृढ गर्दै कार्यान्वयनमा देखिएका कमीकमजोरी सच्याउने प्राथमिकताको स्मरण गर्दै उनले संविधान संशोधनको प्रतिबद्धता व्यक्त गरेका हुन् ।
                             </p>
                         </div>
                         <p className="text-[#808080] font-roboto text-sm flex items-center gap-2">
-                            <span>Sheryl Gay Stolberg</span>
+                            <span>प्रकाश थापा</span>
                             <span>·</span>
-                            <span>14 May, 2025</span>
+                            <span>बैशाख २८, २०८२</span>
                         </p>
                     </div>
 
-                    {/* Right Column - Other Articles */}
+                    {/* Other articles - Right */}
                     <div className="flex-1 flex flex-col justify-between gap-10 md:gap-6 lg:gap-4">
                         {Politics.map((item, index) => (
                             <div key={index} className="flex flex-col sm:flex-row gap-4 group">
-                                {/* Image */}
                                 <div className="relative w-full sm:w-[40%] aspect-[7/6] overflow-hidden md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl">
                                     <Image
                                         src={item.imageUrl}
@@ -70,9 +69,8 @@ function Politics() {
                                     />
                                 </div>
 
-                                {/* Text Content */}
                                 <div className="flex flex-col gap-1 sm:w-[60%]">
-                                    <p className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color line-clamp-2 hover:underline">
+                                    <p className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color hover:underline line-clamp-2">
                                         {item.title}
                                     </p>
                                     <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm line-clamp-3">
