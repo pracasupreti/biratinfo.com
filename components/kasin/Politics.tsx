@@ -70,7 +70,7 @@ function Politics() {
                                 </div>
 
                                 <div className="flex flex-col gap-1 sm:w-[60%]">
-                                    <p className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color line-clamp-2 hover:underline line-clamp-2">
+                                    <p className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color hover:underline line-clamp-2">
                                         {item.title}
                                     </p>
                                     <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm line-clamp-3">
