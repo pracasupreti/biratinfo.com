@@ -43,7 +43,7 @@ function Politics() {
                         <div>
                             <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url(/images/homepage/PoliticsImage1.webp)] rounded-xl" />
                             <p className="font-ibm_plex_serif font-bold text-2xl lg:text-3xl cursor-pointer text-text-color mt-4 hover:underline">
-                                Kennedy Clashes With Top Democrat Who Accused Him of 'Destroying' Health Agencies
+                                Kennedy Clashes With Top Democrat Who Accused Him of &apos;Destroying&apos; Health Agencies
                             </p>
                             <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg mt-2">
                                 Health Secretary Robert F. Kennedy Jr., whose drastic overhaul of the federal health apparatus has left scientists and patients reeling, clashed on Wednesday with a senior House Democrat.
