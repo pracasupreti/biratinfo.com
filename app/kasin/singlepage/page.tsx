@@ -110,7 +110,7 @@ function Page() {
                             </div>
                             <div className='w-full md:w-[502px] max-w-full relative mx-auto md:mx-0 h-auto' >
                                 {/* SIDE IMAGE */}
-                                <div className='relative w-full h-[700px] max-h-[100vh] bg-[url(/images/kasinSinglepage/advertisement.avif)] rounded-md bg-cover bg-no-repeat' />
+                                <div className='relative w-full h-[700px] max-h-[100vh] bg-[url(/images/kasinSinglepage/advertisement.png)] rounded-md bg-cover bg-no-repeat' />
                             </div>
                         </div>
 

@@ -40,14 +40,22 @@ function Header() {
                 </div>
 
                 <div className='flex flex-col md:flex-row items-center justify-between w-full px-3 md:px-9 lg:px-12 xl:px-24 pt-2 gap-4 md:gap-10'>
-                    <div className='relative w-full max-w-[180px] md:max-w-[280px] lg:max-w-[320px] xl:max-w-[380px] aspect-[4/1]'>
-                        <Image
-                            src='/images/homepage/biratinfo-logo.svg'
-                            alt='Site Logo'
-                            fill
-                            className='object-contain'
-                            priority
-                        />
+                    <div className='relative w-full max-w-[180px] md:max-w-[280px] lg:max-w-[320px] xl:max-w-[380px] aspect-[4/1] flex items-center'>
+                        <div className='relative h-full w-[30%]'>
+                            <Image
+                                src='/images/homepage/biratinfo-logo.svg'
+                                alt='Birat Info Logo'
+                                fill
+                                className='object-contain'
+                                priority
+                            />
+                        </div>
+
+                        <div className='w-[60%] pl-2'>
+                            <p className='text-lg md:text-xl lg:text-2xl font-bold text-text-color font-inter'>
+                                विराट इन्फर्म्याटिक्स
+                            </p>
+                        </div>
                     </div>
                     <div className='relative w-full max-w-[280px] md:max-w-[500px] lg:max-w-[600px] xl:max-w-[700px] aspect-[6/1]'>
                         <Image

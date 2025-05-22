@@ -47,8 +47,8 @@ function Footer() {
                     </div>
 
                     {/* Contact */}
-                    <div className='space-y-4 flex flex-col items-center md:items-center'>
-                        <h3 className='text-lg font-semibold text-gray-900 text-center md:text-start'>सम्पर्क</h3>
+                    <div className='space-y-4 flex flex-col items-center'>
+                        <h3 className='text-lg font-semibold text-gray-900 text-center md:text-start md:mr-31'>सम्पर्क</h3>
                         <ul className='space-y-3 text-gray-600 flex flex-col items-center md:items-start'>
                             <li className='flex items-start gap-3'>
                                 <div className='w-6 h-6 bg-[#D9D9D9] rounded-full flex-shrink-0'></div>
@@ -77,7 +77,7 @@ function Footer() {
 
                     {/* App Downloads */}
                     <div className='space-y-4 flex flex-col items-center md:items-end'>
-                        <h3 className='text-lg font-semibold text-gray-900'>Download Our App</h3>
+                        <h3 className='text-lg font-semibold text-gray-900 md:mr-8'>हाम्रो एप डाउनलोड गर्नुहोस्</h3>
                         <div className='flex flex-col gap-3'>
                             <Link href="#" className='hover:opacity-90 transition-opacity'>
                                 <Image
