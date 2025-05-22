@@ -7,11 +7,11 @@ function Hero() {
         <section className="w-full min-h-[calc(100vh-187px)] bg-[url('/images/kasinHomepage/Hero1.jpg')] bg-cover bg-no-repeat bg-center flex items-end justify-center">
             <div className="bg-white w-[95%] sm:w-[90%] max-w-screen-xl mx-auto rounded-t-xl sm:rounded-t-2xl md:rounded-t-3xl px-4 sm:px-6 md:px-8 lg:px-20 xl:px-32 py-5 sm:py-6 md:py-8 xl:py-10 text-text-color text-center font-jost flex flex-col items-center gap-3 sm:gap-5 md:gap-6">
 
-                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-tight">
+                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-tight cursor-pointer hover:underline">
                     कोइला लोड गरेको ट्रक अनियन्त्रित भई पल्टिँदा दुबैतर्फ बाटो अवरुद्ध
                 </h1>
 
-                <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl leading-relaxed max-w-5xl">
+                <p className="text-sm md:text-base lg:text-lg xl:text-xl leading-relaxed max-w-5xl">
                     वीरगञ्जबाट काठमाडौं जाँदै गरेको मधेश प्रदेश ०३-००१ख १८१७ नम्बरको ट्रक आइतबार बिहान ७ बजे पल्टिएको हो । ट्रक पल्टिंदा बाटो पूर्णरुपमा बन्द भएको छ । कोइला लोड गरेको सो ट्रक उकालो ओभरटेक गर्ने क्रममा पल्टिएको प्रहरीले जनाएको छ ।
                 </p>
 
