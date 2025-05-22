@@ -1,5 +1,5 @@
 'use client'
-import { CalendarDaysIcon, HomeIcon, X } from 'lucide-react';
+import { CalendarDaysIcon, HomeIcon } from 'lucide-react';
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
@@ -53,7 +53,7 @@ function Header() {
 
                         <div className='w-[60%] pl-2'>
                             <p className='text-lg md:text-xl lg:text-2xl font-bold text-text-color font-inter'>
-                                विराट इन्फर्म्याटिक्स
+                                विराट इन्फो
                             </p>
                         </div>
                     </div>
@@ -94,8 +94,14 @@ function Header() {
             {/* MOBILE NAV */}
             <div className='md:hidden'>
                 <div className='flex items-center justify-between px-4 py-1'>
-                    <div className='h-9 w-9 border border-gray-400 rounded-full flex items-center justify-center'>
-                        <X size={20} />
+                    <div className='h-9 w-9 border border-gray-400 rounded-full flex items-center justify-center relative'>
+                        <Image
+                            src='/images/homepage/biratinfo-logo.svg'
+                            alt='Birat Info Logo'
+                            fill
+                            className='object-contain'
+                            priority
+                        />
                     </div>
                     <p className='text-2xl font-inter font-[700]'>Birat Info</p>
                     <div className='h-10'>

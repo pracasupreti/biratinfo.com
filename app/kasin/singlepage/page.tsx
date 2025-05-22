@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import Header from '@/components/kasin/Header';
 import { Clock2Icon, TagIcon } from 'lucide-react';
 
-
 function Page() {
     const relatedNews = [
         {
@@ -33,24 +32,19 @@ function Page() {
     return (
         <div>
             <Header />
-            <div className="flex flex-col gap-12 max-w-7xl mx-auto">
-                <div className='relative w-full h-[40vh] md:h-[60vh] lg:h-[80vh] overflow-hidden'>
-                    <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10' />
-                    <Image
-                        src="/images/kasinHomepage/SummaryImage1.png"
-                        alt="News headline image"
-                        fill
-                        className='object-cover '
-                    />
-                    {/* <div className='absolute bottom-0 left-0 right-0 z-20 px-6 pb-8 md:px-12 md:pb-12 mb-16'>
-                        <h1 className='text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight text-center'>
-                            प्रधानमन्त्री ओलीको राजनीतिक चर्तुयाँईको घेरोमा सभापति देउवा : गर्भनरका कारण भित्रि मनमुटाव
-                        </h1>
-                    </div> */}
-                </div>
+            <div className='relative w-full h-[40vh] md:h-[60vh] lg:h-[82vh] overflow-hidden'>
+                <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10' />
+                <Image
+                    src="/images/kasinHomepage/SummaryImage1.png"
+                    alt="News headline image"
+                    fill
+                    className='object-cover w-full'
+                />
+            </div>
 
-                <article className='px-6 md:px-12 lg:px-24'>
-                    <div className='relative -mt-32 md:-mt-40 lg:-mt-40 mb-10 z-30'>
+            <div className="flex flex-col gap-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <article className='mt-6 md:mt-12'>
+                    <div className='relative -mt-24 md:-mt-40 lg:-mt-40 mb-10 z-30'>
                         <div className='bg-white p-4 md:p-8 rounded-xl shadow-lg max-w-4xl mx-auto'>
                             <h1 className='text-[18px] md:text-4xl font-bold leading-tight text-text-color mb-2 text-center '>
                                 प्रधानमन्त्री ओलीको राजनीतिक चर्तुयाँईको घेरोमा सभापति देउवा : गर्भनरका कारण भित्रि मनमुटाव
@@ -73,17 +67,9 @@ function Page() {
                                     दुर्घटना
                                 </p>
                             </div>
-                            <div className='flex md:justify-end justify-center'>
+                            <div className='flex justify-center'>
                                 <p className='text-gray-700 md:text-[12px] text-[10px]'>अपडेट गरिएको ५:०१ बिहान EDT, बिहीबार जेठ १, २०२५</p>
-
                             </div>
-                            {/* <div className='flex flex-wrap gap-4 justify-center'>
-                                {['#समय सान्दर्भिक', '#समाचार', '#राजनीति', '#नेपाल'].map((tag, i) => (
-                                    <span key={i} className='px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm'>
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div> */}
                         </div>
                     </div>
 
@@ -92,7 +78,7 @@ function Page() {
                             नेपालको राजनीति अहिले तरंगित अवस्थामा छ । नेपाली कांग्रेस र नेकपा एमालेको गठबन्धन सरकारको अहिले चौतर्फी आलोचना भैरहेको छ । देशले अहिले सम्म नयाँ गर्भर पाउन सकेको छैन । जसका कारण आर्थिक चलखेलका कुराहरु राम्ररी चलायमान हुन सकेको छैन । गठबन्धन सरकारको गृहमन्त्री रहेका रमेश लेखकले आफूले चाहेको जस्तो निर्णय गर्न सकेनन् । कांग्रेस सभापति शेरबहादुर देउवाको चाहनामा रहेको गर्भर पदले गर्दा अहिले कांग्रेसको मात्र नभई गृहमन्त्री लेखकको पनि आलोचना भैरहेको छ ।
                         </p>
 
-                        <div className='my-12 grid md:grid-cols-2 gap-8 items-center'>
+                        <div className='my-12 grid md:grid-cols-2 gap-8 md:gap-32 items-center'>
                             <div>
                                 <h2 className='text-3xl md:text-4xl font-bold mb-6 text-text-color'>कहाँ जाँदै छ राज्य ? : प्रमुख क्षेत्र अर्थ, चिकित्सा , शिक्षा देखी हरेक क्षेत्र तनावग्रस्त</h2>
                                 <p className='mb-4 text-lg md:text-xl leading-relaxed text-gray-700'>
@@ -160,12 +146,12 @@ function Page() {
             </div>
 
             {/* Related News */}
-            <div className="mb-20 flex flex-col gap-6">
+            <div className="mb-20 flex flex-col gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <p className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl text-center">
                     सम्बन्धित खबर
                 </p>
 
-                <div className="max-w-screen-3xl w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-24 xl:px-32">
+                <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {relatedNews.map((items, index) => (
                         <div
                             key={index}
@@ -198,10 +184,7 @@ function Page() {
             </div>
             <Footer />
         </div>
-
     )
 }
 
 export default Page
-
-
