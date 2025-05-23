@@ -26,7 +26,7 @@ function Header() {
     const pathname = usePathname();
 
     return (
-        <header className='pt-3 md:pt-6'>
+        <header className='md:pt-6'>
             {/* TOPBAR */}
             <div className='md:flex md:flex-col hidden'>
                 <div className='w-full py-1.5 bg-text-color flex flex-col sm:flex-row items-center justify-between px-3 md:px-6 lg:px-12 xl:px-24 text-white'>
@@ -41,20 +41,14 @@ function Header() {
 
                 <div className='flex flex-col md:flex-row items-center justify-between w-full px-3 md:px-9 lg:px-12 xl:px-24 pt-2 gap-4 md:gap-10'>
                     <div className='relative w-full max-w-[180px] md:max-w-[280px] lg:max-w-[320px] xl:max-w-[380px] aspect-[4/1] flex items-center'>
-                        <div className='relative h-full w-[30%]'>
+                        <div className='relative h-full w-[80%]'>
                             <Image
-                                src='/images/homepage/biratinfo-logo.svg'
+                                src='/logo.svg'
                                 alt='Birat Info Logo'
                                 fill
                                 className='object-contain'
                                 priority
                             />
-                        </div>
-
-                        <div className='w-[60%] pl-2'>
-                            <p className='text-lg md:text-xl lg:text-2xl font-bold text-text-color font-inter'>
-                                विराट इन्फो
-                            </p>
                         </div>
                     </div>
                     <div className='relative w-full max-w-[280px] md:max-w-[500px] lg:max-w-[600px] xl:max-w-[700px] aspect-[6/1]'>
@@ -93,22 +87,23 @@ function Header() {
 
             {/* MOBILE NAV */}
             <div className='md:hidden'>
-                <div className='flex items-center justify-between px-4 py-1'>
-                    <div className='h-9 w-9 border border-gray-400 rounded-full flex items-center justify-center relative'>
+                <div className='flex items-center justify-between px-4 py-2'>
+                    <div className='relative h-8 w-36'>
                         <Image
-                            src='/images/homepage/biratinfo-logo.svg'
+                            src='/logo.svg'
                             alt='Birat Info Logo'
                             fill
-                            className='object-contain'
+                            className='object-cover'
                             priority
                         />
                     </div>
-                    <p className='text-2xl font-inter font-[700]'>Birat Info</p>
-                    <div className='h-10'>
+
+                    <div className='h-7'>
                         <MobileNav />
                     </div>
                 </div>
-                <div className='relative w-full aspect-[4/1] bg-amber-200'>
+
+                <div className='relative w-full aspect-[4/1]'>
                     <Image
                         src='/images/homepage/MobileNavAdvertisement.png'
                         alt='Sponsor Logo'
@@ -118,6 +113,7 @@ function Header() {
                     />
                 </div>
             </div>
+
         </header>
     );
 }

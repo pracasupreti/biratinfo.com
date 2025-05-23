@@ -29,7 +29,7 @@ function MobileNav() {
     ];
     return (
         <Sheet>
-            <SheetTrigger ><MenuIcon color="#055D59" size={30} /></SheetTrigger>
+            <SheetTrigger className="bg-red-500 rounded-[2px] px-0.5"><MenuIcon color="white" size={30} /></SheetTrigger>
             <SheetContent side="left" className="bg-[#055D59]">
                 <SheetHeader className="flex flex-col gap-6">
                     <SheetTitle className="text-white font-inter font-[400] text-xl">BIRAT Informatics Pvt. Ltd.</SheetTitle>
