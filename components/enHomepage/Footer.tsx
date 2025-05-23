@@ -47,8 +47,8 @@ function Footer1() {
                     </div>
 
                     {/* Contact */}
-                    <div className='space-y-4'>
-                        <h3 className='text-lg font-semibold text-gray-900 text-center md:text-left'>Contact</h3>
+                    <div className='space-y-4 flex flex-col items-center'>
+                        <h3 className='text-lg font-semibold text-gray-900 text-center md:text-left md:mr-38'>Contact</h3>
                         <ul className='space-y-3 text-gray-600 flex flex-col items-center md:items-start'>
                             <li className='flex items-start gap-3'>
                                 <div className='w-6 h-6 bg-[#F9F8F8] rounded-full flex-shrink-0'></div>
@@ -76,8 +76,8 @@ function Footer1() {
                     </div>
 
                     {/* App Downloads */}
-                    <div className='space-y-4 flex flex-col items-center md:items-start'>
-                        <h3 className='text-lg font-semibold text-gray-900'>Download Our App</h3>
+                    <div className='space-y-4 flex flex-col items-center md:items-end'>
+                        <h3 className='text-lg font-semibold text-gray-900 md:mr-6'>Download Our App</h3>
                         <div className='flex flex-col gap-3'>
                             <Link href="#" className='hover:opacity-90 transition-opacity'>
                                 <Image
