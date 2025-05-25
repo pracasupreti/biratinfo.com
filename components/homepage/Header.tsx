@@ -41,7 +41,7 @@ function Header() {
 
                 <div className='flex flex-col md:flex-row items-center justify-between w-full px-3 md:px-9 lg:px-12 xl:px-24 pt-2 gap-4 md:gap-10'>
                     <div className='relative w-full max-w-[180px] md:max-w-[280px] lg:max-w-[320px] xl:max-w-[380px] aspect-[4/1] flex items-center'>
-                        <div className='relative h-full w-[80%]'>
+                        <div className='relative h-full w-[100%]'>
                             <Image
                                 src='/logo.svg'
                                 alt='Birat Info Logo'

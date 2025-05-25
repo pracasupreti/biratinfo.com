@@ -29,7 +29,7 @@ function Header() {
             <div className='md:flex md:flex-col hidden'>
                 <div className='w-full py-1.5 bg-text-color flex flex-col sm:flex-row items-center justify-between px-3 md:px-6 lg:px-12 xl:px-24 text-white'>
                     <p className='text-sm font-alata text-center sm:text-left'>
-                        Read Today's Paper
+                        Read Today&apos;s Paper
                     </p>
                     <p className='text-sm font-alata text-center sm:text-right flex gap-2 items-center'>
                         <CalendarDaysIcon size={20} />
