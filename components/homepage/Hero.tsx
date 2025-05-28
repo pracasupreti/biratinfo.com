@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 function Hero() {
     return (
         <section className="w-full min-h-[calc(100vh-187px)] bg-[url('/images/kasinHomepage/Hero1.jpg')] bg-cover bg-no-repeat bg-center flex items-end justify-center">
-            <div className="bg-white w-[95%] sm:w-[90%] max-w-screen-xl mx-auto rounded-t-xl sm:rounded-t-2xl md:rounded-t-3xl px-4 sm:px-6 md:px-8 lg:px-20 xl:px-32 py-5 sm:py-6 md:py-8 xl:py-10 text-text-color text-center font-jost flex flex-col items-center gap-3 sm:gap-5 md:gap-6">
+            <div className="bg-white w-[95%] sm:w-[90%] max-w-7xl mx-auto rounded-t-xl sm:rounded-t-2xl md:rounded-t-3xl px-4 sm:px-6 md:px-8 lg:px-20 xl:px-32 py-5 sm:py-6 md:py-8 xl:py-10 text-text-color text-center font-jost flex flex-col items-center gap-3 sm:gap-5 md:gap-6">
 
                 <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-tight cursor-pointer hover:underline">
                     कोइला लोड गरेको ट्रक अनियन्त्रित भई पल्टिँदा दुबैतर्फ बाटो अवरुद्ध
@@ -31,6 +31,9 @@ function Hero() {
                         <TagIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                         दुर्घटना
                     </p>
+                </div>
+                <div className='flex justify-center'>
+                    <p className='text-gray-700 md:text-[12px] text-[10px]'>अपडेट गरिएको ५:०१ बिहान EDT, बिहीबार जेठ १, २०२५</p>
                 </div>
             </div>
         </section>

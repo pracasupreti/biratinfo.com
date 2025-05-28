@@ -6,7 +6,7 @@ import Link from 'next/link'
 function Hero() {
     return (
         <section className="w-full min-h-[calc(100vh-187px)] bg-[url('/images/homepage/HeroImage.webp')] bg-cover bg-no-repeat flex items-end justify-center">
-            <div className="bg-white w-[95%] sm:w-[90%] max-w-screen-xl mx-auto rounded-t-xl sm:rounded-t-2xl md:rounded-t-3xl px-4 sm:px-6 md:px-8 lg:px-20 xl:px-32 py-5 sm:py-6 md:py-8 xl:py-10 text-text-color text-center font-jost flex flex-col items-center gap-3 sm:gap-5 md:gap-6">
+            <div className="bg-white w-[95%] sm:w-[90%] max-w-7xl mx-auto rounded-t-xl sm:rounded-t-2xl md:rounded-t-3xl px-4 sm:px-6 md:px-8 lg:px-20 xl:px-32 py-5 sm:py-6 md:py-8 xl:py-10 text-text-color text-center font-jost flex flex-col items-center gap-3 sm:gap-5 md:gap-6">
 
                 <Link href={'/en/singlepage'} className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-tight cursor-pointer hover:underline">
                     Trump Lands in Qatar After Meeting Militant Who Now Leads Syria
@@ -32,6 +32,9 @@ function Hero() {
                         <TagIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                         Politics
                     </p>
+                </div>
+                <div className='flex justify-center'>
+                    <p className='text-gray-700 md:text-[12px] text-[10px]'>Updated 5:01 AM EDT, Thu May 15, 2025</p>
                 </div>
             </div>
         </section>
