@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@/components/ui/button'
-import { usePostStore } from '@/store/Store'
+import { usePostStore } from '@/store/PostStore'
+
 import toast from 'react-hot-toast'
 
 
@@ -46,7 +47,7 @@ export function PostActions() {
 
 
             //Creating a New Post
-            const response = await fetch('http://localhost:3001/api/posts', {
+            const response = await fetch('http://localhost:3001/api/public-posts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

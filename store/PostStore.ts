@@ -29,6 +29,7 @@ export interface PostState {
     clearError: (field: string) => void
     validate: () => boolean
     resetStore: () => void
+    initialize: (postData: Partial<PostState>) => void
 }
 
 // Zustand store implementation
@@ -146,4 +147,29 @@ export const usePostStore = create<PostState>((set, get) => ({
         })
     },
 
+    // Initialize store with existing post data for editing
+    initialize: (postData) => {
+        set({
+            englishTitle: postData.englishTitle || '',
+            nepaliTitle: postData.nepaliTitle || '',
+            blocks: postData.blocks || ['', '', '', ''],
+            excerpt: postData.excerpt || '',
+            featuredIn: postData.featuredIn || Array(8).fill(false),
+            postInNetwork: postData.postInNetwork || Array(8).fill(false),
+            category: postData.category || '',
+            tags: postData.tags || '',
+            date: postData.date || '',
+            time: postData.time || '',
+            author: postData.author || '',
+            language: postData.language || 'english',
+            heroBanner: postData.heroBanner || '',
+            ogBanner: postData.ogBanner || '',
+            imageCredit: postData.imageCredit || '',
+            sponsoredAds: postData.sponsoredAds || '',
+            access: postData.access || 'public',
+            audioFile: postData.audioFile || null,
+            canonicalUrl: postData.canonicalUrl || '',
+            errors: {}
+        })
+    }
 }))

@@ -4,15 +4,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
-
 import { Input } from '../ui/input'
 import { usePostStore } from '@/store/PostStore'
 
-interface EditorFormProps {
+interface PostFormProps {
     isEditing?: boolean
 }
 
-export function PostForm({ isEditing = false }: EditorFormProps) {
+export function PostForm({ isEditing = false }: PostFormProps) {
     const {
         englishTitle,
         nepaliTitle,
@@ -25,11 +24,8 @@ export function PostForm({ isEditing = false }: EditorFormProps) {
     } = usePostStore()
 
     return (
-        <Card className="mb-6">
-            <CardHeader>
-                <CardTitle className="text-2xl">{isEditing ? 'Edit Post' : 'Create a New Post'}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
+        <Card className="mb-4">
+            <CardContent className="space-y-4">
                 {/* English Title */}
                 <div>
                     <Label htmlFor="englishTitle">Post Title in English (140 words)</Label>

@@ -5,15 +5,22 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 
-
+import { PostActions } from './PostActions'
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react'
 import { Loader2 } from 'lucide-react'
-import { PostActions } from './postActions'
+import { useRouter } from 'next/navigation'
+import { EditorPostAction } from '../editor/EditorPostAction'
 import { usePostStore } from '@/store/PostStore'
 
 
-export function PostSidebar() {
+interface PostSidebarProps {
+    isEditing?: boolean,
+    isEditor?: boolean
+}
+
+export function PostSidebar({ isEditing = false, isEditor }: PostSidebarProps) {
+    const router = useRouter();
     const {
         category,
         tags,
@@ -36,6 +43,7 @@ export function PostSidebar() {
     const [isSponsoredAdsUploading, setIsSponsoredAdsUploading] = useState<boolean>(false);
 
 
+
     // CLOUDINARY UPLOAD
     const uploadToCloudinary = async (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds', file: File): Promise<string> => {
         const formData = new FormData();
@@ -52,7 +60,6 @@ export function PostSidebar() {
             } else {
                 setIsSponsoredAdsUploading(true)
             }
-
 
             const response = await fetch(
                 `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
@@ -89,7 +96,6 @@ export function PostSidebar() {
 
             try {
                 const imageUrl = await uploadToCloudinary(field, file);
-                console.log(imageUrl);
                 setField(field, imageUrl); // Replace with Cloudinary URL
             } catch (error) {
                 console.error(error)
@@ -100,7 +106,7 @@ export function PostSidebar() {
     };
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-6">
             <h2 className="text-xl font-semibold">Post Settings</h2>
 
             {/* Category */}
@@ -192,7 +198,7 @@ export function PostSidebar() {
             {/* Hero Banner */}
             <div>
                 <Label htmlFor="heroBanner">Hero Banner</Label>
-                <div className="flex items-center gap-2 mt-2">
+                <div className="flex items-center gap-2 mt-2 flex-col">
                     <Input
                         id="heroBanner"
                         type="file"
@@ -213,6 +219,7 @@ export function PostSidebar() {
                             'Browse...'
                         )}
                     </Button>
+                    {isEditor && heroBanner && <Button variant={'secondary'} className='w-full cursor-pointer' onClick={() => router.push(heroBanner)}>View Image</Button>}
                 </div>
                 {errors.heroBanner && <p className="text-red-500 text-sm mt-1">{errors.heroBanner}</p>}
             </div>
@@ -220,7 +227,7 @@ export function PostSidebar() {
             {/* OG Banner */}
             <div>
                 <Label htmlFor="ogBanner">OG Banner</Label>
-                <div className="flex items-center gap-2 mt-2">
+                <div className="flex items-center gap-2 mt-2 flex-col">
                     <Input
                         id="ogBanner"
                         type="file"
@@ -241,6 +248,7 @@ export function PostSidebar() {
                             'Browse...'
                         )}
                     </Button>
+                    {isEditor && ogBanner && <Button variant={'secondary'} className='w-full cursor-pointer' onClick={() => router.push(ogBanner)}>View Image</Button>}
                 </div>
                 {errors.ogBanner && <p className="text-red-500 text-sm mt-1">{errors.ogBanner}</p>}
             </div>
@@ -260,7 +268,7 @@ export function PostSidebar() {
             {/* Sponsored Ads */}
             <div>
                 <Label htmlFor="ogBanner">Sponsor Ads</Label>
-                <div className="flex items-center gap-2 mt-2">
+                <div className="flex items-center gap-2 mt-2 flex-col">
                     <Input
                         id="sponsoredAds"
                         type="file"
@@ -281,6 +289,7 @@ export function PostSidebar() {
                             'Browse...'
                         )}
                     </Button>
+                    {isEditor && sponsoredAds && <Button variant={'secondary'} className='w-full cursor-pointer' onClick={() => router.push(sponsoredAds)}>View Image</Button>}
                 </div>
                 {errors.sponsoredAds && <p className="text-red-500 text-sm mt-1">{errors.sponsoredAds}</p>}
             </div>
@@ -314,7 +323,8 @@ export function PostSidebar() {
             </div>
 
             {/* Action Buttons */}
-            <PostActions />
+            {isEditor ?
+                <EditorPostAction /> : <PostActions isEditing={isEditing} />}
         </div>
     )
 }

@@ -11,7 +11,7 @@ function Hero() {
                     कोइला लोड गरेको ट्रक अनियन्त्रित भई पल्टिँदा दुबैतर्फ बाटो अवरुद्ध
                 </h1>
 
-                <p className="text-sm md:text-base lg:text-lg xl:text-xl leading-relaxed max-w-5xl">
+                <p className="text-lg md:text-base lg:text-lg xl:text-xl leading-relaxed max-w-5xl">
                     वीरगञ्जबाट काठमाडौं जाँदै गरेको मधेश प्रदेश ०३-००१ख १८१७ नम्बरको ट्रक आइतबार बिहान ७ बजे पल्टिएको हो । ट्रक पल्टिंदा बाटो पूर्णरुपमा बन्द भएको छ । कोइला लोड गरेको सो ट्रक उकालो ओभरटेक गर्ने क्रममा पल्टिएको प्रहरीले जनाएको छ ।
                 </p>
 
