@@ -37,7 +37,7 @@ function Summary() {
 
     return (
         <section className="w-full px-4 lg:px-20 md:px-6 py-12">
-            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-stretch">
+            <div className="max-w-8xl mx-auto md:mx-16 lg:mx-24 flex flex-col lg:flex-row gap-12 items-stretch">
                 {/* Left Column - Featured Story */}
                 <div className="flex-1 flex flex-col gap-6 h-full">
                     <div className="w-full aspect-[3/2] relative rounded-2xl overflow-hidden">
@@ -49,14 +49,14 @@ function Summary() {
                         />
                     </div>
                     <div className="flex flex-col gap-4">
-                        <p className="text-[#939393] font-orienta text-base sm:text-lg font-[700]">राजनीति</p>
+                        <p className="text-text-color font-orienta text-base sm:text-lg font-[700]">राजनीति</p>
                         <Link
                             href={'/singlepage'}
-                            className="text-text-color font-ibm_plex_serif font-bold text-2xl lg:text-3xl hover:underline"
+                            className="text-text-color font-ibm_plex_serif font-bold text-2xl lg:text-4xl hover:underline"
                         >
                             गर्भनरका कारण भित्रि मनमुटाव
                         </Link>
-                        <p className="text-[#808080] font-ibm_plex_serif font-medium text-base lg:text-lg line-clamp-3">
+                        <p className="text-[#808080] font-ibm_plex_serif font-medium text-base lg:text-xl line-clamp-3">
                             नेपालको राजनीति अहिले तरंगित अवस्थामा छ । नेपाली कांग्रेस र नेकपा एमालेको गठबन्धन सरकारको अहिले चौतर्फी आलोचना भैरहेको छ । देशले अहिले सम्म नयाँ गतिभिर पाउन सकेको छैन् । जसका कारण आर्थिक चलखेलका कुराहरु राम्ररी चलायमान हुन सकेको छैन् ।
                         </p>
                     </div>
@@ -75,10 +75,10 @@ function Summary() {
                                 />
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <p className="text-[#939393] font-orienta text-sm font-[700]">{item.minititle}</p>
+                                <p className="text-text-color font-orienta text-lg font-[700]">{item.minititle}</p>
                                 <Link
                                     href={'/kasin/singlepage'}
-                                    className="text-text-color font-ibm_plex_serif font-semibold text-lg hover:underline line-clamp-2"
+                                    className="text-text-color font-ibm_plex_serif font-semibold text-xl hover:underline line-clamp-2"
                                 >
                                     {item.title}
                                 </Link>

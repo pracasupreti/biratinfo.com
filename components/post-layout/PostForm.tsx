@@ -7,11 +7,8 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '../ui/input'
 import { usePostStore } from '@/store/PostStore'
 
-interface PostFormProps {
-    isEditing?: boolean
-}
 
-export function PostForm({ isEditing = false }: PostFormProps) {
+export function PostForm() {
     const {
         englishTitle,
         nepaliTitle,
@@ -24,11 +21,11 @@ export function PostForm({ isEditing = false }: PostFormProps) {
     } = usePostStore()
 
     return (
-        <Card className="mb-4">
+        <Card className="mb-4 shadow-xl">
             <CardContent className="space-y-4">
                 {/* English Title */}
                 <div>
-                    <Label htmlFor="englishTitle">Post Title in English (140 words)</Label>
+                    <Label htmlFor="englishTitle" className='text-2xl'>Post Title in English (140 words)</Label>
                     <Input
                         id="englishTitle"
                         value={englishTitle}
@@ -40,7 +37,7 @@ export function PostForm({ isEditing = false }: PostFormProps) {
 
                 {/* Nepali Title */}
                 <div>
-                    <Label htmlFor="nepaliTitle">Post Title in Nepali (140 words)</Label>
+                    <Label htmlFor="nepaliTitle" className='text-2xl'>Post Title in Nepali (140 words)</Label>
                     <Input
                         id="nepaliTitle"
                         value={nepaliTitle}
@@ -52,7 +49,7 @@ export function PostForm({ isEditing = false }: PostFormProps) {
 
                 {/* Excerpt */}
                 <div>
-                    <Label htmlFor="excerpt">Excerpt</Label>
+                    <Label htmlFor="excerpt" className='text-2xl'>Excerpt</Label>
                     <Textarea
                         id="excerpt"
                         value={excerpt}
@@ -65,7 +62,7 @@ export function PostForm({ isEditing = false }: PostFormProps) {
                 {/* Content Blocks */}
                 {blocks.map((block, i) => (
                     <div key={i}>
-                        <Label htmlFor={`block-${i}`}>Block {i + 1}</Label>
+                        <Label htmlFor={`block-${i}`} className='text-2xl'>Block {i + 1}</Label>
                         <Textarea
                             id={`block-${i}`}
                             value={block}
@@ -97,8 +94,9 @@ export function PostForm({ isEditing = false }: PostFormProps) {
                                         newFeaturedIn[i] = checked as boolean
                                         setField('featuredIn', newFeaturedIn)
                                     }}
+                                    className='border-green-400'
                                 />
-                                <Label htmlFor={`featured-${i}`}>{site}</Label>
+                                <Label htmlFor={`featured-${i}`} className='text-2xl'>{site}</Label>
                             </div>
                         ))}
                     </CardContent>
@@ -120,8 +118,9 @@ export function PostForm({ isEditing = false }: PostFormProps) {
                                         newPostInNetwork[i] = checked as boolean
                                         setField('postInNetwork', newPostInNetwork)
                                     }}
+                                    className='border-green-400'
                                 />
-                                <Label htmlFor={`network-${i}`}>{site}</Label>
+                                <Label htmlFor={`network-${i}`} className='text-2xl'>{site}</Label>
                             </div>
                         ))}
                     </CardContent>

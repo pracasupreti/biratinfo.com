@@ -83,7 +83,6 @@ export function PostActions({ isEditing = false }: EditorFormProps) {
                         throw new Error(errorData.message || 'Failed to update post');
                     }
 
-                    const result = await response.json();
                     let successMessage = '';
 
                     switch (status) {
@@ -124,7 +123,6 @@ export function PostActions({ isEditing = false }: EditorFormProps) {
                     throw new Error(errorData.message || 'Failed to create post');
                 }
 
-                const result = await response.json();
                 let successMessage = '';
 
                 switch (status) {
@@ -150,17 +148,17 @@ export function PostActions({ isEditing = false }: EditorFormProps) {
     }
 
     return (
-        <div className="flex flex-col gap-2 pt-4">
+        <div className="flex flex-col gap-2 pt-4 pb-4">
             <Button
                 variant="outline"
                 onClick={() => handleSubmit(true)}
-                className="w-full"
+                className="w-full text-xl cursor-pointer py-6"
             >
                 Save as Draft
             </Button>
             <Button
                 onClick={() => handleSubmit(false)}
-                className="w-full"
+                className="w-full text-xl cursor-pointer py-6"
             >
                 Publish Post
             </Button>

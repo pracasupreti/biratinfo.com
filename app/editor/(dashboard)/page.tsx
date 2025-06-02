@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { DashboardHeader } from '@/components/editor/DashBoardHeader'
 import { PostTable } from '@/components/editor/PostTable'
-import { useRouter } from 'next/navigation'
 import Loader from '@/components/Loader'
 import { useAuth } from '@clerk/nextjs'
 
@@ -34,67 +33,34 @@ interface Post {
     updatedAt: string | null;
 }
 
-// Demo data
-const demoPosts = [
-    {
-        id: '1',
-        title: 'New Education Policy Announced',
-        author: 'Manager',
-        status: 'pending',
-        createdAt: '2023-06-15',
-        content: 'The government has announced a new education policy...',
-        category: 'education',
-        tags: ['policy', 'government']
-    },
-    {
-        id: '2',
-        title: 'City Infrastructure Projects',
-        author: 'Manager',
-        status: 'verified',
-        createdAt: '2023-06-10',
-        content: 'Several new infrastructure projects will begin next month...',
-        category: 'infrastructure',
-        tags: ['construction', 'development']
-    },
-    {
-        id: '3',
-        title: 'Economic Growth Report',
-        author: 'Manager',
-        status: 'rejected',
-        createdAt: '2023-06-05',
-        content: 'The latest economic growth figures show...',
-        category: 'economy',
-        tags: ['finance', 'statistics']
-    }
-]
 
 export default function EditorDashboard() {
-    const [posts, setPosts] = useState<Post[]>([])
     const [pendingPosts, setPendingPosts] = useState<Post[]>([]);
     const [rejectedPosts, setRejectedPosts] = useState<Post[]>([]);
     const [verifiedPosts, setVerifiedPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(true);
-    const router = useRouter();
     const { getToken } = useAuth();
 
-    async function fetchPostsByStatus(status: string) {
-        const token = await getToken();
-        const response = await fetch(`http://localhost:3001/api/posts/allpost/${status}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch posts');
+    useEffect(() => {
+        async function fetchPostsByStatus(status: string) {
+            const token = await getToken();
+            const response = await fetch(`http://localhost:3001/api/posts/allpost/${status}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch posts');
+            }
+
+            const data = await response.json();
+            return data.posts;
         }
 
-        const data = await response.json();
-        return data.posts;
-    }
-    useEffect(() => {
         const fetchPosts = async () => {
             try {
                 const [pendingRes, approvedRes, rejectedRes] = await Promise.all([
@@ -113,7 +79,7 @@ export default function EditorDashboard() {
         };
 
         fetchPosts();
-    }, []);
+    }, [getToken]);
 
 
     if (loading) return <Loader />;

@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { UserButton } from '@clerk/nextjs';
-import { Plus, PlusCircle } from 'lucide-react'
+import { PlusCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation';
 
 export const DashboardHeader = () => {

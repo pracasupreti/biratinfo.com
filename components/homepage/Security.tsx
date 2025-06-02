@@ -44,9 +44,9 @@ const Security = () => {
 
     return (
         <section className='w-full px-4 lg:px-20 md:px-6 py-12'>
-            <div className='max-w-7xl mx-auto flex flex-col gap-12 md:gap-16'>
+            <div className='max-w-8xl mx-auto md:mx-16 lg:mx-24 flex flex-col gap-12 md:gap-16'>
                 <div className='flex flex-col gap-2'>
-                    <p className='text-[#939393] font-orienta text-[18px] md:text-[20px] font-[700]'>सुरक्षा</p>
+                    <p className='text-text-color font-orienta text-[18px] md:text-[20px] font-[700]'>सुरक्षा</p>
                     <div className='w-full h-[2px] bg-[#ebebeb]' />
                 </div>
 
@@ -65,18 +65,18 @@ const Security = () => {
 
                             <div className='flex gap-2'>
                                 {item.index === 3 && (
-                                    <span className='font-roboto font-semibold text-[13px] bg-black text-white px-2 rounded-lg'>
+                                    <span className='font-roboto font-semibold text-lg bg-black text-white px-2 rounded-lg'>
                                         EXCLUSIVE
                                     </span>
                                 )}
-                                <p className='text-[#808080] font-roboto font-semibold text-[13px]'>{item.miniTitle}</p>
+                                <p className='text-[#808080] font-roboto font-semibold text-lg'>{item.miniTitle}</p>
                             </div>
 
-                            <h3 className='font-ibm_plex_serif font-medium text-[18px] leading-snug text-text-color line-clamp-2 hover:underline cursor-pointer'>
+                            <h3 className='font-ibm_plex_serif font-bold text-xl leading-snug text-text-color line-clamp-2 hover:underline cursor-pointer'>
                                 {item.title}
                             </h3>
 
-                            <p className='text-[#808080] font-inter text-[13px] line-clamp-3'>{item.description}</p>
+                            <p className='text-[#808080] font-inter text-lg line-clamp-2'>{item.description}</p>
 
                             <div className='flex items-center gap-2'>
                                 <MessageSquareIcon size={16} stroke='#808080' />

@@ -6,12 +6,12 @@ import { usePostStore } from '@/store/PostStore'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 
-function page() {
+function Page() {
     const router = useRouter();
     const { resetStore } = usePostStore()
     useEffect(() => {
         resetStore();
-    }, [])
+    }, [resetStore])
     return (
 
         // {/* Left scrollable content section */}
@@ -27,7 +27,7 @@ function page() {
         <div className="container mx-auto px-4 py-4">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-2xl font-bold">Create a Post</h1>
-                <Button variant="outline" onClick={() => router.push('/manager')}>
+                <Button variant="default" onClick={() => router.push('/manager')} className='text-lg cursor-pointer shadow-xl'>
                     Back to Dashboard
                 </Button>
             </div>
@@ -38,4 +38,4 @@ function page() {
     )
 }
 
-export default page
+export default Page

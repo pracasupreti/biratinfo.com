@@ -1,21 +1,26 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { clerkClient } from '@clerk/nextjs/server'
 import { SearchUsers } from '../SearchUsers'
 import UserTable from './UserTable'
 
 
+
+interface UsersPageProps {
+    searchParams?: Promise<any> | undefined
+}
+
 export default async function UsersPage({
     searchParams,
-}: {
-    searchParams: { search?: string }
-}) {
-    // Fetch users from Clerk
-    const user = await clerkClient()
+}: UsersPageProps) {
+    const query = await searchParams
+
+    const user = await clerkClient();
     const userResponse = await user.users.getUserList({
         limit: 100,
-        query: searchParams.search,
-    })
+        query,
+    });
 
-    const getPostsCount = async (userId: string) => {
+    const getPostsCount = async () => {
         // Replace with actual fetch to your backend
         return Math.floor(Math.random() * 10) // Mock data
     }
@@ -27,7 +32,7 @@ export default async function UsersPage({
             name: `${user.firstName} ${user.lastName}`.trim() || 'Anonymous',
             email: user.emailAddresses[0]?.emailAddress || '',
             role: (user.publicMetadata.role as string) || 'user',
-            posts: await getPostsCount(user.id),
+            posts: await getPostsCount(),
             imageUrl: user.imageUrl,
         }))
     )

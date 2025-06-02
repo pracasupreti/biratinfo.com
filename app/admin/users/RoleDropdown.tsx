@@ -14,7 +14,6 @@ import { removeRole, setRole } from '../_actions'
 
 export default function RoleDropdown({
     userId,
-    currentRole,
 }: {
     userId: string
     currentRole: string

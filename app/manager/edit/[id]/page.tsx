@@ -56,7 +56,7 @@ export default function EditPostPage() {
             }
         }
         loadPost()
-    }, [id, router, initialize])
+    }, [id, router, initialize, getToken])
 
     if (loading) {
         return <Loader />

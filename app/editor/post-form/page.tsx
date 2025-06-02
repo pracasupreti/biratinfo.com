@@ -6,12 +6,13 @@ import { usePostStore } from '@/store/PostStore'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 
-function page() {
+function Page() {
     const router = useRouter();
     const { resetStore } = usePostStore()
+
     useEffect(() => {
         resetStore();
-    }, [])
+    }, [resetStore])
     return (
         <div className="container mx-auto px-4 py-4">
             <div className="flex justify-between items-center mb-8">
@@ -25,4 +26,4 @@ function page() {
     )
 }
 
-export default page
+export default Page

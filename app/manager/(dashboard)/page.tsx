@@ -49,31 +49,27 @@ export default function Dashboard() {
     const router = useRouter();
     const { getToken } = useAuth();
 
-    async function fetchPostsByStatus(status: string) {
-        const token = await getToken();
-        const response = await fetch(`http://localhost:3001/api/posts/status/${status}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
+    useEffect(() => {
+        async function fetchPostsByStatus(status: string) {
+            const token = await getToken();
+            const response = await fetch(`http://localhost:3001/api/posts/status/${status}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch posts');
+            if (!response.ok) {
+                throw new Error('Failed to fetch posts');
+            }
+
+            const data = await response.json();
+            return data.posts;
         }
 
-        const data = await response.json();
-        return data.posts;
-    }
-
-
-    useEffect(() => {
         const fetchPosts = async () => {
             try {
-
-                const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/posts/status`;
-
                 const [draftsRes, pendingRes, scheduledRes, approvedRes] = await Promise.all([
                     fetchPostsByStatus('draft'),
                     fetchPostsByStatus('pending'),
@@ -94,7 +90,7 @@ export default function Dashboard() {
         };
 
         fetchPosts();
-    }, []);
+    }, [getToken]);
 
     const totalPosts =
         draftPosts.length +
@@ -104,23 +100,6 @@ export default function Dashboard() {
 
     if (loading) return <Loader />;
 
-
-
-
-    // Sample data - replace with your actual data
-    const drafts = [
-        { id: 1, title: 'The Future of AI in Healthcare', updatedAt: '2023-06-15', status: 'draft' },
-        { id: 2, title: 'Sustainable Energy Solutions', updatedAt: '2023-06-10', status: 'draft' }
-    ]
-
-    const published = [
-        { id: 3, title: 'Getting Started with Next.js', updatedAt: '2023-06-01', status: 'published', views: 1245 },
-        { id: 4, title: 'React Server Components Explained', updatedAt: '2023-05-28', status: 'published', views: 892 }
-    ]
-
-    const scheduled = [
-        { id: 5, title: 'TypeScript Best Practices', updatedAt: '2023-06-05', publishAt: '2023-06-20', status: 'scheduled' }
-    ]
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="flex justify-between items-center mb-8">
@@ -136,8 +115,9 @@ export default function Dashboard() {
             </div>
 
             <Tabs defaultValue="drafts" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-4">
                     <TabsTrigger value="drafts">Drafts</TabsTrigger>
+                    <TabsTrigger value="pending">Pending</TabsTrigger>
                     <TabsTrigger value="published">Published</TabsTrigger>
                     <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
                 </TabsList>
@@ -152,22 +132,22 @@ export default function Dashboard() {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Title</TableHead>
-                                        <TableHead className="hidden md:table-cell">Last Updated</TableHead>
+                                        <TableHead className='text-left'>Title</TableHead>
+                                        <TableHead className="hidden md:table-cell text-center">Last Updated</TableHead>
                                         <TableHead className="text-right">Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {draftPosts.map((post) => (
                                         <TableRow key={post._id}>
-                                            <TableCell className="font-medium">{post.englishTitle}</TableCell>
+                                            <TableCell className="font-medium text-left">{post.englishTitle}</TableCell>
                                             <TableCell className="hidden md:table-cell">
-                                                <div className="flex items-center text-sm text-muted-foreground">
+                                                <div className="flex items-center text-sm text-muted-foreground justify-center">
                                                     <Calendar className="mr-1 h-4 w-4" />
                                                     {post.updatedAt?.split('T')[0]}
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="text-right">
+                                            <TableCell >
                                                 <div className="flex justify-end gap-2">
                                                     <Button variant="outline" size="sm" onClick={() => router.push(`/manager/edit/${post._id}`)}>
                                                         <Edit className="h-4 w-4" />
@@ -183,12 +163,57 @@ export default function Dashboard() {
                             </Table>
                         </CardContent>
                         <CardFooter className="justify-center">
-                            {drafts.length === 0 && (
+                            {draftPosts.length === 0 && (
                                 <div className="text-center py-8">
                                     <p className="text-muted-foreground">No drafts yet</p>
                                     <Button variant="link" onClick={() => router.push('/editor/new')}>
                                         Create your first draft
                                     </Button>
+                                </div>
+                            )}
+                        </CardFooter>
+                    </Card>
+                </TabsContent>
+
+                {/* PENDING */}
+                <TabsContent value="pending">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Pending Posts</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Title</TableHead>
+                                        <TableHead className="hidden md:table-cell">Created At</TableHead>
+                                        <TableHead className="hidden md:table-cell">Status</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {pendingPosts.map((post) => (
+                                        <TableRow key={post._id}>
+                                            <TableCell className="font-medium">{post.englishTitle}</TableCell>
+                                            <TableCell className="hidden md:table-cell">
+                                                <div className="flex items-center text-sm text-muted-foreground">
+                                                    <Calendar className="mr-1 h-4 w-4" />
+                                                    {post.createdAt?.split('T')[0]}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="hidden md:table-cell">
+                                                <Badge variant="outline" className="bg-yellow-100 text-gray-800">
+                                                    pending
+                                                </Badge>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </CardContent>
+                        <CardFooter className="justify-center">
+                            {pendingPosts.length === 0 && (
+                                <div className="text-center py-8">
+                                    <p className="text-muted-foreground">No pending posts</p>
                                 </div>
                             )}
                         </CardFooter>

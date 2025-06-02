@@ -12,8 +12,8 @@ export default function EditPostPage() {
     const { id } = useParams()
     const router = useRouter()
     const [loading, setLoading] = useState(true)
-    const { getToken } = useAuth();
     const initialize = usePostStore(state => state.initialize)
+    const { getToken } = useAuth();
 
     useEffect(() => {
         const loadPost = async () => {
@@ -55,7 +55,7 @@ export default function EditPostPage() {
             }
         }
         loadPost()
-    }, [id, router, initialize])
+    }, [id, router, initialize, getToken])
 
     if (loading) {
         return <Loader />
