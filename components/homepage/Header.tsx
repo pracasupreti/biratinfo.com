@@ -50,6 +50,15 @@ function Header() {
                                 priority
                             />
                         </div>
+                        <div className='relative h-full w-[100%]'>
+                            <Image
+                                src='/BIRATINFO.svg'
+                                alt='Birat Info Text Logo'
+                                fill
+                                className='object-contain'
+                                priority
+                            />
+                        </div>
                     </div>
                     <div className='relative w-full max-w-[280px] md:max-w-[500px] lg:max-w-[600px] xl:max-w-[700px] aspect-[6/1]'>
                         <Image
