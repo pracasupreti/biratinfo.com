@@ -33,13 +33,12 @@ function Footer() {
                     {/* Our Team */}
                     <div className='space-y-4 text-center md:text-left'>
                         <h3 className='text-xl font-semibold text-gray-900'>हाम्रो टिम</h3>
-                        <ul className='space-y-2 text-gray-600'>
+                        <ul className='space-y-3 text-gray-600'>
                             {[
-                                'अध्यक्ष तथा निर्देशक : सुधीर नेपाल',
-                                'प्रमुख प्राविधिक अधिकृत : प्रकाश शर्मा',
-                                'खाता : निरन्जन थापा',
-                                'कार्यकारी सम्पादक : राम प्रसाद पौडेल',
-                                'जनसम्पर्क अधिकृत : श्रीशा शर्मा'
+                                'अध्यक्ष : सुधीर नेपाल',
+                                'सम्पादक : उमेश शर्मा',
+                                'प्रविधि : प्रकाश उप्रेती',
+                                'जनसम्पर्क अधिकृत : प्रियंका शर्मा'
                             ].map((item, index) => (
                                 <li key={index} className='text-xl'>{item}</li>
                             ))}
@@ -54,7 +53,7 @@ function Footer() {
                                 <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
                                     <NotebookPenIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p className='text-xl text-center md:text-left'>सूचना विभाग दर्ता नं. १२३-०८१/८२</p>
+                                <p className='text-xl text-center md:text-left'>सूचना विभाग दर्ता नं. YYY-०८१/८२</p>
                             </li>
                             <li className='flex items-center gap-3'>
                                 <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
@@ -66,7 +65,7 @@ function Footer() {
                                 <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
                                     <PhoneCallIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p className='text-xl text-center md:text-left'>+९७७-१-१२३४५६७८</p>
+                                <p className='text-xl text-center md:text-left'>+९७७-९८५११-५२७७४ </p>
                             </li>
                             <li className='flex items-center gap-3'>
                                 <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
@@ -79,7 +78,7 @@ function Footer() {
 
                     {/* App Downloads */}
                     <div className='space-y-4 flex flex-col items-center md:items-end'>
-                        <h3 className='text-xl font-semibold text-gray-900 md:mr-3'>हाम्रो एप डाउनलोड गर्नुहोस्</h3>
+                        <h3 className='text-xl font-semibold text-gray-900 md:mr-12'>एप डाउनलोड गर्नुहोस्</h3>
                         <div className='flex flex-col gap-3'>
                             <Link href="#" className='hover:opacity-90 transition-opacity'>
                                 <Image

@@ -40,8 +40,11 @@ function Header() {
                 </div>
 
                 <div className='flex flex-col md:flex-row items-center justify-between w-full pt-2 gap-4 md:gap-10 max-w-7xl mx-auto'>
-                    <div className='relative w-full max-w-[180px] md:max-w-[280px] lg:max-w-[320px] xl:max-w-[380px] aspect-[4/1] flex items-center'>
-                        <div className='relative h-full w-[100%]'>
+
+
+                    <div className='relative w-full max-w-[180px] md:max-w-[280px] lg:max-w-[320px] aspect-[4/1] flex items-center gap-1'>
+
+                        <div className='relative h-full flex-[1]'>
                             <Image
                                 src='/logo.svg'
                                 alt='Birat Info Logo'
@@ -50,7 +53,9 @@ function Header() {
                                 priority
                             />
                         </div>
-                        <div className='relative h-full w-[100%]'>
+
+
+                        <div className='relative h-full' style={{ width: '70%' }}>
                             <Image
                                 src='/BIRATINFO.svg'
                                 alt='Birat Info Text Logo'
@@ -59,7 +64,10 @@ function Header() {
                                 priority
                             />
                         </div>
+
                     </div>
+
+
                     <div className='relative w-full max-w-[280px] md:max-w-[500px] lg:max-w-[600px] xl:max-w-[700px] aspect-[6/1]'>
                         <Image
                             src='/images/homepage/NMB.png'
@@ -70,6 +78,7 @@ function Header() {
                         />
                     </div>
                 </div>
+
 
                 <nav className='w-full bg-text-color hidden md:flex items-center overflow-x-auto whitespace-nowrap scrollbar-hide px-2 lg:px-10 xl:px-24 font-alata text-white'>
                     <div className='mx-auto flex md:gap-0 lg:gap-4 min-w-fit'>

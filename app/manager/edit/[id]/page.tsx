@@ -21,7 +21,7 @@ export default function EditPostPage() {
             try {
                 async function fetchPostsById(id: string) {
                     const token = await getToken();
-                    const response = await fetch(`http://localhost:3001/api/posts/id/${id}`, {
+                    const response = await fetch(`https://biratinfo-backend.vercel.app/api/posts/id/${id}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,

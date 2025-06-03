@@ -52,7 +52,7 @@ export default function Dashboard() {
     useEffect(() => {
         async function fetchPostsByStatus(status: string) {
             const token = await getToken();
-            const response = await fetch(`http://localhost:3001/api/posts/status/${status}`, {
+            const response = await fetch(`https://biratinfo-backend.vercel.app/api/posts/status/${status}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,

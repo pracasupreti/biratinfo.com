@@ -66,7 +66,7 @@ export function PostActions({ isEditing = false }: EditorFormProps) {
                 }
 
                 try {
-                    const response = await fetch('http://localhost:3001/api/posts/update', {
+                    const response = await fetch('https://biratinfo-backend.vercel.app/api/posts/update', {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
