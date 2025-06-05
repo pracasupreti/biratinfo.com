@@ -79,7 +79,6 @@ export default function EditorDashboard() {
                     fetchAllPostsByStatus('approved'),
                     fetchAllPostsByStatus('rejected'),
                 ]);
-                console.log(approvedRes)
 
                 setPendingPosts(pendingRes?.success && pendingRes.posts ? pendingRes.posts : []);
                 setRejectedPosts(rejectedRes?.success && rejectedRes.posts ? rejectedRes.posts : []);
@@ -119,12 +118,12 @@ export default function EditorDashboard() {
 
         const fetchPosts = async () => {
             try {
-                const [draftsRes, pendingRes] = await Promise.all([
+                const [draftsRes, scheduledRes] = await Promise.all([
                     fetchPostsByStatus('draft'),
                     fetchPostsByStatus('scheduled'),
                 ]);
                 setDraftPosts(draftsRes?.success && draftsRes.posts ? draftsRes.posts : []);
-                setPendingPosts(pendingRes?.success && pendingRes.posts ? pendingRes.posts : []);
+                setScheduledPosts(scheduledRes?.success && scheduledRes.posts ? scheduledRes.posts : []);
             } catch (error) {
                 console.error("Failed to fetch posts:", error);
             } finally {
