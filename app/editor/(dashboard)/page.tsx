@@ -49,7 +49,7 @@ export default function EditorDashboard() {
     const { getToken } = useAuth();
 
     useEffect(() => {
-        async function fetchPostsByStatus(status: string) {
+        async function fetchAllPostsByStatus(status: string) {
             const token = await getToken();
             const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
 
@@ -70,21 +70,61 @@ export default function EditorDashboard() {
             return data.posts;
         }
 
+
+
         const fetchPosts = async () => {
             try {
-                const [pendingRes, approvedRes, rejectedRes, draftRes, scheduledRes] = await Promise.all([
-                    fetchPostsByStatus('pending'),
-                    fetchPostsByStatus('approved'),
-                    fetchPostsByStatus('rejected'),
-                    fetchPostsByStatus('draft'),
-                    fetchPostsByStatus('scheduled')
+                const [pendingRes, approvedRes, rejectedRes] = await Promise.all([
+                    fetchAllPostsByStatus('pending'),
+                    fetchAllPostsByStatus('approved'),
+                    fetchAllPostsByStatus('rejected'),
                 ]);
+                console.log(approvedRes)
 
                 setPendingPosts(pendingRes?.success && pendingRes.posts ? pendingRes.posts : []);
                 setRejectedPosts(rejectedRes?.success && rejectedRes.posts ? rejectedRes.posts : []);
                 setVerifiedPosts(approvedRes?.success && approvedRes.posts ? approvedRes.posts : []);
-                setDraftPosts(draftRes?.success && draftRes.posts ? draftRes.posts : []);
-                setScheduledPosts(scheduledRes?.success && scheduledRes.posts ? scheduledRes.posts : []);
+
+            } catch (error) {
+                console.error("Failed to fetch posts:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPosts();
+    }, [getToken]);
+
+    useEffect(() => {
+        async function fetchPostsByStatus(status: string) {
+            const token = await getToken();
+            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+
+            if (!backend_uri) throw new Error("Missing api endpoint")
+            const response = await fetch(`${backend_uri}/api/posts/status/${status}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch posts');
+            }
+
+            const data = await response.json();
+            return data.posts;
+        }
+
+        const fetchPosts = async () => {
+            try {
+                const [draftsRes, pendingRes] = await Promise.all([
+                    fetchPostsByStatus('draft'),
+                    fetchPostsByStatus('scheduled'),
+                ]);
+                setDraftPosts(draftsRes?.success && draftsRes.posts ? draftsRes.posts : []);
+                setPendingPosts(pendingRes?.success && pendingRes.posts ? pendingRes.posts : []);
             } catch (error) {
                 console.error("Failed to fetch posts:", error);
             } finally {
