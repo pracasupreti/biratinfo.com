@@ -21,7 +21,7 @@ function Page() {
                     Back to Dashboard
                 </Button>
             </div>
-            <PostLayout />
+            <PostLayout isEditor={true} isWriting={true} />
         </div>
     )
 }

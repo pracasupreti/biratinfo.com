@@ -21,7 +21,10 @@ export default function EditPostPage() {
             try {
                 async function fetchPostsById(id: string) {
                     const token = await getToken();
-                    const response = await fetch(`https://biratinfo-backend.vercel.app/api/posts/id/${id}`, {
+                    const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+
+                    if (!backend_uri) throw new Error("Missing api endpoint")
+                    const response = await fetch(`${backend_uri}/api/posts/id/${id}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,

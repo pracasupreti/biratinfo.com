@@ -17,10 +17,11 @@ import { Card, CardContent } from '../ui/card'
 
 interface PostSidebarProps {
     isEditing?: boolean,
-    isEditor?: boolean
+    isEditor?: boolean,
+    isWriting?: boolean
 }
 
-export function PostSidebar({ isEditing = false, isEditor }: PostSidebarProps) {
+export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps) {
     const router = useRouter();
     const {
         category,
@@ -29,6 +30,7 @@ export function PostSidebar({ isEditing = false, isEditor }: PostSidebarProps) {
         time,
         author,
         language,
+        readingTime,
         heroBanner,
         ogBanner,
         imageCredit,
@@ -49,8 +51,8 @@ export function PostSidebar({ isEditing = false, isEditor }: PostSidebarProps) {
     const uploadToCloudinary = async (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds', file: File): Promise<string> => {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET!);
-        formData.append('cloud_name', process.env.CLOUDINARY_CLOUD_NAME!);
+        formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
+        formData.append('cloud_name', process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!);
         formData.append('public_id', `posts/${uuidv4()}`);
 
         try {
@@ -63,12 +65,13 @@ export function PostSidebar({ isEditing = false, isEditor }: PostSidebarProps) {
             }
 
             const response = await fetch(
-                `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
+                `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
                 {
                     method: 'POST',
                     body: formData
                 }
             );
+            console.log(response)
 
             if (!response.ok) {
                 throw new Error('Upload failed');
@@ -98,6 +101,7 @@ export function PostSidebar({ isEditing = false, isEditor }: PostSidebarProps) {
             try {
                 const imageUrl = await uploadToCloudinary(field, file);
                 setField(field, imageUrl); // Replace with Cloudinary URL
+                console.log(imageUrl)
             } catch (error) {
                 console.error(error)
                 setField(field, null);
@@ -196,6 +200,31 @@ export function PostSidebar({ isEditing = false, isEditor }: PostSidebarProps) {
                         </SelectContent>
                     </Select>
                 </div>
+
+                {/* Reading Time */}
+                {isEditor && (
+                    <div>
+                        <Label htmlFor="readingTime" className='text-2xl'>Reading Time</Label>
+                        <Select
+                            value={readingTime}
+                            onValueChange={(value) => setField('readingTime', value)}
+                        >
+                            <SelectTrigger className="mt-2 text-lg">
+                                <SelectValue placeholder="Select reading time" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="3 min" className="text-lg">3 min</SelectItem>
+                                <SelectItem value="4 min" className="text-lg">4 min</SelectItem>
+                                <SelectItem value="5 min" className="text-lg">5 min</SelectItem>
+                                <SelectItem value="6 min" className="text-lg">6 min</SelectItem>
+                                <SelectItem value="7 min" className="text-lg">7 min</SelectItem>
+                                <SelectItem value="8 min" className="text-lg">8 min</SelectItem>
+                                <SelectItem value="9 min" className="text-lg">9 min</SelectItem>
+                                <SelectItem value="10 min" className="text-lg">10 min</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                )}
 
                 {/* Hero Banner */}
                 <div>
@@ -325,8 +354,8 @@ export function PostSidebar({ isEditing = false, isEditor }: PostSidebarProps) {
                 </div>
 
                 {/* Action Buttons */}
-                {isEditor ?
-                    <EditorPostAction /> : <PostActions isEditing={isEditing} />}
+                {isEditor && isEditing ?
+                    <EditorPostAction /> : <PostActions isEditing={isEditing} isWriting={isWriting} />}
             </CardContent>
         </Card>
     )

@@ -52,7 +52,10 @@ export default function Dashboard() {
     useEffect(() => {
         async function fetchPostsByStatus(status: string) {
             const token = await getToken();
-            const response = await fetch(`https://biratinfo-backend.vercel.app/api/posts/status/${status}`, {
+            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+
+            if (!backend_uri) throw new Error("Missing api endpoint")
+            const response = await fetch(`${backend_uri}/api/posts/status/${status}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -76,8 +79,6 @@ export default function Dashboard() {
                     fetchPostsByStatus('scheduled'),
                     fetchPostsByStatus('approved'),
                 ]);
-                console.log(draftsRes)
-
                 setDraftPosts(draftsRes?.success && draftsRes.posts ? draftsRes.posts : []);
                 setPendingPosts(pendingRes?.success && pendingRes.posts ? pendingRes.posts : []);
                 setScheduledPosts(scheduledRes?.success && scheduledRes.posts ? scheduledRes.posts : []);

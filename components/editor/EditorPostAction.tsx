@@ -50,6 +50,7 @@ export function EditorPostAction() {
                 time: state.time,
                 author: state.author,
                 language: state.language,
+                readingTime: state.readingTime,
                 heroBanner: state.heroBanner,
                 ogBanner: state.ogBanner,
                 imageCredit: state.imageCredit,
@@ -67,8 +68,11 @@ export function EditorPostAction() {
             if (!token) {
                 throw new Error("Token is required")
             }
+            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
 
-            const response = await fetch('http://localhost:3001/api/posts/update', {
+            if (!backend_uri) throw new Error("Missing api endpoint")
+
+            const response = await fetch(`${backend_uri}/api/posts/update`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

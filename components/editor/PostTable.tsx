@@ -21,6 +21,7 @@ interface Post {
     time: string;
     author: string;
     language: string;
+    readingTime: string;
     heroBanner: string | null;
     ogBanner: string | null;
     imageCredit: string;

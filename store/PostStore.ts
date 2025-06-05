@@ -14,6 +14,7 @@ export interface PostState {
     time: string
     author: string
     language: string
+    readingTime?: string
     heroBanner: string
     ogBanner: string
     imageCredit: string
@@ -47,6 +48,7 @@ export const usePostStore = create<PostState>((set, get) => ({
     time: '',
     author: '',
     language: 'english',
+    readingTime: '',
     heroBanner: '',
     ogBanner: '',
     imageCredit: '',
@@ -136,6 +138,7 @@ export const usePostStore = create<PostState>((set, get) => ({
             time: '',
             author: '',
             language: 'english',
+            readingTime: '',
             heroBanner: '',
             ogBanner: '',
             imageCredit: '',
@@ -162,6 +165,7 @@ export const usePostStore = create<PostState>((set, get) => ({
             time: postData.time || '',
             author: postData.author || '',
             language: postData.language || 'english',
+            readingTime: postData.readingTime || '',
             heroBanner: postData.heroBanner || '',
             ogBanner: postData.ogBanner || '',
             imageCredit: postData.imageCredit || '',

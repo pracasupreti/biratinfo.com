@@ -8,9 +8,10 @@ import toast from 'react-hot-toast'
 
 interface EditorFormProps {
     isEditing?: boolean,
+    isWriting?: boolean
 }
 
-export function PostActions({ isEditing = false }: EditorFormProps) {
+export function PostActions({ isEditing, isWriting }: EditorFormProps) {
     const { validate, resetStore, ...state } = usePostStore()
     const { id } = useParams()
     const { getToken } = useAuth();
@@ -29,7 +30,12 @@ export function PostActions({ isEditing = false }: EditorFormProps) {
             } else {
                 const currentDate = new Date();
                 const postDate = state.date ? new Date(state.date) : currentDate;
-                status = postDate > currentDate ? 'scheduled' : 'pending';
+
+                if (isWriting) {
+                    status = postDate > currentDate ? 'scheduled' : 'approved';
+                } else {
+                    status = postDate > currentDate ? 'scheduled' : 'pending';
+                }
             }
 
             const submissionData = {
@@ -41,10 +47,11 @@ export function PostActions({ isEditing = false }: EditorFormProps) {
                 postInNetwork: state.postInNetwork,
                 category: state.category,
                 tags: state.tags,
-                date: state.tags,
+                date: state.date,
                 time: state.time,
                 author: state.author,
                 language: state.language,
+                readingTime: state.readingTime,
                 heroBanner: state.heroBanner,
                 ogBanner: state.ogBanner,
                 imageCredit: state.imageCredit,
@@ -66,7 +73,11 @@ export function PostActions({ isEditing = false }: EditorFormProps) {
                 }
 
                 try {
-                    const response = await fetch('https://biratinfo-backend.vercel.app/api/posts/update', {
+                    const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+
+                    if (!backend_uri) throw new Error("Missing api endpoint")
+
+                    const response = await fetch(`${backend_uri}/api/posts/update`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -104,12 +115,14 @@ export function PostActions({ isEditing = false }: EditorFormProps) {
                 return;
             }
 
-
-            //Creating a New Post
             // Creating New Post
             try {
                 const token = await getToken();
-                const response = await fetch('http://localhost:3001/api/posts/create', {
+                const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+
+                if (!backend_uri) throw new Error("Missing api endpoint")
+
+                const response = await fetch(`${backend_uri}/api/posts/create`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -133,7 +146,7 @@ export function PostActions({ isEditing = false }: EditorFormProps) {
                         successMessage = 'Your post has been scheduled for publication';
                         break;
                     default:
-                        successMessage = 'Your post has been forwarded to editor successfully';
+                        successMessage = isWriting ? 'Your post have been successfully verified' : 'Your post has been forwarded to editor successfully';
                 }
 
                 toast.success(successMessage);
