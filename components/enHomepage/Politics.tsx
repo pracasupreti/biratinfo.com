@@ -29,38 +29,37 @@ function Politics() {
 
     return (
         <div className="w-full px-4 lg:px-20 md:px-6 py-12">
-            <div className="max-w-7xl mx-auto flex flex-col gap-12">
+            <div className="max-w-8xl mx-auto md:mx-16 lg:mx-24 flex flex-col gap-12">
                 {/* Header */}
                 <div className="flex flex-col gap-2">
-                    <p className="text-[#939393] font-orienta text-xl font-[700]">Politics</p>
+                    <p className="text-text-color font-orienta text-xl font-[700]">Politics</p>
                     <div className="w-full h-[3px] bg-[#ebebeb]" />
                 </div>
 
-                {/* Main content */}
+                {/* Content */}
                 <div className="flex flex-col lg:flex-row gap-12 items-stretch">
-                    {/* Left Column - Main Article */}
+                    {/* Main article - Left */}
                     <div className="flex-1 flex flex-col gap-5 justify-between">
                         <div>
-                            <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url(/images/homepage/PoliticsImage1.webp)] rounded-xl" />
-                            <p className="font-ibm_plex_serif font-bold text-2xl lg:text-3xl cursor-pointer text-text-color mt-4 hover:underline">
+                            <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url('/images/homepage/PoliticsImage1.webp')] rounded-xl" />
+                            <p className="font-ibm_plex_serif font-bold text-2xl lg:text-4xl cursor-pointer text-text-color mt-4 hover:underline">
                                 Kennedy Clashes With Top Democrat Who Accused Him of &apos;Destroying&apos; Health Agencies
                             </p>
-                            <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg mt-2">
+                            <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-xl mt-2">
                                 Health Secretary Robert F. Kennedy Jr., whose drastic overhaul of the federal health apparatus has left scientists and patients reeling, clashed on Wednesday with a senior House Democrat.
                             </p>
                         </div>
-                        <p className="text-[#808080] font-roboto text-sm flex items-center gap-2">
+                        <p className="text-[#808080] font-roboto text-xl flex items-center gap-2">
                             <span>Sheryl Gay Stolberg</span>
                             <span>·</span>
                             <span>14 May, 2025</span>
                         </p>
                     </div>
 
-                    {/* Right Column - Other Articles */}
+                    {/* Other articles - Right */}
                     <div className="flex-1 flex flex-col justify-between gap-10 md:gap-6 lg:gap-4">
                         {Politics.map((item, index) => (
                             <div key={index} className="flex flex-col sm:flex-row gap-4 group">
-                                {/* Image */}
                                 <div className="relative w-full sm:w-[40%] aspect-[7/6] overflow-hidden md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl">
                                     <Image
                                         src={item.imageUrl}
@@ -70,15 +69,14 @@ function Politics() {
                                     />
                                 </div>
 
-                                {/* Text Content */}
                                 <div className="flex flex-col gap-1 sm:w-[60%]">
-                                    <p className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color line-clamp-2 hover:underline">
+                                    <p className="font-ibm_plex_serif font-semibold text-xl cursor-pointer text-text-color hover:underline line-clamp-2">
                                         {item.title}
                                     </p>
-                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm line-clamp-3">
+                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-lg line-clamp-2">
                                         {item.description}
                                     </p>
-                                    <p className="text-[#808080] font-roboto text-sm flex items-center gap-2 mt-2">
+                                    <p className="text-[#808080] font-roboto text-xl flex items-center gap-2 mt-2">
                                         <span>{item.author}</span>
                                         <span>·</span>
                                         <span>{item.publishedDate}</span>

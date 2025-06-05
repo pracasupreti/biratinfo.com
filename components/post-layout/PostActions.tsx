@@ -76,7 +76,7 @@ export function PostActions({ isEditing, isWriting }: EditorFormProps) {
                     const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
 
                     if (!backend_uri) throw new Error("Missing api endpoint")
-
+                    console.log('Hello')
                     const response = await fetch(`${backend_uri}/api/posts/update`, {
                         method: 'PUT',
                         headers: {
@@ -148,7 +148,6 @@ export function PostActions({ isEditing, isWriting }: EditorFormProps) {
                     default:
                         successMessage = isWriting ? 'Your post have been successfully verified' : 'Your post has been forwarded to editor successfully';
                 }
-
                 toast.success(successMessage);
                 resetStore();
             } catch (error) {

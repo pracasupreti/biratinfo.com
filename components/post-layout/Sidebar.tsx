@@ -129,6 +129,7 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                             <SelectItem value="news" className="text-lg">News</SelectItem>
                             <SelectItem value="sports" className="text-lg">Sports</SelectItem>
                             <SelectItem value="entertainment" className="text-lg">Entertainment</SelectItem>
+                            <SelectItem value="politics" className="text-lg">Politics</SelectItem>
                         </SelectContent>
                     </Select>
                     {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category}</p>}

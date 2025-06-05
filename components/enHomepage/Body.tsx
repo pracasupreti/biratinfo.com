@@ -9,7 +9,7 @@ import Health from './Health'
 function Body() {
 
     return (
-        <div className='md:pt-14 pt-10'>
+        <div>
             <Summary />
             <Politics />
             <Economy />

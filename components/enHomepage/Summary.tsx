@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -32,49 +33,51 @@ function Summary() {
 
     return (
         <section className="w-full px-4 lg:px-20 md:px-6 py-12">
-            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-stretch">
-                <div className="flex flex-col lg:w-1/2 h-full gap-6">
-                    <div className="w-full h-[400px] lg:h-[450px] relative rounded-2xl overflow-hidden">
+            <div className="max-w-8xl mx-auto md:mx-16 lg:mx-24 flex flex-col lg:flex-row gap-12 items-stretch">
+                {/* Left Column - Featured Story */}
+                <div className="flex-1 flex flex-col gap-6 h-full">
+                    <div className="w-full aspect-[3/2] relative rounded-2xl overflow-hidden">
                         <Image
                             src="/images/homepage/SummaryImage1.webp"
                             alt="Featured politics story"
                             fill
                             className="object-cover"
-                            priority
-                            sizes="(max-width: 1024px) 100vw, 50vw"
                         />
                     </div>
-                    <div className="flex flex-col gap-6 text-center lg:text-left">
-                        <p className="text-[#939393] font-orienta text-base sm:text-lg font-[700]">Politics</p>
-                        <Link href={''} className="text-text-color font-ibm_plex_serif font-bold text-xl sm:text-2xl lg:text-3xl cursor-pointer hover:underline line-clamp-2">
+                    <div className="flex flex-col gap-4">
+                        <p className="text-text-color font-orienta text-base sm:text-lg font-[700]">Politics</p>
+                        <Link
+                            href={'/singlepage'}
+                            className="text-text-color font-ibm_plex_serif font-bold text-2xl lg:text-4xl hover:underline"
+                        >
                             Relief on China&apos;s factory floors as US tariffs put on hold
                         </Link>
-                        <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-lg line-clamp-4">
+                        <p className="text-[#808080] font-ibm_plex_serif font-medium text-base lg:text-xl line-clamp-3">
                             There&apos;s a vast empty space in the middle of the factory floor in Foshan in southern China where workers should be welding high-end air fryers for the US market. Derek Wang says his American customers were wowed by his air fryer models.
                         </p>
                     </div>
                 </div>
 
-                <div className="grid sm:grid-cols-2 gap-x-8 gap-y-14 lg:w-1/2 h-full">
+                {/* Right Column - Grid Items */}
+                <div className="flex-1 grid sm:grid-cols-2 gap-8 h-full">
                     {summary.map((item, index) => (
                         <div key={index} className="flex flex-col gap-4 group h-full">
-                            <div className="relative w-full aspect-[3/2] rounded-xl overflow-hidden md:group-hover:translate-y-[-10px] md:transition md:duration-400">
+                            <div className="relative w-full aspect-[3/2] rounded-xl overflow-hidden md:group-hover:translate-y-[-10px] md:transition md:duration-300">
                                 <Image
                                     src={item.imageUrl}
                                     alt={item.title}
                                     fill
                                     className="object-cover"
-                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 />
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <div className="text-[#939393] font-orienta text-sm font-[700]">{item.minititle}</div>
-                                <h3 className="text-text-color font-ibm_plex_serif font-semibold text-lg hover:underline cursor-pointer line-clamp-2">
+                                <p className="text-text-color font-orienta text-lg font-[700]">{item.minititle}</p>
+                                <Link
+                                    href={'/singlepage'}
+                                    className="text-text-color font-ibm_plex_serif font-semibold text-xl hover:underline line-clamp-2"
+                                >
                                     {item.title}
-                                </h3>
-                                <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm line-clamp-3">
-                                    {item.description}
-                                </p>
+                                </Link>
                             </div>
                         </div>
                     ))}

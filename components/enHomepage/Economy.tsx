@@ -36,12 +36,14 @@ function Economy() {
 
     return (
         <section className="w-full px-4 lg:px-20 md:px-6 py-12">
-            <div className="max-w-7xl mx-auto flex flex-col gap-12">
+            <div className="max-w-8xl mx-auto md:mx-16 lg:mx-24 flex flex-col gap-12">
+                {/* Header */}
                 <div className="flex flex-col gap-2">
-                    <p className="text-[#939393] font-orienta text-[20px] font-[700]">Economy</p>
+                    <p className="text-text-color font-orienta text-[20px] font-[700]">Economy</p>
                     <div className="w-full h-[3px] bg-[#ebebeb]" />
                 </div>
 
+                {/* Articles */}
                 <div className="flex flex-col gap-20">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-16">
                         {economy.map((item, index) => (
@@ -59,10 +61,10 @@ function Economy() {
                                     <p className="text-text-color font-ibm_plex_serif font-bold text-[18px] md:text-[20px] leading-snug cursor-pointer line-clamp-2 hover:underline">
                                         {item.title}
                                     </p>
-                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm line-clamp-3">
+                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-lg line-clamp-2">
                                         {item.description}
                                     </p>
-                                    <p className="text-[#808080] font-roboto font-medium text-[13px] flex items-center gap-x-2">
+                                    <p className="text-[#808080] font-roboto font-medium text-xl flex items-center gap-x-2">
                                         <span>{item.author}</span>
                                         <span>·</span>
                                         <span>{item.publishedDate}</span>

@@ -5,7 +5,7 @@ import { DashboardHeader } from '@/components/editor/DashBoardHeader'
 import { PostTable } from '@/components/editor/PostTable'
 import Loader from '@/components/Loader'
 import { useAuth } from '@clerk/nextjs'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { Tabs, TabsContent } from '@/components/ui/tabs'
 
 
 interface Post {
