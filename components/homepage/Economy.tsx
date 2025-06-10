@@ -35,20 +35,20 @@ function Economy() {
     ]
 
     return (
-        <section className="w-full px-4 lg:px-20 md:px-6 py-12">
-            <div className="max-w-8xl mx-auto md:mx-16 lg:mx-24 flex flex-col gap-12">
+        <section className="w-full px-4 lg:px-16 md:px-5 py-10">
+            <div className="max-w-8xl mx-auto md:mx-12 lg:mx-20 flex flex-col gap-10">
                 {/* Header */}
                 <div className="flex flex-col gap-2">
-                    <p className="text-text-color font-orienta text-[20px] font-[700]">अर्थ / कारोबार</p>
-                    <div className="w-full h-[3px] bg-[#ebebeb]" />
+                    <p className="text-text-color font-orienta text-[18px] font-[700]">अर्थ / कारोबार</p>
+                    <div className="w-full h-[2px] bg-[#ebebeb]" />
                 </div>
 
                 {/* Articles */}
-                <div className="flex flex-col gap-20">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-16">
+                <div className="flex flex-col gap-16">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-12">
                         {economy.map((item, index) => (
-                            <div key={index} className="flex flex-col lg:flex-row gap-6 group">
-                                <div className="w-full lg:w-[40%] aspect-[3/2] relative md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl overflow-hidden">
+                            <div key={index} className="flex flex-col lg:flex-row gap-5 group">
+                                <div className="w-full lg:w-[40%] aspect-[3/2] relative md:group-hover:translate-y-[-8px] md:transition md:duration-400 rounded-xl overflow-hidden">
                                     <Image
                                         src={item.imageUrl}
                                         alt=""
@@ -57,14 +57,14 @@ function Economy() {
                                     />
                                 </div>
 
-                                <div className="flex flex-col gap-4 lg:w-[60%]">
-                                    <p className="text-text-color font-ibm_plex_serif font-bold text-[18px] md:text-[20px] leading-snug cursor-pointer line-clamp-2 hover:underline">
+                                <div className="flex flex-col gap-2 lg:w-[60%]">
+                                    <p className="text-text-color font-ibm_plex_serif font-bold text-[16px] md:text-[18px] leading-snug cursor-pointer line-clamp-2 hover:underline">
                                         {item.title}
                                     </p>
-                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-lg line-clamp-2">
+                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-base line-clamp-2">
                                         {item.description}
                                     </p>
-                                    <p className="text-[#808080] font-roboto font-medium text-xl flex items-center gap-x-2">
+                                    <p className="text-[#808080] font-roboto font-medium text-lg flex items-center gap-x-2">
                                         <span>{item.author}</span>
                                         <span>·</span>
                                         <span>{item.publishedDate}</span>
@@ -74,7 +74,7 @@ function Economy() {
                         ))}
                     </div>
 
-                    <Button className="w-full max-w-[344px] h-[42px] bg-white border border-[#c9c9c9] text-[#939393] font-roboto font-semibold text-[20px] text-center mx-auto hover:bg-gray-50 transition-colors">
+                    <Button className="w-full max-w-[320px] h-[38px] bg-white border border-[#c9c9c9] text-[#939393] font-roboto font-semibold text-[18px] text-center mx-auto hover:bg-gray-50 transition-colors">
                         थप पढ्नुहोस्
                     </Button>
                 </div>

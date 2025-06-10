@@ -2,16 +2,18 @@
 import { Button } from '@/components/ui/button'
 import { usePostStore } from '@/store/PostStore';
 import { useAuth } from '@clerk/nextjs';
-
 import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast'
+import { Loader2 } from 'lucide-react';
 
-interface EditorFormProps {
+interface PostActionsProps {
     isEditing?: boolean,
-    isWriting?: boolean
+    isWriting?: boolean,
+    isSubmitting?: boolean
+    onActionClick: (action: () => Promise<void>) => Promise<void>;
 }
 
-export function PostActions({ isEditing, isWriting }: EditorFormProps) {
+export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting }: PostActionsProps) {
     const { validate, resetStore, ...state } = usePostStore()
     const { id } = useParams()
     const { getToken } = useAuth();
@@ -19,159 +21,125 @@ export function PostActions({ isEditing, isWriting }: EditorFormProps) {
     const handleSubmit = async (isDraft: boolean) => {
         if (!validate()) {
             toast.error('Please fix all errors before submitting')
-            return
+            return;
         }
+
+        const determineStatus = () => {
+            if (isDraft) return 'draft';
+
+            const currentDate = new Date();
+            const postDate = state.date && state.time
+                ? new Date(`${state.date}T${state.time}`)
+                : currentDate;
+
+            if (isWriting) {
+                return postDate > currentDate ? 'scheduled' : 'approved';
+            }
+            return postDate > currentDate ? 'scheduled' : 'pending';
+        };
+
+        const getSuccessMessage = (status: string) => {
+            switch (status) {
+                case 'draft':
+                    return isEditing
+                        ? 'Your post has been edited and saved as draft successfully'
+                        : 'Your post has been saved as draft successfully';
+                case 'scheduled':
+                    return 'Your post has been scheduled for publication';
+                default:
+                    return isWriting
+                        ? 'Your post has been successfully verified'
+                        : isEditing
+                            ? 'Your post has been edited and forwarded to editor successfully'
+                            : 'Your post has been forwarded to editor successfully';
+            }
+        };
+
+        const submissionData = {
+            englishTitle: state.englishTitle,
+            nepaliTitle: state.nepaliTitle,
+            blocks: state.blocks,
+            excerpt: state.excerpt,
+            featuredIn: state.featuredIn,
+            postInNetwork: state.postInNetwork,
+            category: state.category,
+            tags: state.tags,
+            date: state.date,
+            time: state.time,
+            author: state.author,
+            language: state.language,
+            readingTime: state.readingTime,
+            heroBanner: state.heroBanner,
+            ogBanner: state.ogBanner,
+            imageCredit: state.imageCredit,
+            sponsoredAds: state.sponsoredAds,
+            access: state.access,
+            audioFile: state.audioFile,
+            canonicalUrl: state.canonicalUrl,
+            status: determineStatus(),
+        };
 
         try {
-            // Determine status based on user action and post date
-            let status: string;
-            if (isDraft) {
-                status = 'draft';
-            } else {
-                const currentDate = new Date();
-                const postDate = state.date ? new Date(state.date) : currentDate;
+            const token = await getToken();
+            if (!token) throw new Error("Authentication required");
 
-                if (isWriting) {
-                    status = postDate > currentDate ? 'scheduled' : 'approved';
-                } else {
-                    status = postDate > currentDate ? 'scheduled' : 'pending';
-                }
+            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
+            if (!backend_uri) throw new Error("Missing API endpoint");
+
+            const endpoint = isEditing
+                ? `${backend_uri}/api/posts/update`
+                : `${backend_uri}/api/posts/create`;
+
+            const method = isEditing ? 'PUT' : 'POST';
+            const body = isEditing
+                ? JSON.stringify({ id: id?.toString(), ...submissionData })
+                : JSON.stringify(submissionData);
+
+            const response = await fetch(endpoint, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body,
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || `Failed to ${isEditing ? 'update' : 'create'} post`);
             }
 
-            const submissionData = {
-                englishTitle: state.englishTitle,
-                nepaliTitle: state.nepaliTitle,
-                blocks: state.blocks,
-                excerpt: state.excerpt,
-                featuredIn: state.featuredIn,
-                postInNetwork: state.postInNetwork,
-                category: state.category,
-                tags: state.tags,
-                date: state.date,
-                time: state.time,
-                author: state.author,
-                language: state.language,
-                readingTime: state.readingTime,
-                heroBanner: state.heroBanner,
-                ogBanner: state.ogBanner,
-                imageCredit: state.imageCredit,
-                sponsoredAds: state.sponsoredAds,
-                access: state.access,
-                audioFile: state.audioFile,
-                canonicalUrl: state.canonicalUrl,
-                status,
-            }
-
-            // Editing Post
-            if (isEditing) {
-                if (!id) {
-                    throw new Error("Post ID is required to update the post");
-                }
-                const token = await getToken();
-                if (!token) {
-                    throw new Error("Token is required")
-                }
-
-                try {
-                    const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
-
-                    if (!backend_uri) throw new Error("Missing api endpoint")
-                    const response = await fetch(`${backend_uri}/api/posts/update`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`,
-                        },
-                        body: JSON.stringify({
-                            id: id.toString(),
-                            ...submissionData
-                        }),
-                    });
-
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || 'Failed to update post');
-                    }
-
-                    let successMessage = '';
-
-                    switch (status) {
-                        case 'draft':
-                            successMessage = 'Your post has been edited and saved as draft successfully';
-                            break;
-                        case 'scheduled':
-                            successMessage = 'Your post has been edited scheduled for publication';
-                            break;
-                        default:
-                            successMessage = 'Your post has been edited forwarded to editor successfully';
-                    }
-
-                    toast.success(successMessage);
-                    resetStore();
-                } catch (error) {
-                    toast.error(error instanceof Error ? error.message : 'Failed to update post');
-                }
-                return;
-            }
-
-            // Creating New Post
-            try {
-                const token = await getToken();
-                const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
-
-                if (!backend_uri) throw new Error("Missing api endpoint")
-
-                const response = await fetch(`${backend_uri}/api/posts/create`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(submissionData),
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Failed to create post');
-                }
-
-                let successMessage = '';
-
-                switch (status) {
-                    case 'draft':
-                        successMessage = 'Your post has been saved as draft successfully';
-                        break;
-                    case 'scheduled':
-                        successMessage = 'Your post has been scheduled for publication';
-                        break;
-                    default:
-                        successMessage = isWriting ? 'Your post have been successfully verified' : 'Your post has been forwarded to editor successfully';
-                }
-                toast.success(successMessage);
-                resetStore();
-            } catch (error) {
-                toast.error(error instanceof Error ? error.message : 'Failed to create post');
-            }
-
+            toast.success(getSuccessMessage(submissionData.status));
+            resetStore();
         } catch (error: any) {
-            toast.error(error?.message || 'Failed to submit post. Please try again.');
+            toast.error(error?.message || `Failed to ${isEditing ? 'update' : 'create'} post. Please try again.`);
         }
-    }
+    };
 
     return (
         <div className="flex flex-col gap-2 pt-4 pb-4">
             <Button
                 variant="outline"
-                onClick={() => handleSubmit(true)}
-                className="w-full text-xl cursor-pointer py-6"
+                onClick={() => onActionClick(() => handleSubmit(true))}
+                className="w-full text-base cursor-pointer py-4"
+                disabled={isSubmitting}
             >
-                Save as Draft
+                {isSubmitting ? (
+                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                ) : (
+                    'Save as Draft'
+                )}
             </Button>
             <Button
-                onClick={() => handleSubmit(false)}
-                className="w-full text-xl cursor-pointer py-6"
+                onClick={() => onActionClick(() => handleSubmit(false))}
+                className="w-full text-base cursor-pointer py-4"
+                disabled={isSubmitting}
             >
-                Publish Post
+                {isSubmitting ? (
+                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                ) : (
+                    'Publish Post'
+                )}
             </Button>
         </div>
     )

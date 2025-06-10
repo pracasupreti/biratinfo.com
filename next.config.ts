@@ -2,7 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  devIndicators: false
+  devIndicators: false,
+  images: {
+    remotePatterns: [new URL('https://res.cloudinary.com/**')],
+  }
 };
 
 export default nextConfig;

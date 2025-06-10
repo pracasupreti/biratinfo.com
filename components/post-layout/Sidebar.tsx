@@ -13,7 +13,8 @@ import { useRouter } from 'next/navigation'
 import { EditorPostAction } from '../editor/EditorPostAction'
 import { usePostStore } from '@/store/PostStore'
 import { Card, CardContent } from '../ui/card'
-
+import Image from 'next/image'
+import { AuthorSelect } from './AuthorSelect'
 
 interface PostSidebarProps {
     isEditing?: boolean,
@@ -44,10 +45,8 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
     const [isHeroUploading, setIsHeroUploading] = useState<boolean>(false);
     const [isOgUploading, setIsOgUploading] = useState<boolean>(false);
     const [isSponsoredAdsUploading, setIsSponsoredAdsUploading] = useState<boolean>(false);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-
-
-    // CLOUDINARY UPLOAD
     const uploadToCloudinary = async (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds', file: File): Promise<string> => {
         const formData = new FormData();
         formData.append('file', file);
@@ -71,7 +70,6 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                     body: formData
                 }
             );
-            console.log(response)
 
             if (!response.ok) {
                 throw new Error('Upload failed');
@@ -100,264 +98,282 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
 
             try {
                 const imageUrl = await uploadToCloudinary(field, file);
-                setField(field, imageUrl); // Replace with Cloudinary URL
-                console.log(imageUrl)
+                setField(field, imageUrl);
             } catch (error) {
                 console.error(error)
                 setField(field, null);
-                // Handle error (e.g., show toast notification)
             }
         }
     };
 
+    const handleActionClick = async (action: () => Promise<void>) => {
+        setIsSubmitting(true);
+        try {
+            await action();
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
-        <Card className="space-y-6 shadow-xl">
-            <CardContent className="space-y-4">
-                <h2 className="text-xl font-semibold">Post Settings</h2>
+        <Card className="shadow-sm rounded-md border border-gray-200 text-sm">
+            <CardContent className="p-3 space-y-3">
+                <h2 className="text-lg font-semibold text-gray-800 mb-1">Post Settings</h2>
 
-                {/* Category */}
-                <div>
-                    <Label htmlFor="category" className='text-2xl'>Category *</Label>
-                    <Select
-                        value={category}
-                        onValueChange={(value) => setField('category', value)}
-                    >
-                        <SelectTrigger className="mt-2 text-lg">
-                            <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                        <SelectContent >
-                            <SelectItem value="news" className="text-lg">News</SelectItem>
-                            <SelectItem value="sports" className="text-lg">Sports</SelectItem>
-                            <SelectItem value="entertainment" className="text-lg">Entertainment</SelectItem>
-                            <SelectItem value="politics" className="text-lg">Politics</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category}</p>}
-                </div>
-
-                {/* Tags */}
-                <div>
-                    <Label htmlFor="tags" className='text-2xl'>Tags (comma separated) *</Label>
-                    <Input
-                        id="tags"
-                        value={tags}
-                        onChange={(e) => setField('tags', e.target.value)}
-                        className="mt-2 bg-zinc-100"
-                    />
-                    {errors.tags && <p className="text-red-500 text-sm mt-1">{errors.tags}</p>}
-                </div>
-
-                {/* Date and Time */}
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <Label htmlFor="date" className='text-2xl'>Date *</Label>
-                        <Input
-                            id="date"
-                            type="date"
-                            value={date}
-                            onChange={(e) => setField('date', e.target.value)}
-                            className="mt-2 text-lg"
-                        />
-                        {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date}</p>}
-                    </div>
-                    <div>
-                        <Label htmlFor="time" className='text-2xl'>Time *</Label>
-                        <Input
-                            id="time"
-                            type="time"
-                            value={time}
-                            onChange={(e) => setField('time', e.target.value)}
-                            className="mt-2"
-                        />
-                        {errors.time && <p className="text-red-500 text-sm mt-1">{errors.time}</p>}
-                    </div>
-                </div>
-
-                {/* Author */}
-                <div>
-                    <Label htmlFor="author" className='text-2xl'>Author *</Label>
-                    <Input
-                        id="author"
-                        value={author}
-                        onChange={(e) => setField('author', e.target.value)}
-                        className="mt-2 bg-zinc-100"
-                    />
-                    {errors.author && <p className="text-red-500 text-sm mt-1">{errors.author}</p>}
-                </div>
-
-                {/* Language */}
-                <div>
-                    <Label htmlFor="language" className='text-2xl'>Language</Label>
-                    <Select
-                        value={language}
-                        onValueChange={(value) => setField('language', value)}
-                    >
-                        <SelectTrigger className="mt-2 text-lg">
-                            <SelectValue placeholder="Select language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="english" className="text-lg">English</SelectItem>
-                            <SelectItem value="nepali" className="text-lg">Nepali</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-
-                {/* Reading Time */}
-                {isEditor && (
-                    <div>
-                        <Label htmlFor="readingTime" className='text-2xl'>Reading Time</Label>
+                <div className="grid grid-cols-1 gap-3">
+                    {/* Category */}
+                    <div className="space-y-1">
+                        <Label htmlFor="category" className='text-sm font-medium text-gray-800'>Category *</Label>
                         <Select
-                            value={readingTime}
-                            onValueChange={(value) => setField('readingTime', value)}
+                            value={category}
+                            onValueChange={(value) => setField('category', value)}
                         >
-                            <SelectTrigger className="mt-2 text-lg">
-                                <SelectValue placeholder="Select reading time" />
+                            <SelectTrigger className="w-full bg-gray-100 h-8">
+                                <SelectValue placeholder="Select category" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="3 min" className="text-lg">3 min</SelectItem>
-                                <SelectItem value="4 min" className="text-lg">4 min</SelectItem>
-                                <SelectItem value="5 min" className="text-lg">5 min</SelectItem>
-                                <SelectItem value="6 min" className="text-lg">6 min</SelectItem>
-                                <SelectItem value="7 min" className="text-lg">7 min</SelectItem>
-                                <SelectItem value="8 min" className="text-lg">8 min</SelectItem>
-                                <SelectItem value="9 min" className="text-lg">9 min</SelectItem>
-                                <SelectItem value="10 min" className="text-lg">10 min</SelectItem>
+                                <SelectItem value="news">News</SelectItem>
+                                <SelectItem value="sports">Sports</SelectItem>
+                                <SelectItem value="entertainment">Entertainment</SelectItem>
+                                <SelectItem value="politics">Politics</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        {errors.category && <p className="text-red-500 text-xs mt-0.5">{errors.category}</p>}
+                    </div>
+
+                    {/* Tags */}
+                    <div className="space-y-1">
+                        <Label htmlFor="tags" className='text-sm font-medium text-gray-800'>Tags (comma separated) *</Label>
+                        <Input
+                            id="tags"
+                            value={tags}
+                            onChange={(e) => setField('tags', e.target.value)}
+                            placeholder="tag1, tag2, tag3"
+                            className="w-full bg-gray-100 h-8"
+                        />
+                        {errors.tags && <p className="text-red-500 text-xs mt-0.5">{errors.tags}</p>}
+                    </div>
+
+                    {/* Date and Time */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div className="space-y-1">
+                            <Label htmlFor="date" className='text-sm font-medium text-gray-800'>Date *</Label>
+                            <Input
+                                id="date"
+                                type="date"
+                                value={date}
+                                onChange={(e) => setField('date', e.target.value)}
+                                className="w-full bg-gray-100 h-8"
+                            />
+                            {errors.date && <p className="text-red-500 text-xs mt-0.5">{errors.date}</p>}
+                        </div>
+                        <div className="space-y-1">
+                            <Label htmlFor="time" className='text-sm font-medium text-gray-800'>Time *</Label>
+                            <Input
+                                id="time"
+                                type="time"
+                                value={time}
+                                onChange={(e) => setField('time', e.target.value)}
+                                className="w-full bg-gray-100 h-8"
+                            />
+                            {errors.time && <p className="text-red-500 text-xs mt-0.5">{errors.time}</p>}
+                        </div>
+                    </div>
+
+                    {/* Author */}
+                    <AuthorSelect
+                        value={author}
+                        onChange={(value) => setField('author', value)}
+                        error={errors.author}
+                        isEditor={isEditor}
+                    />
+
+                    {/* Language */}
+                    <div className="space-y-1">
+                        <Label htmlFor="language" className='text-sm font-medium text-gray-800'>Language</Label>
+                        <Select
+                            value={language}
+                            onValueChange={(value) => setField('language', value)}
+                        >
+                            <SelectTrigger className="w-full bg-gray-100 h-8">
+                                <SelectValue placeholder="Select language" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="english">English</SelectItem>
+                                <SelectItem value="nepali">Nepali</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
-                )}
 
-                {/* Hero Banner */}
-                <div>
-                    <Label htmlFor="heroBanner" className='text-2xl'>Hero Banner</Label>
-                    <div className="flex items-center gap-2 mt-2 flex-col">
-                        <Input
-                            id="heroBanner"
-                            type="file"
-                            accept="image/png, image/jpeg, image/jpg, image/svg+xml"
-                            onChange={handleFileUpload('heroBanner')}
-                            className="hidden"
-                        />
-                        <Button
-                            variant="outline"
-                            className="w-full"
-                            onClick={() => document.getElementById('heroBanner')?.click()}
-                        >
-                            {isHeroUploading ? (
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            ) : heroBanner ? (
-                                typeof heroBanner === 'string' ? 'Uploaded' : heroBanner
-                            ) : (
-                                'Browse...'
-                            )}
-                        </Button>
-                        {isEditor && heroBanner && <Button variant={'secondary'} className='w-full cursor-pointer' onClick={() => router.push(heroBanner)}>View Image</Button>}
-                    </div>
-                    {errors.heroBanner && <p className="text-red-500 text-sm mt-1">{errors.heroBanner}</p>}
-                </div>
+                    {/* Reading Time */}
+                    {isEditor && (
+                        <div className="space-y-1">
+                            <Label htmlFor="readingTime" className='text-sm font-medium text-gray-800'>Reading Time</Label>
+                            <Select
+                                value={readingTime}
+                                onValueChange={(value) => setField('readingTime', value)}
+                            >
+                                <SelectTrigger className="w-full bg-gray-100 h-8">
+                                    <SelectValue placeholder="Select reading time" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {[3, 4, 5, 6, 7, 8, 9, 10].map(min => (
+                                        <SelectItem key={min} value={`${min} min`}>{min} min</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
 
-                {/* OG Banner */}
-                <div>
-                    <Label htmlFor="ogBanner" className='text-2xl'>OG Banner</Label>
-                    <div className="flex items-center gap-2 mt-2 flex-col">
-                        <Input
-                            id="ogBanner"
-                            type="file"
-                            accept="image/png, image/jpeg, image/jpg, image/svg+xml"
-                            onChange={handleFileUpload('ogBanner')}
-                            className="hidden"
-                        />
-                        <Button
-                            variant="outline"
-                            className="w-full"
-                            onClick={() => document.getElementById('ogBanner')?.click()}
-                        >
-                            {isOgUploading ? (
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            ) : ogBanner ? (
-                                typeof ogBanner === 'string' ? 'Uploaded' : ogBanner
-                            ) : (
-                                'Browse...'
-                            )}
-                        </Button>
-                        {isEditor && ogBanner && <Button variant={'secondary'} className='w-full cursor-pointer' onClick={() => router.push(ogBanner)}>View Image</Button>}
-                    </div>
-                    {errors.ogBanner && <p className="text-red-500 text-sm mt-1">{errors.ogBanner}</p>}
-                </div>
-
-                {/* Image Credit */}
-                <div>
-                    <Label htmlFor="imageCredit" className='text-2xl'>Image Credit *</Label>
-                    <Input
-                        id="imageCredit"
-                        value={imageCredit}
-                        onChange={(e) => setField('imageCredit', e.target.value)}
-                        className="mt-2"
+                    {/* Hero Banner */}
+                    <FileUploadSection
+                        label="Hero Banner"
+                        field="heroBanner"
+                        value={heroBanner}
+                        isUploading={isHeroUploading}
+                        handleFileUpload={handleFileUpload}
+                        router={router}
+                        isEditor={isEditor}
+                        isOtherUploading={isOgUploading || isSponsoredAdsUploading || isSubmitting}
                     />
-                    {errors.imageCredit && <p className="text-red-500 text-sm mt-1">{errors.imageCredit}</p>}
-                </div>
 
-                {/* Sponsored Ads */}
-                <div>
-                    <Label htmlFor="ogBanner" className='text-2xl'>Sponsored Ads</Label>
-                    <div className="flex items-center gap-2 mt-2 flex-col">
-                        <Input
-                            id="sponsoredAds"
-                            type="file"
-                            accept="image/png, image/jpeg, image/jpg, image/svg+xml"
-                            onChange={handleFileUpload('sponsoredAds')}
-                            className="hidden"
-                        />
-                        <Button
-                            variant="outline"
-                            className="w-full"
-                            onClick={() => document.getElementById('sponsoredAds')?.click()}
-                        >
-                            {isSponsoredAdsUploading ? (
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            ) : sponsoredAds ? (
-                                typeof sponsoredAds === 'string' ? 'Uploaded' : sponsoredAds
-                            ) : (
-                                'Browse...'
-                            )}
-                        </Button>
-                        {isEditor && sponsoredAds && <Button variant={'secondary'} className='w-full cursor-pointer' onClick={() => router.push(sponsoredAds)}>View Image</Button>}
-                    </div>
-                    {errors.sponsoredAds && <p className="text-red-500 text-sm mt-1">{errors.sponsoredAds}</p>}
-                </div>
-
-                {/* Access */}
-                <div>
-                    <Label htmlFor="access" className='text-2xl'>Access</Label>
-                    <Select
-                        value={access}
-                        onValueChange={(value) => setField('access', value)}
-                    >
-                        <SelectTrigger className="mt-2 text-lg">
-                            <SelectValue placeholder="Select access" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="public" className="text-lg">Public</SelectItem>
-                            <SelectItem value="private" className="text-lg">Private</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-
-                {/* Canonical URL */}
-                <div>
-                    <Label htmlFor="canonicalUrl" className='text-2xl'>Canonical URL</Label>
-                    <Input
-                        id="canonicalUrl"
-                        value={canonicalUrl}
-                        onChange={(e) => setField('canonicalUrl', e.target.value)}
-                        className="mt-2 bg-zinc-100"
+                    {/* OG Banner */}
+                    <FileUploadSection
+                        label="OG Banner"
+                        field="ogBanner"
+                        value={ogBanner}
+                        isUploading={isOgUploading}
+                        handleFileUpload={handleFileUpload}
+                        router={router}
+                        isEditor={isEditor}
+                        isOtherUploading={isHeroUploading || isSponsoredAdsUploading || isSubmitting}
                     />
+
+                    {/* Sponsored Ads */}
+                    <FileUploadSection
+                        label="Sponsored Ads"
+                        field="sponsoredAds"
+                        value={sponsoredAds}
+                        isUploading={isSponsoredAdsUploading}
+                        handleFileUpload={handleFileUpload}
+                        router={router}
+                        isEditor={isEditor}
+                        isOtherUploading={isHeroUploading || isOgUploading || isSubmitting}
+                    />
+
+                    {/* Image Credit */}
+                    <div className="space-y-1">
+                        <Label htmlFor="imageCredit" className='text-sm font-medium text-gray-800'>Image Credit</Label>
+                        <Input
+                            id="imageCredit"
+                            value={imageCredit}
+                            onChange={(e) => setField('imageCredit', e.target.value)}
+                            placeholder="Image credit"
+                            className="w-full bg-gray-100 h-8"
+                        />
+                    </div>
+
+                    {/* Access */}
+                    <div className="space-y-1">
+                        <Label htmlFor="access" className='text-sm font-medium text-gray-800'>Access</Label>
+                        <Select
+                            value={access}
+                            onValueChange={(value) => setField('access', value)}
+                        >
+                            <SelectTrigger className="w-full bg-gray-100 h-8">
+                                <SelectValue placeholder="Select access level" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="public">Public</SelectItem>
+                                <SelectItem value="private">Private</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {/* Canonical URL */}
+                    <div className="space-y-1">
+                        <Label htmlFor="canonicalUrl" className='text-sm font-medium text-gray-800'>Canonical URL</Label>
+                        <Input
+                            id="canonicalUrl"
+                            value={canonicalUrl}
+                            onChange={(e) => setField('canonicalUrl', e.target.value)}
+                            placeholder="Canonical URL"
+                            className="w-full bg-gray-100 h-8"
+                        />
+                    </div>
                 </div>
 
                 {/* Action Buttons */}
-                {isEditor && isEditing ?
-                    <EditorPostAction /> : <PostActions isEditing={isEditing} isWriting={isWriting} />}
+                {isEditor ? (
+                    <EditorPostAction
+                        onActionClick={handleActionClick}
+                        isSubmitting={isSubmitting}
+                    />
+                ) : (
+                    <PostActions
+                        isEditing={isEditing}
+                        isSubmitting={isSubmitting}
+                        isWriting={isWriting}
+                        onActionClick={handleActionClick}
+                    />
+                )}
             </CardContent>
         </Card>
+    );
+}
+
+interface FileUploadSectionProps {
+    label: string;
+    field: 'heroBanner' | 'ogBanner' | 'sponsoredAds';
+    value: string | null;
+    isUploading: boolean;
+    handleFileUpload: (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds') => (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+    router: ReturnType<typeof useRouter>;
+    isEditor?: boolean;
+    isOtherUploading: boolean;
+}
+
+const FileUploadSection = ({
+    label,
+    field,
+    value,
+    isUploading,
+    handleFileUpload,
+    isOtherUploading
+}: FileUploadSectionProps) => {
+    return (
+        <div className="space-y-1">
+            <Label htmlFor={field} className='text-sm font-medium text-gray-700'>{label}</Label>
+            {value ? (
+                <Image
+                    src={value}
+                    alt={`${label} preview`}
+                    className="w-full h-auto rounded-sm shadow-xs"
+                    width={800}
+                    height={600}
+                    style={{ objectFit: 'contain' }}
+                    quality={100}
+                />
+            ) : (
+                <div className="border border-dashed border-gray-300 rounded-sm p-2 flex items-center justify-center text-gray-500 text-xs">
+                    No image uploaded
+                </div>
+            )}
+            <Input
+                id={field}
+                type="file"
+                accept="image/*"
+                onChange={handleFileUpload(field)}
+                className="hidden"
+            />
+            <Button
+                type="button"
+                onClick={() => document.getElementById(field)?.click()}
+                className="w-full h-8 text-sm"
+                disabled={isUploading || isOtherUploading}
+            >
+                {isUploading ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : 'Upload'}
+            </Button>
+        </div>
     )
 }

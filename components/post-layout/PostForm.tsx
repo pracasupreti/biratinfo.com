@@ -7,7 +7,6 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '../ui/input'
 import { usePostStore } from '@/store/PostStore'
 
-
 export function PostForm() {
     const {
         englishTitle,
@@ -20,49 +19,64 @@ export function PostForm() {
         setField
     } = usePostStore()
 
+    const maxChars = 60;
+
     return (
-        <Card className="mb-4 shadow-xl">
-            <CardContent className="space-y-4">
+        <Card className="mb-3 shadow-xl rounded-md">
+            <CardContent className="space-y-4 p-4">
                 {/* English Title */}
-                <div>
-                    <Label htmlFor="englishTitle" className='text-2xl'>Post Title in English (140 words)</Label>
+                <div className="space-y-1">
+                    <Label htmlFor="englishTitle" className='text-sm font-medium text-gray-800'>
+                        English Title (max {maxChars} chars)
+                    </Label>
                     <Input
                         id="englishTitle"
                         value={englishTitle}
-                        onChange={(e) => setField('englishTitle', e.target.value)}
-                        className="mt-2 bg-zinc-100"
+                        onChange={(e) => setField('englishTitle', e.target.value.slice(0, maxChars))}
+                        className="bg-gray-100 h-8"
+                        placeholder="English title"
                     />
-                    {errors.englishTitle && <p className="text-red-500 text-sm mt-1">{errors.englishTitle}</p>}
+                    <p className={`text-xs ${englishTitle.length === maxChars ? 'text-red-500' : 'text-gray-600'}`}>
+                        {englishTitle.length}/{maxChars}
+                    </p>
+                    {errors.englishTitle && <p className="text-red-500 text-xs mt-0.5">{errors.englishTitle}</p>}
                 </div>
 
                 {/* Nepali Title */}
-                <div>
-                    <Label htmlFor="nepaliTitle" className='text-2xl'>Post Title in Nepali (140 words)</Label>
+                <div className="space-y-1">
+                    <Label htmlFor="nepaliTitle" className='text-sm font-medium text-gray-800'>
+                        Nepali Title (max {maxChars} chars)
+                    </Label>
                     <Input
                         id="nepaliTitle"
                         value={nepaliTitle}
-                        onChange={(e) => setField('nepaliTitle', e.target.value)}
-                        className="mt-2 bg-zinc-100"
+                        onChange={(e) => setField('nepaliTitle', e.target.value.slice(0, maxChars))}
+                        className="bg-gray-100 h-8"
+                        placeholder="Nepali title"
                     />
-                    {errors.nepaliTitle && <p className="text-red-500 text-sm mt-1">{errors.nepaliTitle}</p>}
+                    <p className={`text-xs ${nepaliTitle.length === maxChars ? 'text-red-500' : 'text-gray-600'}`}>
+                        {nepaliTitle.length}/{maxChars}
+                    </p>
+                    {errors.nepaliTitle && <p className="text-red-500 text-xs mt-0.5">{errors.nepaliTitle}</p>}
                 </div>
 
                 {/* Excerpt */}
-                <div>
-                    <Label htmlFor="excerpt" className='text-2xl'>Excerpt</Label>
+                <div className="space-y-1">
+                    <Label htmlFor="excerpt" className='text-sm font-medium text-gray-800'>Excerpt</Label>
                     <Textarea
                         id="excerpt"
                         value={excerpt}
                         onChange={(e) => setField('excerpt', e.target.value)}
-                        className="h-32 mt-2 bg-zinc-100"
+                        className="h-24 bg-gray-100"
+                        placeholder="Brief excerpt"
                     />
-                    {errors.excerpt && <p className="text-red-500 text-sm mt-1">{errors.excerpt}</p>}
+                    {errors.excerpt && <p className="text-red-500 text-xs mt-0.5">{errors.excerpt}</p>}
                 </div>
 
                 {/* Content Blocks */}
                 {blocks.map((block, i) => (
-                    <div key={i}>
-                        <Label htmlFor={`block-${i}`} className='text-2xl'>Block {i + 1}</Label>
+                    <div key={i} className="space-y-1">
+                        <Label htmlFor={`block-${i}`} className='text-sm font-medium text-gray-800'>Block {i + 1}</Label>
                         <Textarea
                             id={`block-${i}`}
                             value={block}
@@ -71,19 +85,19 @@ export function PostForm() {
                                 newBlocks[i] = e.target.value
                                 setField('blocks', newBlocks)
                             }}
-                            className="h-40 mt-2 bg-zinc-100"
+                            className="h-32 bg-gray-100"
+                            placeholder={`Content block ${i + 1}`}
                         />
-                        {errors[`block${i}`] && <p className="text-red-500 text-sm mt-1">{errors[`block${i}`]}</p>}
+                        {errors[`block${i}`] && <p className="text-red-500 text-xs mt-0.5">{errors[`block${i}`]}</p>}
                     </div>
                 ))}
 
-
                 {/* Featured In Section */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-lg">Featured In</CardTitle>
+                <Card className="border border-gray-200 shadow-xs">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-semibold">Featured In</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid grid-cols-4 gap-4">
+                    <CardContent className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                         {FEATURED_SITES.map((site, i) => (
                             <div key={site} className="flex items-center space-x-2">
                                 <Checkbox
@@ -94,20 +108,22 @@ export function PostForm() {
                                         newFeaturedIn[i] = checked as boolean
                                         setField('featuredIn', newFeaturedIn)
                                     }}
-                                    className='border-green-400'
+                                    className="h-4 w-4 border-green-500 data-[state=checked]:bg-green-500 data-[state=checked]:text-white"
                                 />
-                                <Label htmlFor={`featured-${i}`} className='text-2xl'>{site}</Label>
+                                <Label htmlFor={`featured-${i}`} className="text-[13px] font-normal cursor-pointer">
+                                    {site}
+                                </Label>
                             </div>
                         ))}
                     </CardContent>
                 </Card>
 
                 {/* Post in Network Section */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-lg">Post in Network</CardTitle>
+                <Card className="border border-gray-200 shadow-xs">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-semibold">Post in Network</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid grid-cols-4 gap-4">
+                    <CardContent className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                         {NETWORK_SITES.map((site, i) => (
                             <div key={site} className="flex items-center space-x-2">
                                 <Checkbox
@@ -118,9 +134,11 @@ export function PostForm() {
                                         newPostInNetwork[i] = checked as boolean
                                         setField('postInNetwork', newPostInNetwork)
                                     }}
-                                    className='border-green-400'
+                                    className="h-4 w-4 border-green-500 data-[state=checked]:bg-green-500 data-[state=checked]:text-white"
                                 />
-                                <Label htmlFor={`network-${i}`} className='text-2xl'>{site}</Label>
+                                <Label htmlFor={`network-${i}`} className="text-[13px] font-normal cursor-pointer">
+                                    {site}
+                                </Label>
                             </div>
                         ))}
                     </CardContent>
@@ -130,7 +148,6 @@ export function PostForm() {
     )
 }
 
-// Constants (could be moved to a separate file)
 const FEATURED_SITES = [
     'bhadrapur.com', 'belauri.com', 'chandragadhi.com', 'digitalkoshi.com',
     'koshinfo.com', 'uhabi.com', 'jhorahat.com', 'sriyog.net'

@@ -4,6 +4,7 @@ import "./globals.css";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
+import ScheduledPostChecker from "@/components/ScheduledPostChecker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,9 +62,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <Head>
+        <head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-        </Head>
+          <script type="text/javascript" src={`https://platform-api.sharethis.com/js/sharethis.js#property=${process.env.NEXT_PUBLIC_SHARETHIS_URL}&product=inline-share-buttons&source=platform`} async></script>
+        </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${alata.variable} ${jost.variable} ${orienta.variable} ${ibm_plex_serif.variable} ${roboto.variable} ${inter.variable} antialiased`}
         >
@@ -75,6 +77,7 @@ export default function RootLayout({
             </ClerkLoading>
 
             <ClerkLoaded>
+              <ScheduledPostChecker />
               {children}
               <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
             </ClerkLoaded>

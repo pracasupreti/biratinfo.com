@@ -177,7 +177,7 @@ export default function EditorDashboard() {
                         onClick={() => setActiveTab('drafts')}
                     >
                         <CardHeader className="flex flex-row items-center justify-between">
-                            <CardTitle className="text-sm font-medium">Drafts</CardTitle>
+                            <CardTitle className="text-sm font-medium">My Drafts</CardTitle>
                             <span className="text-2xl font-bold">{draftPosts.length}</span>
                         </CardHeader>
                     </Card>
@@ -186,7 +186,7 @@ export default function EditorDashboard() {
                         onClick={() => setActiveTab('scheduled')}
                     >
                         <CardHeader className="flex flex-row items-center justify-between">
-                            <CardTitle className="text-sm font-medium">Scheduled</CardTitle>
+                            <CardTitle className="text-sm font-medium">My Scheduled Posts</CardTitle>
                             <span className="text-2xl font-bold">{scheduledPosts.length}</span>
                         </CardHeader>
                     </Card>

@@ -26,17 +26,17 @@ function Technology() {
     ]
 
     return (
-        <div className="w-full px-4 lg:px-20 md:px-6 py-12">
-            <div className="max-w-8xl mx-auto md:mx-16 lg:mx-24 flex flex-col gap-12">
+        <div className="w-full px-4 lg:px-16 md:px-5 py-10">
+            <div className="max-w-8xl mx-auto md:mx-12 lg:mx-20 flex flex-col gap-10">
                 <div className="flex flex-col gap-2">
-                    <p className="text-text-color font-orienta text-[20px] font-[700]">विज्ञान र प्रविधि</p>
-                    <div className="w-full h-[3px] bg-[#ebebeb]" />
+                    <p className="text-text-color font-orienta text-[18px] font-[700]">विज्ञान र प्रविधि</p>
+                    <div className="w-full h-[2px] bg-[#ebebeb]" />
                 </div>
 
-                <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {Society1.map((item, index) => (
-                        <div className="flex flex-col gap-6 group" key={index}>
-                            <div className="w-full aspect-[16/9] relative md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl overflow-hidden">
+                        <div className="flex flex-col gap-4 group" key={index}>
+                            <div className="w-full aspect-[16/9] relative md:group-hover:translate-y-[-8px] md:transition md:duration-400 rounded-xl overflow-hidden">
                                 <Image
                                     src={item.imageUrl}
                                     alt=""
@@ -45,21 +45,21 @@ function Technology() {
                                 />
                             </div>
 
-                            <p className="font-ibm_plex_serif font-bold text-[20px] cursor-pointer text-text-color line-clamp-1 hover:underline">
+                            <p className="font-ibm_plex_serif font-bold text-[18px] cursor-pointer text-text-color line-clamp-1 hover:underline">
                                 {item.title}
                             </p>
-                            <p className="font-ibm_plex_serif font-[500] text-lg text-[#808080] line-clamp-2">
+                            <p className="font-ibm_plex_serif font-[500] text-base text-[#808080] line-clamp-2">
                                 {item.description}
                             </p>
 
-                            <div className="flex items-center gap-4">
-                                <div className="h-[27px] w-[27px] rounded-full">
+                            <div className="flex items-center gap-3">
+                                <div className="h-[24px] w-[24px] rounded-full">
                                     <Avatar>
                                         <AvatarImage src="/images/kasinHomepage/author.jpg" />
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
                                 </div>
-                                <span className="font-inter font-[500] text-xl text-[#808080]">
+                                <span className="font-inter font-[500] text-lg text-[#808080]">
                                     {item.author}
                                 </span>
                             </div>

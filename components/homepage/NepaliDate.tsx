@@ -63,7 +63,7 @@ const NepaliDateTime = () => {
 
     return (
         <div className="flex justify-center">
-            <p className="text-gray-700 md:text-[16px] text-[10px]">{nepaliDate}</p>
+            <p className="text-gray-700 md:text-[12px] text-[10px]">{nepaliDate}</p>
         </div>
     );
 };

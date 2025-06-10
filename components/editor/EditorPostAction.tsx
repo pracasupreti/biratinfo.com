@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { Button } from '@/components/ui/button'
@@ -12,18 +11,22 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { usePostStore } from '@/store/PostStore'
 import { useAuth } from '@clerk/nextjs'
+import { Loader2 } from 'lucide-react'
 
+interface EditorPostActionProps {
+    isSubmitting: boolean
+    onActionClick: (action: () => Promise<void>) => Promise<void>
+}
 
-export function EditorPostAction() {
+export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActionProps) {
     const { validate, resetStore, ...state } = usePostStore()
     const { id } = useParams()
-    const { getToken } = useAuth();
+    const { getToken } = useAuth()
 
     const [open, setOpen] = useState(false)
     const [dialogType, setDialogType] = useState<'approve' | 'reject' | null>(null)
@@ -46,7 +49,7 @@ export function EditorPostAction() {
                 postInNetwork: state.postInNetwork,
                 category: state.category,
                 tags: state.tags,
-                date: state.tags,
+                date: state.date,
                 time: state.time,
                 author: state.author,
                 language: state.language,
@@ -61,16 +64,12 @@ export function EditorPostAction() {
                 status,
             }
 
+            if (!id) throw new Error('Post ID is required to update the post')
+            const token = await getToken()
+            if (!token) throw new Error("Authentication required")
 
-            if (!id) throw new Error('Post Id is required to update the post')
-
-            const token = await getToken();
-            if (!token) {
-                throw new Error("Token is required")
-            }
             const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
-
-            if (!backend_uri) throw new Error("Missing api endpoint")
+            if (!backend_uri) throw new Error("Missing API endpoint")
 
             const response = await fetch(`${backend_uri}/api/posts/update`, {
                 method: 'PUT',
@@ -82,20 +81,19 @@ export function EditorPostAction() {
                     id: id.toString(),
                     ...submissionData
                 }),
-            });
-            const result = await response.json()
+            })
 
-            if (result.success) {
-                toast.success(
-                    status === 'approved'
-                        ? 'The post has been successfully approved'
-                        : 'The post has been rejected'
-                )
-                resetStore()
-            } else {
-                throw new Error(result.message || 'Unknown error')
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.message || 'Failed to update post')
             }
 
+            toast.success(
+                status === 'approved'
+                    ? 'The post has been successfully approved'
+                    : 'The post has been rejected'
+            )
+            resetStore()
         } catch (error: any) {
             toast.error(error?.message || 'Failed to submit post. Please try again.')
         } finally {
@@ -103,28 +101,37 @@ export function EditorPostAction() {
         }
     }
 
+    const handleButtonClick = (type: 'approve' | 'reject') => {
+        setDialogType(type)
+        setOpen(true)
+    }
+
     return (
         <>
             <div className="flex flex-col gap-2 pt-4">
                 <Button
                     variant="outline"
-                    onClick={() => {
-                        setDialogType('approve')
-                        setOpen(true)
-                    }}
+                    onClick={() => handleButtonClick('approve')}
                     className="w-full hover:bg-green-500 cursor-pointer"
+                    disabled={isSubmitting}
                 >
-                    Approve Post
+                    {isSubmitting && dialogType === 'approve' ? (
+                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                    ) : (
+                        'Approve Post'
+                    )}
                 </Button>
 
                 <Button
-                    onClick={() => {
-                        setDialogType('reject')
-                        setOpen(true)
-                    }}
+                    onClick={() => handleButtonClick('reject')}
                     className="w-full hover:bg-red-500 cursor-pointer"
+                    disabled={isSubmitting}
                 >
-                    Reject Post
+                    {isSubmitting && dialogType === 'reject' ? (
+                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                    ) : (
+                        'Reject Post'
+                    )}
                 </Button>
             </div>
 
@@ -143,11 +150,18 @@ export function EditorPostAction() {
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel disabled={isSubmitting}>Cancel</AlertDialogCancel>
                         <AlertDialogAction
-                            onClick={() => handleSubmit(dialogType === 'approve')}
+                            onClick={() => onActionClick(() => handleSubmit(dialogType === 'approve'))}
+                            disabled={isSubmitting}
                         >
-                            {dialogType === 'approve' ? 'Approve' : 'Reject'}
+                            {isSubmitting ? (
+                                <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                            ) : dialogType === 'approve' ? (
+                                'Approve'
+                            ) : (
+                                'Reject'
+                            )}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

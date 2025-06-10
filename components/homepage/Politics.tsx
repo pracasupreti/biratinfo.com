@@ -28,39 +28,37 @@ function Politics() {
     ]
 
     return (
-        <div className="w-full px-4 lg:px-20 md:px-6 py-12">
-            <div className="max-w-8xl mx-auto md:mx-16 lg:mx-24 flex flex-col gap-12">
+        <div className="w-full px-4 lg:px-16 md:px-5 py-10">
+            <div className="max-w-8xl mx-auto md:mx-12 lg:mx-20 flex flex-col gap-10">
                 {/* Header */}
                 <div className="flex flex-col gap-2">
-                    <p className="text-text-color font-orienta text-xl font-[700]">राजनीति</p>
-                    <div className="w-full h-[3px] bg-[#ebebeb]" />
+                    <p className="text-text-color font-orienta text-lg font-[700]">राजनीति</p>
+                    <div className="w-full h-[2px] bg-[#ebebeb]" />
                 </div>
 
                 {/* Content */}
-                <div className="flex flex-col lg:flex-row gap-12 items-stretch">
-                    {/* Main article - Left */}
-                    <div className="flex-1 flex flex-col gap-5 justify-between">
+                <div className="flex flex-col lg:flex-row gap-10 items-stretch">
+                    <div className="flex-1 flex flex-col gap-4 justify-between">
                         <div>
                             <div className="w-full aspect-[3/2] bg-cover bg-center bg-no-repeat bg-[url('/images/kasinHomepage/PoliticsImage1.png')] rounded-xl" />
-                            <p className="font-ibm_plex_serif font-bold text-2xl lg:text-4xl cursor-pointer text-text-color mt-4 hover:underline">
+                            <p className="font-ibm_plex_serif font-bold text-xl lg:text-3xl cursor-pointer text-text-color mt-3 hover:underline line-clamp-1">
                                 प्राप्त उपलब्धिको रक्षा एवं प्रवद्र्धन गर्न प्रस्तुत नीतिमा सदन एक हुने : प्रधानमन्त्री ओली (पूर्ण पाठ सहित)
                             </p>
-                            <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-xl mt-2">
+                            <p className="text-[#808080] font-ibm_plex_serif font-medium text-xs sm:text-sm lg:text-base mt-1.5 line-clamp-3">
                                 प्रतिनिधिसभाको आइतबारको बैठकमा सरकार गठनका बेला संविधानको समीक्षा गर्ने प्रतिबद्धता, त्यसका सबल पक्षलाई सुदृढ गर्दै कार्यान्वयनमा देखिएका कमीकमजोरी सच्याउने प्राथमिकताको स्मरण गर्दै उनले संविधान संशोधनको प्रतिबद्धता व्यक्त गरेका हुन् ।
                             </p>
                         </div>
-                        <p className="text-[#808080] font-roboto text-xl flex items-center gap-2">
+                        <p className="text-[#808080] font-roboto text-lg flex items-center gap-2">
                             <span>प्रकाश थापा</span>
                             <span>·</span>
                             <span>बैशाख २८, २०८२</span>
                         </p>
                     </div>
 
-                    {/* Other articles - Right */}
-                    <div className="flex-1 flex flex-col justify-between gap-10 md:gap-6 lg:gap-4">
+                    <div className="flex-1 flex flex-col justify-between gap-8 md:gap-5 lg:gap-4">
                         {Politics.map((item, index) => (
-                            <div key={index} className="flex flex-col sm:flex-row gap-4 group">
-                                <div className="relative w-full sm:w-[40%] aspect-[7/6] overflow-hidden md:group-hover:translate-y-[-10px] md:transition md:duration-400 rounded-xl">
+                            <div key={index} className="flex flex-col sm:flex-row gap-3 group">
+                                <div className="relative w-full sm:w-[40%] aspect-[7/6] overflow-hidden md:group-hover:translate-y-[-8px] md:transition md:duration-400 rounded-xl">
                                     <Image
                                         src={item.imageUrl}
                                         alt=""
@@ -69,14 +67,14 @@ function Politics() {
                                     />
                                 </div>
 
-                                <div className="flex flex-col gap-1 sm:w-[60%]">
-                                    <p className="font-ibm_plex_serif font-semibold text-xl cursor-pointer text-text-color hover:underline line-clamp-2">
+                                <div className="flex flex-col gap-0.5 sm:w-[60%]">
+                                    <p className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color hover:underline line-clamp-2">
                                         {item.title}
                                     </p>
-                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-lg line-clamp-2">
+                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-base line-clamp-2">
                                         {item.description}
                                     </p>
-                                    <p className="text-[#808080] font-roboto text-xl flex items-center gap-2 mt-2">
+                                    <p className="text-[#808080] font-roboto text-lg flex items-center gap-2 mt-1.5">
                                         <span>{item.author}</span>
                                         <span>·</span>
                                         <span>{item.publishedDate}</span>
