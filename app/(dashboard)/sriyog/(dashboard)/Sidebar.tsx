@@ -23,7 +23,7 @@ export default function Sidebar() {
         <div className=" h-full bg-white border-r border-gray-200 flex flex-col animate-fade-in-right">
             {/* Header */}
             <div className="p-4 border-b border-gray-200">
-                <h2 className="text-xl font-bold text-gray-800">Birat Info</h2>
+                <h2 className="text-xl font-bold text-gray-800">Admin Dashboard</h2>
             </div>
 
             {/* Navigation */}
@@ -49,22 +49,19 @@ export default function Sidebar() {
                         />
                     </button>
                     <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${expandedSections.posts ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
-                        <Link href={'/sriyog'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
-                            Write a Post
-                        </Link>
-                        <Link href={'/sriyog'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                        <Link href={'/sriyog/posts/published-posts'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
                             Published Posts
                         </Link>
-                        <Link href={'/sriyog'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                        <Link href={'/sriyog/posts/pending-posts'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
                             Pending Approval
                         </Link>
-                        <Link href={'/sriyog'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                        <Link href={'/sriyog/posts/scheduled-posts'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
                             Scheduled Posts
                         </Link>
-                        <Link href={'/sriyog'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                        <Link href={'/sriyog/posts/rejected-posts'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
                             Rejected Posts
                         </Link>
-                        <Link href={'/sriyog'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                        <Link href={'/sriyog/posts/draft-posts'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
                             Draft Posts
                         </Link>
                     </div>
@@ -78,15 +75,20 @@ export default function Sidebar() {
                         onClick={() => toggleSection('categories')}
                         className="w-full flex justify-between items-center p-2 text-gray-700 hover:bg-gray-100 rounded-md font-medium transition-colors duration-200"
                     >
-                        <span>Categories</span>
+                        <span>Content Insights</span>
                         <ChevronDown
                             size={16}
                             className={`transition-transform duration-200 ${expandedSections.categories ? 'rotate-0' : '-rotate-90'}`}
                         />
                     </button>
                     <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${expandedSections.categories ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
-                        <Link href="/categories" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                        <Link href="/sriyog/content-insights/categories" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
                             All Categories
+                        </Link>
+                    </div>
+                    <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${expandedSections.categories ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
+                        <Link href="/sriyog/content-insights/analytics" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                            Analytics
                         </Link>
                     </div>
                 </div>
@@ -131,14 +133,14 @@ export default function Sidebar() {
                         />
                     </button>
                     <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${expandedSections.administration ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
-                        <Link href="#authors" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                        <Link href="/sriyog/administration/authors" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
                             Authors
                         </Link>
-                        <Link href="#subscribers" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
-                            Subscribers
+                        <Link href="/sriyog/administration/editors" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                            Editors
                         </Link>
-                        <Link href="#support" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
-                            Support
+                        <Link href="/sriyog/administration/admin" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                            Admin
                         </Link>
                     </div>
                 </div>

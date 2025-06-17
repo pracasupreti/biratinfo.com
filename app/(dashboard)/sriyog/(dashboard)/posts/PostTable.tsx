@@ -1,35 +1,31 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationLink, PaginationNext } from '@/components/ui/pagination'
-import { Search, Edit } from 'lucide-react'
-import { Card, CardContent } from '../ui/card'
+import { Search, Edit, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Post from '@/types/Post'
 import { useAuth } from '@clerk/nextjs'
-import AuthorDisplay from '../AuthorDisplay'
-
+import { toast } from 'sonner'
+import AuthorDisplay from '@/components/AuthorDisplay'
+import { Card, CardContent } from '@/components/ui/card'
 
 interface PostTableProps {
     allPosts: Post[]
     title: string
     description: string
-    isEditable?: boolean
     postsPerPage?: number
-    isEditor?: boolean
 }
 
 export function PostTable({
     allPosts,
     title,
     description,
-    isEditable = false,
     postsPerPage = 10,
-    isEditor = false
 }: PostTableProps) {
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -41,12 +37,11 @@ export function PostTable({
     const [searchQuery, setSearchQuery] = useState(searchParam || '')
     const [sortConfig, setSortConfig] = useState<{ key: keyof Post; direction: 'asc' | 'desc' } | null>(null)
 
-
     // Filter, sort and paginate posts
     const filteredPosts = allPosts.filter(post =>
         post.englishTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.nepaliTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+        post.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
     )
 
     const sortedPosts = [...filteredPosts].sort((a, b) => {
@@ -78,7 +73,6 @@ export function PostTable({
         updateUrlParams(1, query)
     }
 
-
     const updateUrlParams = (page: number, query: string) => {
         const params = new URLSearchParams()
         if (query) params.set('search', query)
@@ -86,62 +80,36 @@ export function PostTable({
         router.replace(`?${params.toString()}`, { scroll: false })
     }
 
-
     const formatDate = (dateString: string | Date | null): string => {
-        if (!dateString) return 'N/A';
+        if (!dateString) return 'N/A'
+        const date = new Date(dateString)
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+        })
+    }
 
-        const date = new Date(dateString);
-        const now = new Date();
-        const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    const handleDelete = async (postId: string) => {
+        try {
+            const token = await getToken()
+            const response = await fetch(`/api/posts/${postId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
 
-        console.log(diffInSeconds)
+            if (!response.ok) throw new Error('Failed to delete post')
 
-        // Future date (scheduled)
-        if (diffInSeconds < 0) {
-            const absDiff = Math.abs(diffInSeconds);
-            if (absDiff < 60) {
-                return 'In a few seconds';
-            } else if (absDiff < 3600) {
-                const minutes = Math.floor(absDiff / 60);
-                return `In ${minutes} min`;
-            } else if (absDiff < 86400) {
-                const hours = Math.floor(absDiff / 3600);
-                return `In ${hours} hr`;
-            } else if (absDiff < 2592000) {
-                const days = Math.floor(absDiff / 86400);
-                return `In ${days} days`;
-            } else {
-                return `On ${date.toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                })}`;
-            }
+            toast.success('Post deleted successfully')
+            router.refresh() // Refresh the page after deletion
+        } catch (error) {
+            toast.error('Failed to delete post')
+            console.error('Delete error:', error)
         }
+    }
 
-        // Past date
-        if (diffInSeconds < 60) {
-            return 'Just now';
-        } else if (diffInSeconds < 3600) {
-            const minutes = Math.floor(diffInSeconds / 60);
-            return `${minutes} min ago`;
-        } else if (diffInSeconds < 86400) {
-            const hours = Math.floor(diffInSeconds / 3600);
-            return `${hours} hr ago`;
-        } else if (diffInSeconds < 2592000) {
-            const days = Math.floor(diffInSeconds / 86400);
-            return `${days} days ago`;
-        } else {
-            return date.toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-            });
-        }
-    };
-
-
-    // Generate sequential ID based on position in filtered list
     const getSequentialId = (post: Post) => {
         return filteredPosts.findIndex(p => p._id === post._id) + 1
     }
@@ -154,7 +122,7 @@ export function PostTable({
                 <p className="text-muted-foreground">{description}</p>
             </div>
 
-            {/* Search and Filters */}
+            {/* Search */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <form onSubmit={(e) => { e.preventDefault(); handleSearch(searchQuery) }} className="w-full md:w-1/3">
                     <div className="relative">
@@ -180,7 +148,7 @@ export function PostTable({
                 <div className="space-y-3">
                     {/* Header Row */}
                     <Card className="hidden sm:grid">
-                        <CardContent className={`grid ${isEditable ? 'grid-cols-12' : 'grid-cols-11'} gap-4 items-center`}>
+                        <CardContent className="grid grid-cols-12 gap-4 items-center">
                             <div className="col-span-1 font-medium">ID</div>
                             <div className="col-span-3 font-medium">Title</div>
                             <div className="col-span-2 font-medium flex items-center justify-center">Authors</div>
@@ -188,14 +156,14 @@ export function PostTable({
                             <div className="col-span-1 font-medium flex items-center justify-center">Tags</div>
                             <div className="col-span-2 font-medium flex items-center justify-center">Date</div>
                             <div className="col-span-1 font-medium">Status</div>
-                            {isEditable && <div className="col-span-1 font-medium text-center">Action</div>}
+                            <div className="col-span-1 font-medium text-center">Actions</div>
                         </CardContent>
                     </Card>
 
                     {/* Posts */}
                     {paginatedPosts.map((post) => (
                         <Card key={post._id} className="hover:shadow-md transition-shadow">
-                            <CardContent className={`grid ${isEditable ? 'grid-cols-12' : 'grid-cols-11'} gap-4 px-4 py-3 items-center`}>
+                            <CardContent className="grid grid-cols-12 gap-4 px-4 py-3 items-center">
                                 {/* ID */}
                                 <div className="col-span-1">
                                     <span className="font-mono text-sm">{getSequentialId(post)}</span>
@@ -260,13 +228,25 @@ export function PostTable({
                                     </Badge>
                                 </div>
 
-                                {isEditable && (
-                                    <div className="col-span-1 flex justify-center">
-                                        <Button variant="ghost" size="icon" onClick={() => router.push(`/${isEditor ? `editor/edit/${post._id}` : `manager/edit/${post._id}`}`)} className='cursor-pointer'>
-                                            <Edit className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                )}
+                                {/* Actions */}
+                                <div className="col-span-1 flex justify-center gap-2">
+                                    {/* <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => router.push(`/admin/edit/${post._id}`)}
+                                        className="hover:bg-blue-50 hover:text-blue-600"
+                                    >
+                                        <Edit className="h-4 w-4" />
+                                    </Button> */}
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => handleDelete(post._id)}
+                                        className="hover:bg-red-50 hover:text-red-600 cursor-pointer"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </div>
                             </CardContent>
                         </Card>
                     ))}

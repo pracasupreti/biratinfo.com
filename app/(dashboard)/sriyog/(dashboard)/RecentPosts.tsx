@@ -9,9 +9,14 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 interface RecentPostsProps {
     posts?: Post[]
     loading?: boolean
+    postCount?: number
 }
 
-export default function RecentPosts({ posts, loading = false }: RecentPostsProps) {
+export default function RecentPosts({
+    posts,
+    loading = false,
+    postCount = 5
+}: RecentPostsProps) {
     // Calculate relative time
     const getTimeAgo = (dateString: string | Date | null) => {
         if (!dateString) return 'Just now'
@@ -31,7 +36,7 @@ export default function RecentPosts({ posts, loading = false }: RecentPostsProps
     const sortedPosts = [...(posts || [])].sort((a, b) => {
         const dateA = new Date(a.createdAt || 0).getTime()
         const dateB = new Date(b.createdAt || 0).getTime()
-        return dateB - dateA
+        return dateB - dateA // Descending order (newest first)
     })
 
     return (
@@ -47,7 +52,7 @@ export default function RecentPosts({ posts, loading = false }: RecentPostsProps
 
             {/* Content */}
             {loading ? (
-                Array.from({ length: 3 }).map((_, i) => (
+                Array.from({ length: postCount }).map((_, i) => (
                     <div key={i} className="p-4 border rounded-lg bg-white shadow-sm grid grid-cols-12 gap-4">
                         <div className="col-span-12 md:col-span-1">
                             <Skeleton className="h-6 w-full" />
@@ -71,7 +76,7 @@ export default function RecentPosts({ posts, loading = false }: RecentPostsProps
                     </div>
                 ))
             ) : sortedPosts && sortedPosts.length > 0 ? (
-                sortedPosts.slice(0, 3).map((post) => (
+                sortedPosts.slice(0, postCount).map((post) => (
                     <div
                         key={post._id}
                         className="p-4 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow grid grid-cols-12 gap-4"
@@ -115,7 +120,7 @@ export default function RecentPosts({ posts, loading = false }: RecentPostsProps
                             )}
                         </div>
 
-                        {/* Date - Now shows relative time */}
+                        {/* Date - shows relative time */}
                         <div className="col-span-12 md:col-span-2 flex items-center">
                             <span className="text-sm text-gray-500">
                                 {getTimeAgo(post.createdAt)}

@@ -40,10 +40,16 @@ export default function AuthorDisplay({ authorId }: AuthorDisplayProps) {
     )
 }
 
+const authorCache = new Map<string, { name: string; imageUrl: string }>();
+
 export async function getSingleAuthor(userId: string, token: string) {
+    if (authorCache.has(userId)) {
+        return authorCache.get(userId)!;
+    }
+
     try {
-        const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
-        if (!backend_uri) throw new Error('Missing API endpoint')
+        const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
+        if (!backend_uri) throw new Error('Missing API endpoint');
 
         const response = await fetch(`${backend_uri}/api/users/${userId}`, {
             method: 'GET',
@@ -51,20 +57,23 @@ export async function getSingleAuthor(userId: string, token: string) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             }
-        })
+        });
 
-        if (!response.ok) throw new Error('Failed to fetch user')
+        if (!response.ok) throw new Error('Failed to fetch user');
 
-        const data = await response.json()
-        return {
+        const data = await response.json();
+        const authorData = {
             name: data.user?.name || 'Unknown',
             imageUrl: data.user?.imageUrl || ''
-        }
+        };
+
+        authorCache.set(userId, authorData); // Save to cache
+        return authorData;
     } catch (error) {
-        console.error('Error fetching user:', error)
+        console.error('Error fetching user:', error);
         return {
             name: 'Unknown',
             imageUrl: ''
-        }
+        };
     }
 }
