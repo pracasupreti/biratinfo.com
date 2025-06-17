@@ -1,11 +1,12 @@
 'use client'
-import { ChevronDown, HomeIcon } from 'lucide-react';
+import { ChevronDown, HomeIcon, Loader2 } from 'lucide-react';
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MobileNav from '../MobileNav';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { useAuth } from '@clerk/nextjs';
 
 function Header() {
     const nav = [
@@ -33,6 +34,41 @@ function Header() {
     ];
 
     const pathname = usePathname();
+    const { getToken } = useAuth();
+    const [sponsorBanner, setSponsorBanner] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchActiveBanner() {
+            try {
+                setIsLoading(true);
+                const token = await getToken();
+                const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
+                if (!backend_uri) throw new Error("Missing API endpoint");
+
+                const response = await fetch(`${backend_uri}/api/active-banner?name=header_banner`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    cache: 'no-store' // Ensure fresh data
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+                }
+
+                const data = await response.json();
+                setSponsorBanner(data?.url || null);
+            } catch (error) {
+                console.error('Error fetching active banner:', error);
+                setSponsorBanner(null); // Explicitly set null on error
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchActiveBanner();
+    }, [pathname]);
 
     return (
         <header >
@@ -70,14 +106,25 @@ function Header() {
                         </div>
                     </div>
 
-                    <div className='relative w-full max-w-[200px] md:max-w-[400px] lg:max-w-[500px] xl:max-w-[600px] aspect-[6/1]'>
-                        <Image
-                            src='/images/homepage/NMB.png'
-                            alt='Sponsor Logo'
-                            fill
-                            className='object-contain'
-                            priority
-                        />
+                    <div className="relative w-full max-w-[400px] lg:max-w-[500px] xl:max-w-[600px] aspect-[6/1] bg-gray-50 rounded-md">
+                        {isLoading ? (
+                            <div className="w-full h-full flex items-center justify-center">
+                                <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+                            </div>
+                        ) : sponsorBanner ? (
+                            <Image
+                                src={sponsorBanner}
+                                alt='Sponsor Banner'
+                                fill
+                                className="object-contain "
+                                priority
+                                onError={() => setSponsorBanner(null)} // Fallback if image fails to load
+                            />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                                Sponsor banner spot available
+                            </div>
+                        )}
                     </div>
                 </div>
 

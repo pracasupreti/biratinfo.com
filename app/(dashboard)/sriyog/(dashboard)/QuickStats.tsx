@@ -152,11 +152,11 @@ export default function QuickStats({
         const lastEdited = new Date(latest.updatedAt || latest.createdAt || '');
         const diffHours = Math.floor((now.getTime() - lastEdited.getTime()) / (1000 * 60 * 60));
 
-        if (diffHours < 24) {
-            return `Updated ${diffHours} hours ago`;
-        } else {
-            return `Updated ${Math.floor(diffHours / 24)} days ago`;
-        }
+        if (diffHours < 60) return 'Just now'
+        if (diffHours < 3600) return `${Math.floor(diffHours / 60)} min ago`
+        if (diffHours < 86400) return `${Math.floor(diffHours / 3600)} hr ago`
+        if (diffHours < 2592000) return `${Math.floor(diffHours / 86400)} days ago`
+        return lastEdited.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
     }
 
     return (

@@ -18,7 +18,7 @@ interface User {
     posts: number
 }
 
-export default function AuthorsPage() {
+export default function EditorPage() {
     const { getToken } = useAuth()
     const [users, setUsers] = useState<User[]>([])
     const [loading, setLoading] = useState(true)
@@ -27,7 +27,7 @@ export default function AuthorsPage() {
     const query = searchParams.get('search')?.toLowerCase() || ''
 
     useEffect(() => {
-        async function fetchAuthors() {
+        async function fetchEditor() {
             try {
                 setLoading(true)
                 const token = await getToken()
@@ -39,7 +39,7 @@ export default function AuthorsPage() {
                 const clerkUsers = await clerkRes.json()
 
                 const filtered = clerkUsers.users.filter((user: any) =>
-                    (user.publicMetadata?.role === 'manager') &&
+                    (user.publicMetadata?.role === 'editor') &&
                     (`${user.firstName} ${user.lastName}`.toLowerCase().includes(query) ||
                         user.emailAddresses[0]?.emailAddress.toLowerCase().includes(query))
                 )
@@ -83,7 +83,7 @@ export default function AuthorsPage() {
             }
         }
 
-        fetchAuthors()
+        fetchEditor()
     }, [getToken, query])
 
     if (loading) return <Loader />
@@ -92,9 +92,9 @@ export default function AuthorsPage() {
         <div className="space-y-6 p-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold">Authors</h2>
+                    <h2 className="text-2xl font-bold">Editors</h2>
                     <p className="text-muted-foreground">
-                        Manage all authors and their permissions
+                        Manage all editors and their permissions
                     </p>
                 </div>
             </div>

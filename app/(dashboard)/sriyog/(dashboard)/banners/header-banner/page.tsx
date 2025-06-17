@@ -29,10 +29,12 @@ export default function SponsorBannerManager() {
 
     async function fetchBanners() {
         try {
-            const response = await fetch('/api/cloudinary/advertisement')
+            const response = await fetch('/api/cloudinary/header-banner')
             if (!response.ok) throw new Error('Failed to fetch banners')
+
             const data = await response.json()
-            return Array.isArray(data) ? data : []
+            console.log(data)
+            return data ? data.filteredImages : []
         } catch (error) {
             console.error('Error fetching banners:', error)
             toast.error('Failed to load banners')
@@ -113,7 +115,7 @@ export default function SponsorBannerManager() {
 
         try {
             // Delete from Cloudinary
-            const deleteResponse = await fetch('/api/cloudinary/advertisement', {
+            const deleteResponse = await fetch('/api/cloudinary/header-banner', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ publicId })
@@ -145,6 +147,7 @@ export default function SponsorBannerManager() {
             toast.error(error instanceof Error ? error.message : 'Failed to delete banner')
         }
     }
+    console.log(banners)
 
     if (isLoading) {
         return (
@@ -169,7 +172,8 @@ export default function SponsorBannerManager() {
 
     return (
         <div className="space-y-6 p-6">
-            <Card>
+            {/* Active Banner */}
+            <Card className='bg-gray-200'>
                 <CardHeader>
                     <CardTitle>Current Active Banner</CardTitle>
                 </CardHeader>
@@ -178,7 +182,7 @@ export default function SponsorBannerManager() {
                         <div className="relative w-full flex items-center justify-center rounded-md overflow-hidden">
                             <CldImage
                                 src={activeBannerUrl}
-                                alt="Active sponsor banner"
+                                alt="Active header banner"
                                 width={1200}
                                 height={300}
                                 className="object-contain w-full h-auto max-h-[180px]"
@@ -193,6 +197,70 @@ export default function SponsorBannerManager() {
                 </CardContent>
             </Card>
 
+
+            {/* Banner Library */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Banner Library</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {banners.length === 0 ? (
+                        <p className="text-muted-foreground">No banners available</p>
+                    ) : (
+                        <div className="space-y-4">
+                            {banners.map((banner) => (
+                                <Card
+                                    key={banner.public_id}
+                                    className={activeBannerUrl === banner.secure_url ? 'border-2 border-green-300 bg-gray-200' : 'bg-gray-200'}
+                                >
+                                    <CardContent className="flex flex-col sm:flex-row gap-4 items-center p-4">
+                                        <div className="relative w-full flex items-center justify-center rounded-md overflow-hidden">
+                                            <CldImage
+                                                src={banner.public_id}
+                                                alt="Header banner"
+                                                width={1200}
+                                                height={300}
+                                                className="object-contain w-full h-auto max-h-[180px]"
+                                                sizes="(max-width: 768px) 100vw, 1200px"
+                                            />
+                                        </div>
+
+                                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+                                            <Button
+                                                onClick={() => handleSetActive(banner.secure_url)}
+                                                disabled={activeBannerUrl === banner.secure_url}
+                                                className="gap-2 cursor-pointer"
+                                                variant={
+                                                    activeBannerUrl === banner.secure_url ? 'default' : 'outline'
+                                                }
+                                            >
+                                                {activeBannerUrl === banner.secure_url ? (
+                                                    <>
+                                                        <CheckCircle className="h-4 w-4" />
+                                                        Active
+                                                    </>
+                                                ) : (
+                                                    'Set Active'
+                                                )}
+                                            </Button>
+                                            <Button
+                                                onClick={() => handleDelete(banner.public_id)}
+                                                variant="destructive"
+                                                className="gap-2 cursor-pointer"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+
+            {/* Upload Banner */}
             <Card>
                 <CardHeader>
                     <CardTitle>Upload New Banner</CardTitle>
@@ -230,67 +298,6 @@ export default function SponsorBannerManager() {
                             </Button>
                         )}
                     </CldUploadWidget>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>Banner Library</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {banners.length === 0 ? (
-                        <p className="text-muted-foreground">No banners available</p>
-                    ) : (
-                        <div className="space-y-4">
-                            {banners.map((banner) => (
-                                <Card
-                                    key={banner.public_id}
-                                    className={activeBannerUrl === banner.secure_url ? 'border-2 border-green-300 bg-gray-200' : 'bg-gray-200'}
-                                >
-                                    <CardContent className="flex flex-col sm:flex-row gap-4 items-center p-4">
-                                        <div className="relative w-full flex items-center justify-center rounded-md overflow-hidden">
-                                            <CldImage
-                                                src={banner.public_id}
-                                                alt="Sponsor banner"
-                                                width={1200}
-                                                height={300}
-                                                className="object-contain w-full h-auto max-h-[180px]"
-                                                sizes="(max-width: 768px) 100vw, 1200px"
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
-                                            <Button
-                                                onClick={() => handleSetActive(banner.secure_url)}
-                                                disabled={activeBannerUrl === banner.secure_url}
-                                                className="gap-2"
-                                                variant={
-                                                    activeBannerUrl === banner.secure_url ? 'default' : 'outline'
-                                                }
-                                            >
-                                                {activeBannerUrl === banner.secure_url ? (
-                                                    <>
-                                                        <CheckCircle className="h-4 w-4" />
-                                                        Active
-                                                    </>
-                                                ) : (
-                                                    'Set Active'
-                                                )}
-                                            </Button>
-                                            <Button
-                                                onClick={() => handleDelete(banner.public_id)}
-                                                variant="destructive"
-                                                className="gap-2"
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                                Delete
-                                            </Button>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    )}
                 </CardContent>
             </Card>
         </div>

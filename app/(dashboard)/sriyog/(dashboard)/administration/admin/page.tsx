@@ -18,7 +18,7 @@ interface User {
     posts: number
 }
 
-export default function AuthorsPage() {
+export default function AdminPage() {
     const { getToken } = useAuth()
     const [users, setUsers] = useState<User[]>([])
     const [loading, setLoading] = useState(true)
@@ -27,7 +27,7 @@ export default function AuthorsPage() {
     const query = searchParams.get('search')?.toLowerCase() || ''
 
     useEffect(() => {
-        async function fetchAuthors() {
+        async function fetchAdmin() {
             try {
                 setLoading(true)
                 const token = await getToken()
@@ -48,7 +48,7 @@ export default function AuthorsPage() {
                 const enrichedUsers = await Promise.all(
                     filtered.map(async (user: any) => {
                         try {
-                            const postCountRes = await fetch(`${backend_uri}/api/posts/approved-count/${user.id}`, {
+                            const postCountRes = await fetch(`${backend_uri}/api/posts/post-count/${user.id}`, {
                                 headers: {
                                     'Authorization': `Bearer ${token}`,
                                 }
@@ -83,7 +83,7 @@ export default function AuthorsPage() {
             }
         }
 
-        fetchAuthors()
+        fetchAdmin()
     }, [getToken, query])
 
     if (loading) return <Loader />
@@ -92,9 +92,9 @@ export default function AuthorsPage() {
         <div className="space-y-6 p-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold">Authors</h2>
+                    <h2 className="text-2xl font-bold">Admins</h2>
                     <p className="text-muted-foreground">
-                        Manage all authors and their permissions
+                        Manage all admins and their permissions
                     </p>
                 </div>
             </div>
@@ -103,7 +103,7 @@ export default function AuthorsPage() {
 
             <UserTable
                 users={users}
-                availableRoles={['editor', 'admin']}
+                availableRoles={['editor', 'manager', 'admin']}
                 currentRole="manager"
             />
         </div>

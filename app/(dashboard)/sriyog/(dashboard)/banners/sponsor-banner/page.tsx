@@ -29,10 +29,12 @@ export default function SponsorBannerManager() {
 
     async function fetchBanners() {
         try {
-            const response = await fetch('/api/cloudinary/advertisement')
+            const response = await fetch('/api/cloudinary/sponsor-banner')
             if (!response.ok) throw new Error('Failed to fetch banners')
+
             const data = await response.json()
-            return Array.isArray(data) ? data : []
+            console.log(data)
+            return data ? data.filteredImages : []
         } catch (error) {
             console.error('Error fetching banners:', error)
             toast.error('Failed to load banners')
@@ -46,7 +48,7 @@ export default function SponsorBannerManager() {
             const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
             if (!backend_uri) throw new Error("Missing API endpoint")
 
-            const response = await fetch(`${backend_uri}/api/active-banner?name=header_banner`, {
+            const response = await fetch(`${backend_uri}/api/active-banner?name=sponsor_banner`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -108,13 +110,12 @@ export default function SponsorBannerManager() {
         }
     }
 
-    // REMAINING
     const handleDelete = async (publicId: string) => {
         if (!confirm('Are you sure you want to delete this banner?')) return
 
         try {
             // Delete from Cloudinary
-            const deleteResponse = await fetch('/api/cloudinary/advertisement', {
+            const deleteResponse = await fetch('/api/cloudinary/sponsor-banner', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ publicId })
@@ -146,6 +147,7 @@ export default function SponsorBannerManager() {
             toast.error(error instanceof Error ? error.message : 'Failed to delete banner')
         }
     }
+    console.log(banners)
 
     if (isLoading) {
         return (
@@ -170,30 +172,77 @@ export default function SponsorBannerManager() {
 
     return (
         <div className="space-y-6 p-6">
+            {/* Banner Library */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Current Active Banner</CardTitle>
+                    <CardTitle className="text-lg font-bold">Banner Library</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {activeBannerUrl ? (
-                        <div className="relative w-full flex items-center justify-center rounded-md overflow-hidden">
-                            <CldImage
-                                src={activeBannerUrl}
-                                alt="Active sponsor banner"
-                                width={1200}
-                                height={300}
-                                className="object-contain w-full h-auto max-h-[180px]"
-                                sizes="(max-width: 768px) 100vw, 1200px"
-                            />
+                    {banners.length === 0 ? (
+                        <div className="py-8 text-center text-muted-foreground">
+                            No banners available
                         </div>
                     ) : (
-                        <div className="h-40 flex items-center justify-center bg-muted rounded-md">
-                            <p className="text-muted-foreground">No active banner selected</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            {banners.map((banner) => (
+                                <Card
+                                    key={banner.public_id}
+                                    className={
+                                        activeBannerUrl === banner.secure_url
+                                            ? 'border-2 border-green-500'
+                                            : 'hover:shadow-xl transition-shadow'
+                                    }
+                                >
+                                    <CardContent className="p-4 space-y-4">
+                                        <div className="relative aspect-[12/11] rounded-md overflow-hidden bg-gray-100">
+                                            <CldImage
+                                                src={banner.public_id}
+                                                alt="Sponsor banner"
+                                                fill
+                                                className="object-cover w-full h-full object-center"
+                                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                                            />
+                                        </div>
+
+                                        <div className="flex gap-2">
+                                            <Button
+                                                size="sm"
+                                                onClick={() => handleSetActive(banner.secure_url)}
+                                                disabled={activeBannerUrl === banner.secure_url}
+                                                variant={
+                                                    activeBannerUrl === banner.secure_url
+                                                        ? 'default'
+                                                        : 'outline'
+                                                }
+                                                className="flex-1 gap-1 cursor-pointer"
+                                            >
+                                                {activeBannerUrl === banner.secure_url ? (
+                                                    <>
+                                                        <CheckCircle className="h-4 w-4" />
+                                                        Active
+                                                    </>
+                                                ) : (
+                                                    'Set Active'
+                                                )}
+                                            </Button>
+                                            <Button
+                                                size="sm"
+                                                onClick={() => handleDelete(banner.public_id)}
+                                                variant="destructive"
+                                                className="gap-1 cursor-pointer"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))}
                         </div>
                     )}
                 </CardContent>
             </Card>
 
+            {/* Upload Banner */}
             <Card>
                 <CardHeader>
                     <CardTitle>Upload New Banner</CardTitle>
@@ -203,8 +252,8 @@ export default function SponsorBannerManager() {
                         uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_ADVERTISEMENT_UPLOAD_PRESET}
                         options={{
                             folder: 'biratinfo/advertisement',
-                            context: { name: 'header banner' },
-                            tags: ['header_banner'],
+                            context: { name: 'sponsor banner' },
+                            tags: ['sponsor_banner'],
                             resourceType: 'image',
                             multiple: false,
                             maxFiles: 1,
@@ -227,71 +276,10 @@ export default function SponsorBannerManager() {
                     >
                         {({ open }) => (
                             <Button onClick={() => open()} className="gap-2">
-                                Upload New Banner
+                                Browse
                             </Button>
                         )}
                     </CldUploadWidget>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>Banner Library</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {banners.length === 0 ? (
-                        <p className="text-muted-foreground">No banners available</p>
-                    ) : (
-                        <div className="space-y-4">
-                            {banners.map((banner) => (
-                                <Card
-                                    key={banner.public_id}
-                                    className={activeBannerUrl === banner.secure_url ? 'border-2 border-green-300 bg-gray-200' : 'bg-gray-200'}
-                                >
-                                    <CardContent className="flex flex-col sm:flex-row gap-4 items-center p-4">
-                                        <div className="relative w-full flex items-center justify-center rounded-md overflow-hidden">
-                                            <CldImage
-                                                src={banner.public_id}
-                                                alt="Sponsor banner"
-                                                width={1200}
-                                                height={300}
-                                                className="object-contain w-full h-auto max-h-[180px]"
-                                                sizes="(max-width: 768px) 100vw, 1200px"
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
-                                            <Button
-                                                onClick={() => handleSetActive(banner.secure_url)}
-                                                disabled={activeBannerUrl === banner.secure_url}
-                                                className="gap-2"
-                                                variant={
-                                                    activeBannerUrl === banner.secure_url ? 'default' : 'outline'
-                                                }
-                                            >
-                                                {activeBannerUrl === banner.secure_url ? (
-                                                    <>
-                                                        <CheckCircle className="h-4 w-4" />
-                                                        Active
-                                                    </>
-                                                ) : (
-                                                    'Set Active'
-                                                )}
-                                            </Button>
-                                            <Button
-                                                onClick={() => handleDelete(banner.public_id)}
-                                                variant="destructive"
-                                                className="gap-2"
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                                Delete
-                                            </Button>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    )}
                 </CardContent>
             </Card>
         </div>

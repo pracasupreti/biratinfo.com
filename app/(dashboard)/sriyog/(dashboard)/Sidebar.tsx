@@ -108,10 +108,10 @@ export default function Sidebar() {
                         />
                     </button>
                     <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${expandedSections.banners ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
-                        <Link href="#header-banners" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                        <Link href="/sriyog/banners/header-banner" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
                             Header Banners
                         </Link>
-                        <Link href="#sponsor-banners" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                        <Link href="/sriyog/banners/sponsor-banner" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
                             Sponsor Banners
                         </Link>
                     </div>
@@ -148,7 +148,7 @@ export default function Sidebar() {
 
                 {/* Account Section */}
                 <div className="mb-2">
-                    <Link href={'/manager/manage-profile'}
+                    <Link href={'/sriyog/manage-profile'}
                         className="w-full flex justify-between items-center p-2 text-gray-700 hover:bg-gray-100 rounded-md font-medium transition-colors duration-200"
                     >
                         <span>Manage Account</span>

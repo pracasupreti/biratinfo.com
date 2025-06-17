@@ -51,6 +51,7 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
     const uploadToCloudinary = async (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds', file: File): Promise<string> => {
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('folder', 'biratinfo/posts');
         formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
         formData.append('cloud_name', process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!);
         formData.append('public_id', `posts/${uuidv4()}`);

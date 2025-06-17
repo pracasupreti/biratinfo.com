@@ -8,10 +8,11 @@ export async function GET() {
     const folder = 'biratinfo/advertisement'
     const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64')
 
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/resources/image`, {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/resources/image?tags=true`, {
         headers: {
             Authorization: `Basic ${auth}`,
         },
+
     })
 
     const data = await res.json()
@@ -19,7 +20,6 @@ export async function GET() {
         img.public_id.startsWith(`${folder}/`) &&
         img.tags?.includes('header_banner')
     )
-
 
     return NextResponse.json({ success: true, filteredImages })
 }

@@ -118,7 +118,7 @@ export default function RecentPosts({ posts, loading = false }: RecentPostsProps
                         {/* Date - Now shows relative time */}
                         <div className="col-span-12 md:col-span-2 flex items-center">
                             <span className="text-sm text-gray-500">
-                                {getTimeAgo(post.createdAt)}
+                                {getTimeAgo(post.updatedAt)}
                             </span>
                         </div>
                     </div>

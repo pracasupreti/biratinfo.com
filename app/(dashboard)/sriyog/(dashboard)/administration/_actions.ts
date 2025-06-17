@@ -38,3 +38,18 @@ export async function removeRole(formData: FormData) {
         throw err
     }
 }
+
+export async function deleteUser(userId: string) {
+    const user = await currentUser()
+
+    if (!user || user.publicMetadata.role !== 'admin') {
+        redirect('/')
+    }
+    try {
+        const client = await clerkClient()
+        await client.users.deleteUser(userId)
+    } catch (err) {
+        console.error('Error deleting user:', err)
+        throw err
+    }
+}

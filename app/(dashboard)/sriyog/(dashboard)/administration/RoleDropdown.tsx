@@ -9,8 +9,9 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { MoreVertical } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
+
 import { setRole } from './_actions'
+import toast from 'react-hot-toast'
 
 interface RoleDropdownProps {
     userId: string
@@ -25,17 +26,22 @@ export function RoleDropdown({
 }: RoleDropdownProps) {
     const router = useRouter()
 
+
     const handleSetRole = async (role: string) => {
-        try {
-            const formData = new FormData()
-            formData.append('id', userId)
-            formData.append('role', role)
-            await setRole(formData)
-            toast.success(`User role updated to ${role}`)
-            router.refresh()
-        } catch (error) {
-            toast.error('Failed to update role')
-        }
+        const formData = new FormData()
+        formData.append('id', userId)
+        formData.append('role', role)
+
+        toast.promise(
+            setRole(formData),
+            {
+                loading: `Updating role to ${role}...`,
+                success: `User role updated to ${role}`,
+                error: 'Failed to update role',
+            }
+        )
+
+        router.refresh()
     }
 
     return (

@@ -240,7 +240,7 @@ export function PostTable({
 
                                 {/* Date */}
                                 <div className="col-span-2 text-sm text-muted-foreground whitespace-nowrap flex items-center justify-center">
-                                    {formatDate(post.createdAt)}
+                                    {formatDate(post.updatedAt)}
                                 </div>
 
                                 {/* Status */}
