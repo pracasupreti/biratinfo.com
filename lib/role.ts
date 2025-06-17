@@ -32,3 +32,19 @@ export const checkRole = async (role: Roles) => {
     return true;
 }
 
+export const getCurrentRole = async (): Promise<Roles | null> => {
+    const { userId, sessionClaims } = await auth();
+
+    if (!userId) {
+        return null;
+    }
+
+    const userRole = sessionClaims?.metadata?.role as Roles | undefined;
+
+    if (!userRole) {
+        return null;
+    }
+
+    return userRole;
+}
+

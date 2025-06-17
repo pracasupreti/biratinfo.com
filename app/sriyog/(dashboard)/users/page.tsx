@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { clerkClient } from '@clerk/nextjs/server'
-import { SearchUsers } from '../SearchUsers'
+import { SearchUsers } from './SearchUsers'
 import UserTable from './UserTable'
 
 

@@ -1,52 +1,26 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { DashboardHeader } from '@/components/editor/DashBoardHeader'
-import { PostTable } from '@/components/editor/PostTable'
-import Loader from '@/components/Loader'
 import { useAuth } from '@clerk/nextjs'
-import { Tabs, TabsContent } from '@/components/ui/tabs'
+import Post from '@/types/Post'
+import QuickStats from './QuickStats'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import RecentPosts from './RecentPosts'
+import DraftPosts from './DraftPosts'
+import Loader from '@/components/Loader'
+import { Button } from '@/components/ui/button'
+import { PlusCircle } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 
-interface Post {
-    _id: string;
-    userId: { $oid: string };
-    status: 'draft' | 'pending' | 'scheduled' | 'approved' | 'rejected';
-    englishTitle: string;
-    nepaliTitle: string;
-    blocks: string[];
-    excerpt: string;
-    featuredIn: boolean[];
-    postInNetwork: boolean[];
-    category: string;
-    tags: string;
-    date: string;
-    time: string;
-    author: string;
-    language: string;
-    readingTime: string;
-    heroBanner: string | null;
-    ogBanner: string | null;
-    imageCredit: string;
-    sponsoredAds: boolean;
-    access: string;
-    audioFile: string | null;
-    canonicalUrl: string;
-    createdAt: string | null;
-    updatedAt: string | null;
-}
-
-type TabValue = 'pending' | 'verified' | 'rejected' | 'drafts' | 'scheduled';
-
-export default function EditorDashboard() {
+export default function Dashboard() {
     const [pendingPosts, setPendingPosts] = useState<Post[]>([]);
     const [rejectedPosts, setRejectedPosts] = useState<Post[]>([]);
-    const [verifiedPosts, setVerifiedPosts] = useState<Post[]>([]);
+    const [approvedPosts, setApprovedPosts] = useState<Post[]>([]);
     const [draftPosts, setDraftPosts] = useState<Post[]>([]);
     const [scheduledPosts, setScheduledPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<TabValue>('pending');
     const { getToken } = useAuth();
+    const router = useRouter();
 
     useEffect(() => {
         async function fetchAllPostsByStatus(status: string) {
@@ -82,7 +56,7 @@ export default function EditorDashboard() {
 
                 setPendingPosts(pendingRes?.success && pendingRes.posts ? pendingRes.posts : []);
                 setRejectedPosts(rejectedRes?.success && rejectedRes.posts ? rejectedRes.posts : []);
-                setVerifiedPosts(approvedRes?.success && approvedRes.posts ? approvedRes.posts : []);
+                setApprovedPosts(approvedRes?.success && approvedRes.posts ? approvedRes.posts : []);
 
             } catch (error) {
                 console.error("Failed to fetch posts:", error);
@@ -136,126 +110,44 @@ export default function EditorDashboard() {
 
     if (loading) return <Loader />;
 
+
+
     return (
-        <div className="flex min-h-screen">
+        <div className="container mx-auto px-4 py-8 space-y-8">
+            <QuickStats
+                draftPosts={draftPosts}
+                pendingPosts={pendingPosts}
+                scheduledPosts={scheduledPosts}
+                approvedPosts={approvedPosts}
+                rejectedPosts={rejectedPosts}
+            />
 
-            {/* Main Content */}
-            <div className="flex-1 p-6 space-y-6">
-                <DashboardHeader />
-
-                {/* Stats Overview */}
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                    <Card
-                        className={`cursor-pointer ${activeTab === 'pending' ? 'border-primary' : ''}`}
-                        onClick={() => setActiveTab('pending')}
-                    >
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 space-y-6">
+                    <Card>
                         <CardHeader className="flex flex-row items-center justify-between">
-                            <CardTitle className="text-sm font-medium">Pending</CardTitle>
-                            <span className="text-2xl font-bold">{pendingPosts.length}</span>
+                            <CardTitle>Recent Approved Posts</CardTitle>
+                            <Button onClick={() => router.push('/editor/post-form')}>
+                                <PlusCircle className="mr-2 h-4 w-4" />
+                                Write Post
+                            </Button>
                         </CardHeader>
-                    </Card>
-                    <Card
-                        className={`cursor-pointer ${activeTab === 'verified' ? 'border-green-400' : ''}`}
-                        onClick={() => setActiveTab('verified')}
-                    >
-                        <CardHeader className="flex flex-row items-center justify-between">
-                            <CardTitle className="text-sm font-medium">Verified</CardTitle>
-                            <span className="text-2xl font-bold">{verifiedPosts.length}</span>
-                        </CardHeader>
-                    </Card>
-                    <Card
-                        className={`cursor-pointer ${activeTab === 'rejected' ? 'border-destructive' : ''}`}
-                        onClick={() => setActiveTab('rejected')}
-                    >
-                        <CardHeader className="flex flex-row items-center justify-between">
-                            <CardTitle className="text-sm font-medium">Rejected</CardTitle>
-                            <span className="text-2xl font-bold">{rejectedPosts.length}</span>
-                        </CardHeader>
-                    </Card>
-                    <Card
-                        className={`cursor-pointer ${activeTab === 'drafts' ? 'border-orange-400' : ''}`}
-                        onClick={() => setActiveTab('drafts')}
-                    >
-                        <CardHeader className="flex flex-row items-center justify-between">
-                            <CardTitle className="text-sm font-medium">My Drafts</CardTitle>
-                            <span className="text-2xl font-bold">{draftPosts.length}</span>
-                        </CardHeader>
-                    </Card>
-                    <Card
-                        className={`cursor-pointer ${activeTab === 'scheduled' ? 'border-yellow-400' : ''}`}
-                        onClick={() => setActiveTab('scheduled')}
-                    >
-                        <CardHeader className="flex flex-row items-center justify-between">
-                            <CardTitle className="text-sm font-medium">My Scheduled Posts</CardTitle>
-                            <span className="text-2xl font-bold">{scheduledPosts.length}</span>
-                        </CardHeader>
+                        <CardContent>
+                            <RecentPosts posts={approvedPosts.slice(0, 3)} />
+                        </CardContent>
                     </Card>
                 </div>
 
-                {/* Tab Content */}
-                <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabValue)}>
-                    <TabsContent value="pending">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Posts Needing Verification</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                {pendingPosts.length === 0 ? (
-                                    <p className="text-muted-foreground">No posts pending verification</p>
-                                ) : (
-                                    <PostTable
-                                        posts={pendingPosts}
-                                        showActions={true}
-                                    />
-                                )}
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="verified">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Verified Posts</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <PostTable posts={verifiedPosts} />
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="rejected">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Rejected Posts</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <PostTable posts={rejectedPosts} />
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="drafts">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Draft Posts</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <PostTable posts={draftPosts} showActions={true} />
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="scheduled">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Scheduled Posts</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <PostTable posts={scheduledPosts} />
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-                </Tabs>
+                <div className="space-y-4">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Your Drafts</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <DraftPosts drafts={draftPosts} />
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
         </div>
     )

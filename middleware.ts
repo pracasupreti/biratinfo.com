@@ -4,7 +4,7 @@ import type { Roles } from '@/types/globals';
 
 // Define protected routes and their required roles
 const protectedRoutes = [
-    { path: '/admin', role: 'admin' },
+    { path: '/sriyog', role: 'admin' },
     { path: '/editor', role: 'editor' },
     { path: '/manager', role: 'manager' },
 ];
@@ -45,7 +45,7 @@ export default clerkMiddleware(async (auth, req) => {
 
     // 3. Role-based access control
     const roleRedirects: Record<Roles, string> = {
-        admin: '/admin',
+        admin: '/sriyog',
         editor: '/editor',
         manager: '/manager',
     };

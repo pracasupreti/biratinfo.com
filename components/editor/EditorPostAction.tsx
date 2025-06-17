@@ -38,7 +38,17 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
         }
 
         try {
-            const status = isApproved ? 'approved' : 'rejected'
+            const determineStatus = () => {
+                if (isApproved) {
+                    const currentDate = new Date();
+                    const postDate = state.date && state.time
+                        ? new Date(`${state.date}T${state.time}`)
+                        : currentDate;
+                    return postDate > currentDate ? 'scheduled' : 'approved';
+                }
+
+                return 'rejected'
+            };
 
             const submissionData = {
                 englishTitle: state.englishTitle,
@@ -51,7 +61,7 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
                 tags: state.tags,
                 date: state.date,
                 time: state.time,
-                author: state.author,
+                authors: state.authors,
                 language: state.language,
                 readingTime: state.readingTime,
                 heroBanner: state.heroBanner,
@@ -61,7 +71,7 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
                 access: state.access,
                 audioFile: state.audioFile,
                 canonicalUrl: state.canonicalUrl,
-                status,
+                status: determineStatus()
             }
 
             if (!id) throw new Error('Post ID is required to update the post')
@@ -88,11 +98,16 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
                 throw new Error(errorData.message || 'Failed to update post')
             }
 
+            const status = determineStatus()
+
             toast.success(
                 status === 'approved'
                     ? 'The post has been successfully approved'
-                    : 'The post has been rejected'
-            )
+                    : status === 'scheduled'
+                        ? 'The post has been scheduled for later'
+                        : 'The post has been rejected'
+            );
+
             resetStore()
         } catch (error: any) {
             toast.error(error?.message || 'Failed to submit post. Please try again.')

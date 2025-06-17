@@ -38,6 +38,8 @@ export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting 
             return postDate > currentDate ? 'scheduled' : 'pending';
         };
 
+        console.log("Status: ", determineStatus())
+
         const getSuccessMessage = (status: string) => {
             switch (status) {
                 case 'draft':
@@ -66,7 +68,7 @@ export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting 
             tags: state.tags,
             date: state.date,
             time: state.time,
-            author: state.author,
+            authors: state.authors,
             language: state.language,
             readingTime: state.readingTime,
             heroBanner: state.heroBanner,
@@ -111,8 +113,10 @@ export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting 
 
             toast.success(getSuccessMessage(submissionData.status));
             resetStore();
+
         } catch (error: any) {
             toast.error(error?.message || `Failed to ${isEditing ? 'update' : 'create'} post. Please try again.`);
+            throw error;
         }
     };
 

@@ -10,7 +10,7 @@ import {
 
 import { MoreVertical } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { removeRole, setRole } from '../_actions'
+import { removeRole, setRole } from './_actions'
 
 export default function RoleDropdown({
     userId,

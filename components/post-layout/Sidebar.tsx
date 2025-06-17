@@ -15,6 +15,7 @@ import { usePostStore } from '@/store/PostStore'
 import { Card, CardContent } from '../ui/card'
 import Image from 'next/image'
 import { AuthorSelect } from './AuthorSelect'
+import { MultiSelect } from '../MultiSelectComponent'
 
 interface PostSidebarProps {
     isEditing?: boolean,
@@ -26,10 +27,10 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
     const router = useRouter();
     const {
         category,
-        tags,
+        tags = [],
         date,
         time,
-        author,
+        authors = [],
         language,
         readingTime,
         heroBanner,
@@ -143,13 +144,18 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
 
                     {/* Tags */}
                     <div className="space-y-1">
-                        <Label htmlFor="tags" className='text-sm font-medium text-gray-800'>Tags (comma separated) *</Label>
-                        <Input
-                            id="tags"
+                        <Label className='text-sm font-medium text-gray-800'>Tags (max 5)</Label>
+                        <MultiSelect
+                            options={[
+                                { value: 'news', label: 'News' },
+                                { value: 'sports', label: 'Sports' },
+                                { value: 'entertainment', label: 'Entertainment' },
+                                // Add more tag options as needed
+                            ]}
                             value={tags}
-                            onChange={(e) => setField('tags', e.target.value)}
-                            placeholder="tag1, tag2, tag3"
-                            className="w-full bg-gray-100 h-8"
+                            onChange={(newTags) => setField('tags', newTags)}
+                            placeholder="Add tags"
+                            maxSelections={5}
                         />
                         {errors.tags && <p className="text-red-500 text-xs mt-0.5">{errors.tags}</p>}
                     </div>
@@ -180,13 +186,18 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                         </div>
                     </div>
 
-                    {/* Author */}
-                    <AuthorSelect
-                        value={author}
-                        onChange={(value) => setField('author', value)}
-                        error={errors.author}
-                        isEditor={isEditor}
-                    />
+                    {/* Authors */}
+                    <div className="space-y-1">
+                        <div className="space-y-2">
+                            <AuthorSelect
+                                value={authors}
+                                onChange={(newAuthors) => setField('authors', newAuthors)}
+                                isEditor={isEditor}
+                                error={errors.authors}
+                                maxSelections={2}
+                            />
+                        </div>
+                    </div>
 
                     {/* Language */}
                     <div className="space-y-1">
@@ -304,7 +315,7 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                 </div>
 
                 {/* Action Buttons */}
-                {isEditor ? (
+                {isEditor && isEditing ? (
                     <EditorPostAction
                         onActionClick={handleActionClick}
                         isSubmitting={isSubmitting}

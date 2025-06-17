@@ -1,18 +1,22 @@
 import { create } from 'zustand'
 
-// TypeScript types for store state and actions
+interface Block {
+    content: string
+    link?: string
+}
+
 export interface PostState {
     englishTitle: string
     nepaliTitle: string
-    blocks: string[]
+    blocks: Block[]
     excerpt: string
     featuredIn: boolean[]
     postInNetwork: boolean[]
     category: string
-    tags: string
+    tags: string[]
     date: string
     time: string
-    author: string
+    authors: string[]
     language: string
     readingTime?: string
     heroBanner: string
@@ -25,28 +29,32 @@ export interface PostState {
     errors: Record<string, string>
 
     // Actions
-    setField: (field: keyof Omit<PostState, 'errors' | 'setField' | 'setError' | 'clearError' | 'validate' | 'updateBlock' | 'resetStore'>, value: any) => void
+    setField: (field: keyof Omit<PostState, 'errors' | 'setError' | 'clearError' | 'validate' | 'resetStore' | 'initialize'>, value: any) => void
     setError: (field: string, message: string) => void
     clearError: (field: string) => void
     validate: () => boolean
     resetStore: () => void
     initialize: (postData: Partial<PostState>) => void
+    updateBlock: (index: number, content: string, link?: string) => void
+    addAuthor: (author: string) => void
+    removeAuthor: (index: number) => void
+    addTag: (tag: string) => void
+    removeTag: (index: number) => void
 }
 
-// Zustand store implementation
 export const usePostStore = create<PostState>((set, get) => ({
     // Initial State
     englishTitle: '',
     nepaliTitle: '',
-    blocks: ['', '', '', ''], // 4 blocks by default
+    blocks: Array(4).fill({ content: '', link: undefined }), // Initialize with empty blocks
     excerpt: '',
-    featuredIn: Array(8).fill(false), // [false, false,....,false] Array of 8
+    featuredIn: Array(8).fill(false),
     postInNetwork: Array(8).fill(false),
     category: '',
-    tags: '',
+    tags: [],
     date: '',
     time: '',
-    author: '',
+    authors: [],
     language: 'english',
     readingTime: '',
     heroBanner: '',
@@ -58,18 +66,57 @@ export const usePostStore = create<PostState>((set, get) => ({
     canonicalUrl: '',
     errors: {},
 
-
-
     // Set any field dynamically
     setField: (field, value) => {
         set({ [field]: value })
-
-        // Auto-clear error if it exists
         if (get().errors[field]) {
             set(state => ({
                 errors: { ...state.errors, [field]: '' }
             }))
         }
+    },
+
+    // Update a specific block with content and optional link
+    updateBlock: (index, content, link) => {
+        set(state => {
+            const newBlocks = [...state.blocks]
+            newBlocks[index] = { content, link }
+            return { blocks: newBlocks }
+        })
+    },
+
+    // Add author (max 2)
+    addAuthor: (author) => {
+        set(state => {
+            if (state.authors.length >= 2) return state
+            return { authors: [...state.authors, author] }
+        })
+    },
+
+    // Remove author by index
+    removeAuthor: (index) => {
+        set(state => {
+            const newAuthors = [...state.authors]
+            newAuthors.splice(index, 1)
+            return { authors: newAuthors }
+        })
+    },
+
+    // Add tag (max 5)
+    addTag: (tag) => {
+        set(state => {
+            if (state.tags.length >= 5) return state
+            return { tags: [...state.tags, tag] }
+        })
+    },
+
+    // Remove tag by index
+    removeTag: (index) => {
+        set(state => {
+            const newTags = [...state.tags]
+            newTags.splice(index, 1)
+            return { tags: newTags }
+        })
     },
 
     // Set an error manually
@@ -86,7 +133,6 @@ export const usePostStore = create<PostState>((set, get) => ({
         }))
     },
 
-
     // Validate fields before submission
     validate: () => {
         const state = get()
@@ -99,26 +145,28 @@ export const usePostStore = create<PostState>((set, get) => ({
         if (!state.category.trim()) newErrors.category = 'Category is required.'
         if (!state.date.trim()) newErrors.date = 'Date is required.'
         if (!state.time.trim()) newErrors.time = 'Time is required.'
-        if (!state.author.trim()) newErrors.author = 'Author name is required.'
+        if (state.authors.length === 0) newErrors.authors = 'At least one author is required.'
         if (!state.imageCredit.trim()) newErrors.imageCredit = 'Image credit is required.'
         if (!state.heroBanner) newErrors.heroBanner = 'Hero banner image is required.'
         if (!state.ogBanner) newErrors.ogBanner = 'OG banner image is required.'
 
-        // // File type validations (images and audio)
-        // const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml', 'image/webp']
-        // if (state.heroBanner && !allowedImageTypes.includes(state.heroBanner.type)) {
-        //     newErrors.heroBanner = 'Hero banner must be PNG, JPG, JPEG, SVG, or WebP.'
-        // }
-        // if (state.ogBanner && !allowedImageTypes.includes(state.ogBanner.type)) {
-        //     newErrors.ogBanner = 'OG banner must be PNG, JPG, JPEG, SVG, or WebP.'
-        // }
+        // Validate blocks have content
+        state.blocks.forEach((block, index) => {
+            if (!block.content.trim()) {
+                newErrors[`blocks[${index}]`] = 'Block content cannot be empty'
+            }
+        })
 
-        // const allowedAudioTypes = ['audio/mpeg', 'audio/wav', 'audio/ogg']
-        // if (state.audioFile && !allowedAudioTypes.includes(state.audioFile.type)) {
-        //     newErrors.audioFile = 'Audio must be MP3, WAV, or OGG format.'
-        // }
+        // Validate authors limit
+        if (state.authors.length > 2) {
+            newErrors.authors = 'Maximum 2 authors allowed'
+        }
 
-        // Apply and return
+        // Validate tags limit
+        if (state.tags.length > 5) {
+            newErrors.tags = 'Maximum 5 tags allowed'
+        }
+
         set({ errors: newErrors })
         return Object.keys(newErrors).length === 0
     },
@@ -128,15 +176,15 @@ export const usePostStore = create<PostState>((set, get) => ({
         set({
             englishTitle: '',
             nepaliTitle: '',
-            blocks: ['', '', '', ''],
+            blocks: Array(4).fill({ content: '', link: undefined }),
             excerpt: '',
             featuredIn: Array(8).fill(false),
             postInNetwork: Array(8).fill(false),
             category: '',
-            tags: '',
+            tags: [],
             date: '',
             time: '',
-            author: '',
+            authors: [],
             language: 'english',
             readingTime: '',
             heroBanner: '',
@@ -155,15 +203,15 @@ export const usePostStore = create<PostState>((set, get) => ({
         set({
             englishTitle: postData.englishTitle || '',
             nepaliTitle: postData.nepaliTitle || '',
-            blocks: postData.blocks || ['', '', '', ''],
+            blocks: postData.blocks || Array(4).fill({ content: '', link: undefined }),
             excerpt: postData.excerpt || '',
             featuredIn: postData.featuredIn || Array(8).fill(false),
             postInNetwork: postData.postInNetwork || Array(8).fill(false),
             category: postData.category || '',
-            tags: postData.tags || '',
+            tags: postData.tags || [],
             date: postData.date || '',
             time: postData.time || '',
-            author: postData.author || '',
+            authors: postData.authors || [],
             language: postData.language || 'english',
             readingTime: postData.readingTime || '',
             heroBanner: postData.heroBanner || '',
