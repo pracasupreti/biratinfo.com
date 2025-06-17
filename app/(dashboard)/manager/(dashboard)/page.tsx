@@ -47,16 +47,18 @@ export default function Dashboard() {
 
         const fetchPosts = async () => {
             try {
-                const [draftsRes, pendingRes, scheduledRes, approvedRes] = await Promise.all([
+                const [draftsRes, pendingRes, scheduledRes, approvedRes, rejectedRes] = await Promise.all([
                     fetchPostsByStatus('draft'),
                     fetchPostsByStatus('pending'),
                     fetchPostsByStatus('scheduled'),
                     fetchPostsByStatus('approved'),
+                    fetchPostsByStatus('rejected'),
                 ]);
                 setDraftPosts(draftsRes?.success && draftsRes.posts ? draftsRes.posts : []);
                 setPendingPosts(pendingRes?.success && pendingRes.posts ? pendingRes.posts : []);
                 setScheduledPosts(scheduledRes?.success && scheduledRes.posts ? scheduledRes.posts : []);
                 setApprovedPosts(approvedRes?.success && approvedRes.posts ? approvedRes.posts : []);
+                setRejectedPosts(rejectedRes?.success && rejectedRes.posts ? rejectedRes.posts : []);
             } catch (error) {
                 console.error("Failed to fetch posts:", error);
             } finally {

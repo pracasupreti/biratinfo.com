@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,7 +11,6 @@ import { Search, Edit } from 'lucide-react'
 import { Card, CardContent } from '../ui/card'
 import { cn } from '@/lib/utils'
 import Post from '@/types/Post'
-import { useAuth } from '@clerk/nextjs'
 import AuthorDisplay from '../AuthorDisplay'
 
 
@@ -33,7 +33,6 @@ export function PostTable({
 }: PostTableProps) {
     const router = useRouter()
     const searchParams = useSearchParams()
-    const { getToken } = useAuth()
     const pageParam = searchParams.get('page')
     const searchParam = searchParams.get('search')
 

@@ -7,7 +7,7 @@ function ScheduledPostChecker() {
     try {
         useEffect(() => {
             fetch(`${backend_uri}/api/updateScheduledPost`);
-        }, []);
+        });
     } catch (error) {
         console.error(error)
     }

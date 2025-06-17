@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
 import { useState } from 'react'
@@ -6,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationLink, PaginationNext } from '@/components/ui/pagination'
-import { Search, Edit, Trash2 } from 'lucide-react'
+import { Search, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Post from '@/types/Post'
 import { useAuth } from '@clerk/nextjs'

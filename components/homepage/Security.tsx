@@ -1,6 +1,5 @@
 import React from 'react'
 import Image from 'next/image'
-import { MessageSquareIcon, TrendingUpIcon } from 'lucide-react'
 
 const Security = () => {
     const employment = [

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-import { Clock, AlertCircle, X, Check, Users, FileText, PenTool, Tag, Bookmark, User, Shield } from 'lucide-react'
+import { Clock, AlertCircle, X, Check, PenTool, Tag, Bookmark, User } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import Post from '@/types/Post'
 import { IUser } from '@/types/User'
@@ -57,12 +58,12 @@ export default function QuickStats({
     }).length;
 
     // Calculate monthly published posts
-    const monthlyPublished = approvedPosts.filter(post => {
-        const postDate = new Date(post.createdAt || '');
-        const monthAgo = new Date();
-        monthAgo.setMonth(monthAgo.getMonth() - 1);
-        return postDate > monthAgo;
-    }).length;
+    // const monthlyPublished = approvedPosts.filter(post => {
+    //     const postDate = new Date(post.createdAt || '');
+    //     const monthAgo = new Date();
+    //     monthAgo.setMonth(monthAgo.getMonth() - 1);
+    //     return postDate > monthAgo;
+    // }).length;
 
     const stats = [
         {

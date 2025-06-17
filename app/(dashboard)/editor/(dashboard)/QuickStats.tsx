@@ -1,5 +1,5 @@
 'use client'
-import { Clock, Edit, AlertCircle, X, Check, CheckIcon } from 'lucide-react'
+import { Clock, AlertCircle, X, Check, CheckIcon } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import Post from '@/types/Post'
 

@@ -16,7 +16,6 @@ import { Button } from '@/components/ui/button'
 import { Trash2 } from 'lucide-react'
 import { deleteUser } from './_actions'
 import toast from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
 
 interface User {
     id: string
@@ -35,7 +34,7 @@ interface UserTableProps {
 
 
 
-export function UserTable({ users, availableRoles, currentRole }: UserTableProps) {
+export function UserTable({ users, availableRoles }: UserTableProps) {
     const handleDelete = async (userId: string) => {
         toast.promise(
             deleteUser(userId),

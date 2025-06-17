@@ -68,7 +68,7 @@ function Header() {
         }
 
         fetchActiveBanner();
-    }, [pathname]);
+    }, [pathname, getToken]);
 
     return (
         <header >

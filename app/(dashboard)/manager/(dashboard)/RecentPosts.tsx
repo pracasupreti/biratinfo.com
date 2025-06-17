@@ -3,7 +3,6 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import Post from '@/types/Post'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 import AuthorDisplay from '@/components/AuthorDisplay'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 

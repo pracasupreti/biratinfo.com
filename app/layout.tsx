@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Alata, Jost, Orienta, IBM_Plex_Serif, Roboto, Inter } from "next/font/google";
 import "./globals.css";
-import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
 import ScheduledPostChecker from "@/components/ScheduledPostChecker";
