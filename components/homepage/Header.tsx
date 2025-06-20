@@ -6,82 +6,77 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import MobileNav from '../MobileNav';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { useAuth } from '@clerk/nextjs';
+
+const nav = [
+    { name: <HomeIcon size={16} />, path: "/" },
+    { name: "राजनीति", path: "/politics" },
+    { name: "प्रबिधि", path: "/technology" },
+    { name: "साहित्य", path: "/literature" },
+    { name: "अर्थ", path: "/economy" },
+    { name: "सम्पादकीय ", path: "/a" },
+    { name: "बिचार", path: "/a" },
+    { name: "प्रदेश", path: "/a" },
+    { name: "खेलकुद", path: "/a" },
+    { name: "रोजगार", path: "/a" },
+    { name: "मनोरंजन", path: "/a" },
+    { name: "सुरक्षा", path: "/a" },
+    { name: "अन्य", path: "/a" }
+];
+
+const othersDropdown = [
+    { name: 'पर्यटन', path: '/tourism' },
+    { name: 'स्वास्थ्य', path: '/health' },
+    { name: 'शिक्षा', path: '/education' },
+    { name: 'अन्तराष्ट्रिय', path: '/international' }
+];
 
 function Header() {
-    const nav = [
-        { name: <HomeIcon size={16} />, path: "/" },
-        { name: "राजनीति", path: "/politics" },
-        { name: "प्रबिधि", path: "/technology" },
-        { name: "साहित्य", path: "/literature" },
-        { name: "अर्थ", path: "/economy" },
-        { name: "सम्पादकीय ", path: "/a" },
-        { name: "बिचार", path: "/a" },
-        { name: "प्रदेश", path: "/a" },
-        { name: "खेलकुद", path: "/a" },
-        { name: "रोजगार", path: "/a" },
-        { name: "मनोरंजन", path: "/a" },
-        { name: "सुरक्षा", path: "/a" },
-        { name: "अन्य", path: "/a" }
-    ];
-
-
-    const othersDropdown = [
-        { name: 'पर्यटन', path: '/tourism' },
-        { name: 'स्वास्थ्य', path: '/health' },
-        { name: 'शिक्षा', path: '/education' },
-        { name: 'अन्तराष्ट्रिय', path: '/international' }
-    ];
-
     const pathname = usePathname();
-    const { getToken } = useAuth();
     const [sponsorBanner, setSponsorBanner] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        async function fetchActiveBanner() {
+        const fetchBanner = async () => {
             try {
-                setIsLoading(true);
-                const token = await getToken();
                 const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
-                if (!backend_uri) throw new Error("Missing API endpoint");
+                const apiKey = process.env.NEXT_PUBLIC_API_SPECIAL_KEY;
 
-                const response = await fetch(`${backend_uri}/api/active-banner?name=header_banner`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    cache: 'no-store' // Ensure fresh data
-                });
+                if (!backend_uri || !apiKey) {
+                    throw new Error('Missing backend configuration');
+                }
+
+                const headers = { 'x-special-key': apiKey };
+                const response = await fetch(
+                    `${backend_uri}/api/active-banner?name=header_banner`,
+                    { headers, cache: 'no-store' }
+                );
 
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+                    throw new Error('Failed to fetch banner');
                 }
 
                 const data = await response.json();
                 setSponsorBanner(data?.url || null);
-            } catch (error) {
-                console.error('Error fetching active banner:', error);
-                setSponsorBanner(null); // Explicitly set null on error
+            } catch (err) {
+                console.error('Banner fetch error:', err);
+                setError('Failed to load sponsor banner');
             } finally {
                 setIsLoading(false);
             }
-        }
+        };
 
-        fetchActiveBanner();
-    }, [pathname, getToken]);
+        if (!sponsorBanner && isLoading) {
+            fetchBanner();
+        }
+    }, [sponsorBanner, isLoading]);
 
     return (
-        <header >
+        <header>
             {/* TOPBAR */}
             <div className='md:flex md:flex-col hidden'>
                 <div className='w-full py-1 h-5 bg-text-color flex flex-col sm:flex-row items-center justify-between px-2 md:px-4 lg:px-8 xl:px-16 text-white'>
-                    {/* <p className='text-xs font-alata text-center sm:text-left'>
-                        आज को ताजा खबर
-                    </p>
-                    <p className='text-xs font-alata text-center sm:text-right flex gap-1 items-center'>
-                        <CalendarDaysIcon size={16} />
-                        २८ बैशाख २०८२, आईतवार
-                    </p> */}
+                    {/* Optional: Add breaking news ticker here */}
                 </div>
 
                 <div className='flex flex-col md:flex-row items-center justify-between w-full pt-1 gap-2 md:gap-6 max-w-5xl mx-auto px-4'>
@@ -106,19 +101,27 @@ function Header() {
                         </div>
                     </div>
 
+                    {/* Banner Section */}
                     <div className="relative w-full max-w-[400px] lg:max-w-[500px] xl:max-w-[600px] aspect-[6/1] bg-gray-50 rounded-md">
                         {isLoading ? (
                             <div className="w-full h-full flex items-center justify-center">
-                                <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+                                <Loader2 className='animate-spin h-6 w-6 text-gray-400' />
+                            </div>
+                        ) : error ? (
+                            <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                                {error}
                             </div>
                         ) : sponsorBanner ? (
                             <Image
                                 src={sponsorBanner}
                                 alt='Sponsor Banner'
                                 fill
-                                className="object-contain "
+                                className="object-contain"
                                 priority
-                                onError={() => setSponsorBanner(null)} // Fallback if image fails to load
+                                onError={() => {
+                                    setError('Failed to load banner image');
+                                    setSponsorBanner(null);
+                                }}
                             />
                         ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
@@ -144,7 +147,6 @@ function Header() {
                                                     <div className='mt-0.5'>
                                                         <ChevronDown size={15} />
                                                     </div>
-
                                                 </span>
                                             </div>
                                         </DropdownMenuTrigger>

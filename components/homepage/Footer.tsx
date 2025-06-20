@@ -5,8 +5,8 @@ import { MailIcon, MapPinIcon, NotebookPenIcon, PhoneCallIcon } from 'lucide-rea
 
 function Footer() {
     return (
-        <div className='w-full px-4 lg:px-16 md:px-5 py-10 bg-[#D9D9D9]'>
-            <div className='max-w-8xl mx-auto md:mx-12 lg:mx-20 flex flex-col gap-10'>
+        <div className='w-full px-4 lg:px-16 md:px-5 py-8 bg-[#D9D9D9]'>
+            <div className='max-w-8xl mx-auto md:mx-12 lg:mx-20 flex flex-col gap-5'>
                 <div className='flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left'>
                     <h2 className='text-[20px] font-bold text-gray-900 font-orienta'>विराट इन्फर्म्याटिक्स प्रा. लि.</h2>
                     <div className='flex gap-4 justify-center'>

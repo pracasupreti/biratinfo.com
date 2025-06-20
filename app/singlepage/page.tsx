@@ -1,170 +1,314 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
+
+import { Author, IPost, SinglePost } from '@/types/Post';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState, FC } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import Footer from '@/components/homepage/Footer';
-import { Button } from '@/components/ui/button';
-import Header from '@/components/homepage/Header';
-import { Clock2Icon, TagIcon } from 'lucide-react';
+import { Clock2Icon, TagIcon, CopyIcon, CheckIcon } from 'lucide-react';
 import NepaliDateTime from '@/components/homepage/NepaliDate';
+import Footer from '@/components/homepage/Footer';
+import Header from '@/components/homepage/Header';
+import { Button } from '@/components/ui/button';
+import NepaliTimeDisplay from '@/components/homepage/NepaliTime';
+import { getNepaliCategory } from '@/components/homepage/Hero';
+import Loader from '@/components/Loader';
 
-function Page() {
-    const relatedNews = [
-        {
-            title: 'ताप बढे सँगै बजारमा फलफूलको माग बढ्न थाल्यो(मूल्यसूची सहित)',
-            path: '/images/kasinSinglepage/RelatedImage1.png',
-            description: 'तापक्रममा भएको वृद्धिसँगै उपभोक्ताहरूले मौसमी फलफूलमा देखाएको आकर्षणले बजारमा माग बढाएको छ, जसको ......'
-        },
-        {
-            title: 'उपत्यकाको तापक्रम बढ्ने क्रममा : अरब सागरबाट भित्रिरहेको जलवाष्पयुक्त हावाको आंशिक प्रभाव',
-            path: '/images/kasinSinglepage/RelatedImage2.jpg',
-            description: 'उपत्यकामा तापक्रम वृद्धि जारी: अरब सागरबाट भित्रिएको जलवाष्पयुक्त हावाको आंशिक प्रभावले मौसममा ......'
-        },
-        {
-            title: 'गाउँ गाउँमा रहेका भूमेस्थानमा राम्रोसँग काम होस् भनी प्रकृतिको पूजा आराधना गर्ने प्रचलन',
-            path: '/images/kasinSinglepage/RelatedImage3.jpg',
-            description: 'ग्रामीण भेगमा भूमेस्थानको धार्मिक र सांस्कृतिक महत्व: राम्रो फसल र शान्तिको कामना गर्दै प्रकृतिलाई गरिने ......'
-        },
-        {
-            title: 'अहिंसा नै शान्ति र मैत्रीको आधारशिला हो : भगवान् गौतम बुद्ध',
-            path: '/images/kasinSinglepage/RelatedImage4.png',
-            description: 'संसारलाई शान्तिको बाटो: भगवान् गौतम बुद्धको कालजयी दर्शन - अहिंसा, प्रेम र करुणा नै मानव कल्याण र विश्व ......'
-        },
-    ]
+// --- Helper Functions & Constants ---
+const getAuthorName = (authors: Author[] | undefined): string => {
+    if (!authors || authors.length === 0) return 'अज्ञात';
+    return `${authors[0].firstName} ${authors[0].lastName}`.trim() || 'अज्ञात';
+};
+
+const getAuthorInitial = (authors: Author[] | undefined): string => {
+    const name = getAuthorName(authors);
+    return name.charAt(0).toUpperCase();
+};
+
+const API_CONFIG = {
+    backend_uri: process.env.NEXT_PUBLIC_BACKEND_URL,
+    apiKey: process.env.NEXT_PUBLIC_API_SPECIAL_KEY,
+};
+
+// --- Sub-components for better structure ---
+
+// 1. Post Meta Information Component
+const PostMeta: FC<{ post: SinglePost }> = ({ post }) => (
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm md:text-base text-white/90">
+        <div className="flex items-center gap-2">
+            <Avatar className="w-7 h-7 border-2 border-white/50">
+                <AvatarImage src={post.authors?.[0]?.avatar} alt={getAuthorName(post.authors)} />
+                <AvatarFallback className="bg-primary text-white text-xs">
+                    {getAuthorInitial(post.authors)}
+                </AvatarFallback>
+            </Avatar>
+            <span>{getAuthorName(post.authors)}</span>
+        </div>
+        <span className="flex items-center gap-1.5">
+            <Clock2Icon className="w-4 h-4" />
+            <NepaliTimeDisplay timeText={post.readingTime} />
+        </span>
+        <span className="flex items-center gap-1.5">
+            <TagIcon className="w-4 h-4" />
+            {getNepaliCategory(post.category)}
+        </span>
+        <NepaliDateTime updatedAt={post.updatedAt!} />
+    </div>
+);
+
+// 2. Post Hero Section Component
+const PostHero: FC<{ post: SinglePost }> = ({ post }) => (
+    <div className="relative w-full h-[50vh] md:h-[70vh] overflow-hidden">
+        {post.heroBanner ? (
+            <Image
+                src={post.heroBanner}
+                alt={post.nepaliTitle}
+                fill
+                className="object-cover w-full"
+                priority
+                sizes="(max-width: 768px) 100vw, 80vw"
+            />
+        ) : (
+            <div className="w-full h-full bg-gray-300" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-10 text-white">
+            <div className="max-w-5xl mx-auto">
+                <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-4 drop-shadow-lg">
+                    {post.nepaliTitle}
+                </h1>
+                <PostMeta post={post} />
+            </div>
+        </div>
+    </div>
+);
+
+// 3. Social Share Component
+const SocialShare = () => {
+    const [isCopied, setIsCopied] = useState(false);
+    const copyToClipboard = () => {
+        if (typeof window !== 'undefined') {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                setIsCopied(true);
+                setTimeout(() => setIsCopied(false), 2000);
+            });
+        }
+    };
     return (
-        <div>
-            <Header />
-            <div className='relative w-full h-[40vh] md:h-[50vh] lg:h-[85vh] overflow-hidden'>
-                <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10' />
-                <Image
-                    src="/images/kasinHomepage/SummaryImage1.png"
-                    alt="News headline image"
-                    fill
-                    className='object-cover w-full'
-                />
-            </div>
-
-            <div className="flex flex-col gap-8 max-w-5xl mx-auto px-4 sm:px-6">
-                <article className='mt-4 md:mt-8'>
-                    <div className='relative -mt-20 md:-mt-32 lg:-mt-40 mb-8 z-30'>
-                        <div className='bg-white p-4 md:p-6 rounded-xl shadow-lg max-w-3xl mx-auto'>
-                            <h1 className='text-[16px] md:text-3xl font-bold leading-tight text-text-color mb-2 text-center'>
-                                प्रधानमन्त्री ओलीको राजनीतिक चर्तुयाँईको घेरोमा सभापति देउवा : गर्भनरका कारण भित्रि मनमुटाव
-                            </h1>
-
-                            <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 md:gap-5 xl:gap-12 xl:text-base text-xs sm:text-sm md:text-sm font-normal text-text-color mb-2">
-                                <p className="flex items-center gap-1">
-                                    <Avatar className="w-6 h-6">
-                                        <AvatarImage src="/images/kasinHomepage/author.jpg" />
-                                        <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
-                                    प्रकाश थापा
-                                </p>
-                                <p className="flex items-center gap-1">
-                                    <Clock2Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                                    ६ मिनेटमा पढ्नुहोस
-                                </p>
-                                <p className="flex items-center gap-1">
-                                    <TagIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                                    दुर्घटना
-                                </p>
-                            </div>
-                            <div className='flex justify-center'>
-                                <NepaliDateTime />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className='prose prose-base max-w-none md:prose-lg prose-p:text-gray-700 prose-headings:text-gray-900 text-center md:text-start'>
-                        <p className='text-base md:text-lg leading-relaxed text-gray-700'>
-                            नेपालको राजनीति अहिले तरंगित अवस्थामा छ । नेपाली कांग्रेस र नेकपा एमालेको गठबन्धन सरकारको अहिले चौतर्फी आलोचना भैरहेको छ । देशले अहिले सम्म नयाँ गर्भर पाउन सकेको छैन । जसका कारण आर्थिक चलखेलका कुराहरु राम्ररी चलायमान हुन सकेको छैन । गठबन्धन सरकारको गृहमन्त्री रहेका रमेश लेखकले आफूले चाहेको जस्तो निर्णय गर्न सकेनन् । कांग्रेस सभापति शेरबहादुर देउवाको चाहनामा रहेको गर्भर पदले गर्दा अहिले कांग्रेसको मात्र नभई गृहमन्त्री लेखकको पनि आलोचना भैरहेको छ ।
-                        </p>
-
-                        <div className='my-8 grid md:grid-cols-2 gap-6 md:gap-16 items-left'>
-                            <div>
-                                <h2 className='text-2xl md:text-3xl font-bold mb-4 text-text-color'>कहाँ जाँदै छ राज्य ? : प्रमुख क्षेत्र अर्थ, चिकित्सा , शिक्षा देखी हरेक क्षेत्र तनावग्रस्त</h2>
-                                <p className='mb-3 text-base md:text-lg leading-relaxed text-gray-700'>
-                                    राज्य अहिले तहसनहस अवस्थामा पुगेको छ। प्रधानमन्त्री केपी शर्मा ओली नेतृत्वको गठबन्धन सरकार जनताको चाहनाको विपक्ष भन्दा पनि धेरै ध्यानकेन्द्रित गरिंदैछ। राजयमा अहिले प्रमुख विषय भनेको शिक्षक आन्दोलन भएको छ। आफ्नो माग पूरा नभएसम्म आन्दोलनलाई नरोक्ने घोषणा सडकमा उत्रिएका गुरु गुरुआमाहरुको मागलाई सम्बोधन गर्न भन्दा पनि आन्दोलनलाई कसरी तितरबितर पार्न दाउमा सरकार पक्ष लागेको देखिन थालेको छ।
-                                </p>
-                                <p className='mb-3 text-base md:text-lg leading-relaxed text-gray-700'>
-                                    गुरु गुरुआमाहरुको मागलाई सरकारले त्यति धेरै वास्ता नगर्नुको प्रमुख कारण शैक्षिक क्षेत्रमा लादिएको राजनीति पनि हो। शिक्षा संग सम्बन्धित एक शिक्षा विज्ञ भन्छन्, प्राय शिक्षकहरु कुनै न कुनै राजनीतिक दल संग सरोकार राख्ने हुँदा सरकारले उनीहरुको मागलाई त्यति गंभीरताका साथ लिएको नहो।
-                                </p>
-                                <p className='text-base md:text-lg leading-relaxed text-gray-700'>
-                                    हो उनको भनाईलाई मात्रै हो भने अहिले गठबन्धन सरकारका नेतृत्वकर्ता प्रधानमन्त्री ओली देखी सत्ता साझेदार दल नेपाल कांग्रेसका नेताहरु स्वयं पनि शिक्षक आन्दोलनमा लागेको गुरु गुरुआमाहरुलाई शिक्षक होइन कि आफ्नो दलका कार्यकर्ताहरुको रुपमा चित्रित गर्न हुँदा पनि यो अवस्था उब्जिएको हो।
-                                </p>
-                            </div>
-                            <div className='w-full md:w-[400px] max-w-full relative mx-auto md:mx-0 h-auto'>
-                                <div className='relative w-full h-[550px] max-h-[80vh] bg-[url(/images/kasinSinglepage/advertisement.png)] rounded-md bg-cover bg-no-repeat' />
-                            </div>
-                        </div>
-
-                        <h2 className='text-2xl md:text-3xl font-bold my-6 text-text-color'>प्रधानमन्त्री ओली : न सत्ता नेतृत्वमा सफल न पार्टी नेतृत्वमा : बोल्यो कि पोल्यो को बाटोमा ओली नेतृत्व</h2>
-                        <p className='text-base md:text-lg leading-relaxed text-gray-700'>
-                            बुधवारप्रतिनिधिसभामा प्रतिपक्षी दलहरुले उनको राजीनामाको कुरा उठाए। भने अहिले आफ्नै दल नेकपा एमालेमा एउटा तानाशाही प्रवृत्तिको अध्यक्षको परिचय हुन थालेको छ। सत्ताको नेतृत्वकर्ता प्रधानमन्त्री ओलीले जसरी तानाशाही प्रवृत्ति लाद्दै छन्। त्यसरी पार्टीमा पनि उनको शैली त्यस्तै छ।
-                        </p>
-
-                        <blockquote className='border-l-4 border-gray-300 pl-4 my-6 italic text-base md:text-lg leading-relaxed text-gray-700'>
-                            &quot;कार्यकारी प्रमुखको गहन भूमिकामा रहेका प्रधानमन्त्री केपी ओली चौतर्फी बिरोधका पात्र &quot;
-                        </blockquote>
-
-                        <p className='text-base md:text-lg leading-relaxed text-gray-700'>
-                            यसरी शिक्षक आन्दोलनको पक्षमा बोलेकै भन्दै पूर्व शिक्षामन्त्री धनिराम पौडेललाई राजिनामा दिन बाध्य पारे। पूर्व मन्त्री भट्टराई शिक्षक बिधेयकलाई पास गर्नुपर्ने कुरा उठाउँछन्। अहिले एमालेमा अर्कोतिर तानाशाह बनिरहेका प्रधानमन्त्री ओली आफ्नो बिरोधको स्वर सुन्न नचाहने हठ्ठमाबादी सोचलाई अहिले पुनरवृत्ति गरिरहेका प्रधानमन्त्री ओलीले आफ्नो नेतृत्वको सत्ता र दलमा भरपूर पकड लिइरहेका छन्।
-                        </p>
-
-                        <h2 className='text-2xl md:text-3xl font-bold my-6 text-text-color'>निष्कर्ष</h2>
-                        <p className='text-base md:text-lg leading-relaxed text-gray-700'>
-                            देशका हरेक स्थान होटल, पसल देखी सार्वजनिक स्थलहरुमा प्रधानमन्त्री ओलीको क्रियाकलापलाई निकै निचो चर्चा चुलु रहेको छ। युवाहरुमाझ चर्चित रहेको टिकटक ह्यान्डिलमा ओलीको कार्य व्यवहारले गर्दा अहिले देशका विशेष गरि युवा युवतीहरुको जमात उनी विरुद्ध जुरुमुर्याउदै अनेक थरी अवस्था रहेको छ।
-                        </p>
-                    </div>
-
-                    <div className='border-t border-b border-gray-200 py-4 my-8'>
-                        <div className='flex flex-col md:flex-row items-center justify-between gap-3'>
-                            <h3 className='text-base font-semibold text-gray-800'>सेयर गर्नुहोस्:</h3>
-                            <div className="sharethis-inline-share-buttons"></div>
-                        </div>
-                    </div>
-                </article>
-            </div>
-
-            {/* Related News */}
-            <div className="mb-16 flex flex-col gap-4 max-w-5xl mx-auto px-4 sm:px-6">
-                <p className="font-bold text-base sm:text-lg md:text-xl text-center">
-                    सम्बन्धित खबर
-                </p>
-
-                <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {relatedNews.map((items, index) => (
-                        <div
-                            key={index}
-                            className="flex flex-col gap-2 group border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white"
-                        >
-                            <div className="w-full h-[25vh] sm:h-[20vh] md:h-[18vh] lg:h-[16vh] relative overflow-hidden rounded-t-lg">
-                                <Image
-                                    src={items.path}
-                                    alt="image"
-                                    fill
-                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                />
-                            </div>
-                            <div className="p-3 flex flex-col gap-2">
-                                <p className="font-semibold text-xs sm:text-sm md:text-base leading-snug text-text-color cursor-pointer line-clamp-2">
-                                    {items.title}
-                                </p>
-                                <p className="font-[400] text-xs text-zinc-500 line-clamp-3">
-                                    {items.description}
-                                </p>
-                                <div>
-                                    <Button className="font-[400] text-xs font-inter bg-white text-black border border-zinc-400 shadow-sm h-8">
-                                        थप पढ्नुहोस्
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+        <div className='border-t border-b border-gray-200 py-4 my-8'>
+            <div className='flex flex-col sm:flex-row items-center justify-between gap-4'>
+                <h3 className='text-lg font-semibold text-gray-800'>यो खबर सेयर गर्नुहोस्:</h3>
+                <div className="flex items-center gap-2">
+                    <div className="sharethis-inline-share-buttons"></div>
+                    <Button variant="outline" size="sm" onClick={copyToClipboard} className="gap-2">
+                        {isCopied ? <CheckIcon className="w-4 h-4 text-green-500" /> : <CopyIcon className="w-4 h-4" />}
+                        {isCopied ? 'लिङ्क कपि भयो' : 'लिङ्क कपि'}
+                    </Button>
                 </div>
             </div>
+        </div>
+    );
+};
+
+// 4. NEW: Component for Content with a Sidebar Ad
+const ContentWithSidebarAd: FC<{ contentHtml: string; sponsorBanner: string | null; }> = ({ contentHtml, sponsorBanner }) => {
+    return (
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 my-12 not-prose">
+            {/* Main Content on the left */}
+            <div
+                className="flex-1 article-content"
+                dangerouslySetInnerHTML={{ __html: contentHtml }}
+            />
+
+            {/* Sponsor Ad on the right */}
+            <div className="w-full lg:w-[300px] lg:min-w-[300px] h-[500px] rounded-lg bg-gray-100 overflow-hidden shadow-md sticky top-24">
+                {sponsorBanner ? (
+                    <a href="#" target="_blank" rel="noopener noreferrer sponsored" className="block w-full h-full">
+                        <Image
+                            src={sponsorBanner}
+                            alt="Sponsor Advertisement"
+                            width={300}
+                            height={500}
+                            className="w-full h-full object-cover"
+                        />
+                    </a>
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-500 bg-gray-200 p-4">
+                        <div className="text-center">
+                            <p className="font-medium mb-2">Advertisement</p>
+                            <p className="text-sm">Your brand could be here</p>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+// 5. UPDATED: Article Body Component
+const ArticleBody: FC<{ blocks: { content: string }[], sponsorBanner: string | null }> = ({ blocks, sponsorBanner }) => {
+    // We will replace the block at this index with the two-column ad layout
+    const AD_INSERT_INDEX = 2; // Inserts the ad layout at the 3rd position
+
+    return (
+        <div className="prose-lg max-w-none text-gray-800 leading-relaxed">
+            {blocks.map((block, index) => {
+                // Check if this is the designated block for the ad layout
+                if (index === AD_INSERT_INDEX && sponsorBanner) {
+                    return (
+                        <ContentWithSidebarAd
+                            key={`ad-block-${index}`}
+                            contentHtml={block.content}
+                            sponsorBanner={sponsorBanner}
+                        />
+                    );
+                }
+
+                // Otherwise, render the standard content block
+                return (
+                    <div
+                        key={`block-${index}`}
+                        className="mb-6 article-content"
+                        dangerouslySetInnerHTML={{ __html: block.content }}
+                    />
+                );
+            })}
+        </div>
+    );
+};
+
+// 6. Related Post Card Component
+const RelatedPostCard: FC<{ post: IPost }> = ({ post }) => (
+    <Link href={`/post/${post.category}/${post._id}`} className="block group">
+        <article className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col hover:shadow-xl transition-shadow duration-300 hover:-translate-y-1">
+            <div className="relative h-48">
+                {post.heroBanner ? (
+                    <Image src={post.heroBanner} alt={post.nepaliTitle} fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
+                ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm p-4 text-center">तस्वीर उपलब्ध छैन</div>
+                )}
+            </div>
+            <div className="p-4 flex flex-col flex-grow">
+                <h5 className="font-semibold text-base line-clamp-3 mb-2 text-text-color group-hover:text-primary transition-colors">{post.nepaliTitle}</h5>
+                <p className="text-sm text-gray-600 line-clamp-2 mt-auto">{post.excerpt}</p>
+            </div>
+        </article>
+    </Link>
+);
+
+
+// --- Main Page Component ---
+const PostPage = () => {
+    const params = useParams();
+    const router = useRouter();
+    const { category, id } = params;
+
+    const [postData, setPostData] = useState<SinglePost | null>(null);
+    const [relatedPosts, setRelatedPosts] = useState<IPost[]>([]);
+    const [sponsorBanner, setSponsorBanner] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!category || !id) return;
+        const { backend_uri, apiKey } = API_CONFIG;
+        if (!backend_uri || !apiKey) {
+            setErrorMessage('API configuration is missing.');
+            setIsLoading(false);
+            return;
+        }
+
+        const fetchData = async () => {
+            setIsLoading(true);
+            setErrorMessage(null);
+            try {
+                const headers = { 'x-special-key': apiKey };
+                const options: RequestInit = { headers, cache: 'no-store' };
+
+                const postRes = await fetch(`${backend_uri}/api/posts/full/${category}/${id}`, options);
+                if (!postRes.ok) throw new Error(`Failed to fetch post. Status: ${postRes.status}`);
+                const postResult = await postRes.json();
+                const fetchedPost = postResult?.post?.[0];
+
+                if (!fetchedPost) throw new Error('Post not found.');
+                setPostData(fetchedPost);
+
+                const [bannerRes, relatedRes] = await Promise.all([
+                    fetch(`${backend_uri}/api/active-banner?name=article_banner_portrait`, options), // Changed banner name
+                    fetch(`${backend_uri}/api/posts/category-summary/${fetchedPost.category}`, options)
+                ]);
+
+                if (bannerRes.ok) {
+                    const bannerData = await bannerRes.json();
+                    setSponsorBanner(bannerData?.url || null);
+                }
+
+                if (relatedRes.ok) {
+                    const relatedData = await relatedRes.json();
+                    setRelatedPosts(relatedData.filter((p: IPost) => p._id !== id).slice(0, 4));
+                }
+
+            } catch (error: any) {
+                console.error('Fetch error:', error);
+                setErrorMessage(error.message || 'An unexpected error occurred.');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [category, id]);
+
+    // --- Render Logic ---
+    if (isLoading) return <Loader />;
+
+    if (errorMessage) return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+            <div className="text-center p-8 bg-white rounded-lg shadow-md">
+                <h2 className="text-2xl font-bold text-red-600 mb-4">एउटा त्रुटि भयो</h2>
+                <p className="text-gray-600 mb-6">{errorMessage}</p>
+                <Button onClick={() => router.push('/')}>गृहपृष्ठमा फर्कनुहोस्</Button>
+            </div>
+        </div>
+    );
+
+    if (!postData) return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+            <div className="text-center p-8 bg-white rounded-lg shadow-md">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">पोस्ट फेला परेन</h2>
+                <p className="text-gray-600 mb-6">तपाईंले खोज्नुभएको सामग्री उपलब्ध छैन।</p>
+                <Button onClick={() => router.push('/')}>गृहपृष्ठमा फर्कनुहोस्</Button>
+            </div>
+        </div>
+    );
+
+    return (
+        <div className="bg-background min-h-screen flex flex-col">
+            <Header />
+            <PostHero post={postData} />
+            <main className="flex-1 w-full py-8 md:py-12">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6">
+                    <article className="bg-white rounded-xl shadow-lg p-6 md:p-10">
+                        {postData.blocks && <ArticleBody blocks={postData.blocks} sponsorBanner={sponsorBanner} />}
+                        <SocialShare />
+                    </article>
+                </div>
+                {relatedPosts.length > 0 && (
+                    <section className="bg-gray-50 mt-12 py-12">
+                        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+                            <h4 className="text-3xl font-bold mb-8 text-center text-text-color">सम्बन्धित खबरहरू</h4>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {relatedPosts.map((post) => (<RelatedPostCard key={post._id} post={post} />))}
+                            </div>
+                        </div>
+                    </section>
+                )}
+            </main>
             <Footer />
         </div>
-    )
-}
+    );
+};
 
-export default Page
+export default PostPage;

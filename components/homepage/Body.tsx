@@ -1,23 +1,46 @@
-import React from 'react'
-import Summary from './Summary'
-import Politics from './Politics'
-import Economy from './Economy'
-import Technology from './Technology'
-import Sports from './Sports'
-import Security from './Security'
+// Body.tsx
+import React from 'react';
+import Summary from './Summary';
+import Economy from './Economy';
+import Technology from './Technology';
+import { PostsResponse } from '@/types/Post';
+import Tourism from './Tourism';
+import Agriculture from './Agriculture';
+import Lifestyle from './Lifestyle';
 
 
-function Body() {
-    return (
-        <div>
-            <Summary />
-            <Politics />
-            <Economy />
-            <Technology />
-            <Sports />
-            <Security />
-        </div>
-    )
+interface BodyProps {
+    data: PostsResponse[] | null;
 }
 
-export default Body
+function Body({ data }: BodyProps) {
+    if (!data) return null;
+
+    // Extract all posts
+    const allPosts = data.flatMap(item => item.post);
+
+    // Filter posts by category
+    const summaryPosts = allPosts.filter(post =>
+        ['sports', 'health', 'education', 'entertainment', 'culture'].includes(post.category?.toLowerCase())
+    );
+
+    const tourismPosts = allPosts.filter(post => post.category?.toLowerCase() === 'tourism' && !post.tags?.includes('breaking-news'));
+    const economyPosts = allPosts.filter(post => post.category?.toLowerCase() === 'economy');
+    const technologyPosts = allPosts.filter(post => post.category?.toLowerCase() === 'technology');
+    const agriculturePosts = allPosts.filter(post => post.category?.toLowerCase() === 'agriculture');
+    const lifestylePosts = allPosts.filter(post => post.category?.toLowerCase() === 'lifestyle');
+
+
+    return (
+        <div>
+            <Summary posts={summaryPosts} />
+            <Tourism posts={tourismPosts} />
+            <Economy posts={economyPosts} />
+            <Technology posts={technologyPosts} />
+            <Agriculture posts={agriculturePosts} />
+            <Lifestyle posts={lifestylePosts} />
+        </div>
+    );
+}
+
+export default Body;

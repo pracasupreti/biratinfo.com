@@ -21,7 +21,8 @@ export interface PostState {
     readingTime?: string
     heroBanner: string
     ogBanner: string
-    imageCredit: string
+    heroImageCredit: string
+    ogImageCredit: string
     sponsoredAds: string
     access: string
     audioFile: File | null
@@ -59,7 +60,8 @@ export const usePostStore = create<PostState>((set, get) => ({
     readingTime: '',
     heroBanner: '',
     ogBanner: '',
-    imageCredit: '',
+    heroImageCredit: '',
+    ogImageCredit: '',
     sponsoredAds: '',
     access: 'public',
     audioFile: null,
@@ -146,7 +148,8 @@ export const usePostStore = create<PostState>((set, get) => ({
         if (!state.date.trim()) newErrors.date = 'Date is required.'
         if (!state.time.trim()) newErrors.time = 'Time is required.'
         if (state.authors.length === 0) newErrors.authors = 'At least one author is required.'
-        if (!state.imageCredit.trim()) newErrors.imageCredit = 'Image credit is required.'
+        if (!state.heroImageCredit.trim()) newErrors.heroImageCredit = 'Hero Image credit is required.'
+        if (!state.ogImageCredit.trim()) newErrors.ogImageCredit = 'Og Image credit is required.'
         if (!state.heroBanner) newErrors.heroBanner = 'Hero banner image is required.'
         if (!state.ogBanner) newErrors.ogBanner = 'OG banner image is required.'
 
@@ -189,7 +192,8 @@ export const usePostStore = create<PostState>((set, get) => ({
             readingTime: '',
             heroBanner: '',
             ogBanner: '',
-            imageCredit: '',
+            heroImageCredit: '',
+            ogImageCredit: '',
             sponsoredAds: '',
             access: 'public',
             audioFile: null,
@@ -216,7 +220,8 @@ export const usePostStore = create<PostState>((set, get) => ({
             readingTime: postData.readingTime || '',
             heroBanner: postData.heroBanner || '',
             ogBanner: postData.ogBanner || '',
-            imageCredit: postData.imageCredit || '',
+            heroImageCredit: postData.heroImageCredit || '',
+            ogImageCredit: postData.ogImageCredit || '',
             sponsoredAds: postData.sponsoredAds || '',
             access: postData.access || 'public',
             audioFile: postData.audioFile || null,

@@ -41,7 +41,7 @@ export default function RecentPosts({ posts, loading = false }: RecentPostsProps
                 <div className="col-span-1 font-medium">ID</div>
                 <div className="col-span-4 font-medium">Post</div>
                 <div className="col-span-2 font-medium">Category</div>
-                <div className="col-span-3 font-medium">Author</div>
+                <div className="col-span-3 font-medium flex justify-center">Author</div>
                 <div className="col-span-2 font-medium">Posted</div>
             </div>
 
@@ -102,7 +102,7 @@ export default function RecentPosts({ posts, loading = false }: RecentPostsProps
                         </div>
 
                         {/* Author */}
-                        <div className="col-span-12 md:col-span-3 flex items-center">
+                        <div className="col-span-12 md:col-span-3 flex items-center justify-center">
                             {post.authors?.[0] ? (
                                 <AuthorDisplay authorId={post.authors[0]} />
                             ) : (

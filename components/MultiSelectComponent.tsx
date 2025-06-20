@@ -55,7 +55,7 @@ export function MultiSelect({
                     className="flex flex-wrap gap-1 items-center min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
                     onClick={() => setIsOpen(true)}
                 >
-                    {value.length > 0 ? (
+                    {
                         value.map(val => {
                             const option = options.find(o => o.value === val)
                             return (
@@ -78,9 +78,7 @@ export function MultiSelect({
                                 </Badge>
                             )
                         })
-                    ) : (
-                        <span className="text-muted-foreground">{placeholder}</span>
-                    )}
+                    }
                     <Input
                         type="text"
                         value={search}

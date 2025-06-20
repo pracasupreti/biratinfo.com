@@ -95,7 +95,7 @@ export default function SponsorBannerManager() {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ url, name: 'header_banner' })
+                body: JSON.stringify({ url, name: 'sponsor_banner' })
             })
 
             if (!response.ok) {

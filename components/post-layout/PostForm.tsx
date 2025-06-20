@@ -21,7 +21,7 @@ export function PostForm() {
         updateBlock
     } = usePostStore()
 
-    const maxChars = 60
+    const maxChars = 70
 
     return (
         <Card className="mb-3 shadow-sm rounded-lg border">
@@ -89,7 +89,6 @@ export function PostForm() {
                         <RichTextEditor
                             value={block.content}
                             onChange={(html) => updateBlock(i, html)}
-                            placeholder={i === 0 ? 'मुख्य सामग्री यहाँ लेख्नुहोस्...' : `Content block ${i + 1}`}
                         />
                     </div>
                 ))}
