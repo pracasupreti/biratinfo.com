@@ -6,6 +6,9 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import MobileNav from '../MobileNav';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { useAuth } from '@clerk/nextjs';
+
+
 
 const nav = [
     { name: <HomeIcon size={16} />, path: "/" },
@@ -27,7 +30,8 @@ const othersDropdown = [
     { name: 'पर्यटन', path: '/tourism' },
     { name: 'स्वास्थ्य', path: '/health' },
     { name: 'शिक्षा', path: '/education' },
-    { name: 'अन्तराष्ट्रिय', path: '/international' }
+    { name: 'अन्तराष्ट्रिय', path: '/international' },
+    { name: 'पोस्ट न्युज ', path: '/sign-up' }
 ];
 
 function Header() {
@@ -35,9 +39,14 @@ function Header() {
     const [sponsorBanner, setSponsorBanner] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const { getToken } = useAuth()
+    let token: string | null
+
 
     useEffect(() => {
         const fetchBanner = async () => {
+            token = await getToken()
+            othersDropdown[4].path = token ? '/manager' : '/sign-in'
             try {
                 const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
                 const apiKey = process.env.NEXT_PUBLIC_API_SPECIAL_KEY;

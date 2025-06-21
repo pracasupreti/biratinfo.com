@@ -1,8 +1,9 @@
 import React from 'react'
 import Image from 'next/image'
-import { IPost } from '@/types/Post'
+import { Author, IPost } from '@/types/Post'
 import { getNepaliCategory } from './Hero'
 import Link from 'next/link'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 interface SummaryProps {
     posts: IPost[]
@@ -15,6 +16,11 @@ const Lifestyle = ({ posts }: SummaryProps) => {
                 <p className="text-center text-text-color">No Technology posts available</p>
             </div>
         )
+    }
+    const getAuthorName = (authors: Author[] | undefined): string => {
+        if (!authors || authors.length === 0) return 'अज्ञात'
+        const firstAuthor = authors[0]
+        return `${firstAuthor.firstName} ${firstAuthor.lastName}`.trim()
     }
 
     return (
@@ -44,6 +50,17 @@ const Lifestyle = ({ posts }: SummaryProps) => {
                             <p className='text-[#808080] font-ibm_plex_serif font-medium text-[14px] line-clamp-2'>
                                 {post.excerpt}
                             </p>
+                            <div className="flex items-center gap-3">
+                                <div className="h-[24px] w-[24px] rounded-full">
+                                    <Avatar className="h-5 w-5 sm:h-6 sm:w-6">
+                                        <AvatarImage src={post?.authors[0]?.avatar} alt={post?.authors[0]?.firstName} />
+                                        <AvatarFallback>{post?.authors[0]?.firstName.slice(0, 2).toUpperCase()}</AvatarFallback>
+                                    </Avatar>
+                                </div>
+                                <span className="font-inter font-bold text-md text-[#808080]">
+                                    {getAuthorName(post.authors)}
+                                </span>
+                            </div>
                         </div>
                     ))}
                 </div>

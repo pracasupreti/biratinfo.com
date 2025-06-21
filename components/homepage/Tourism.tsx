@@ -60,7 +60,7 @@ function Tourism({ posts }: SummaryProps) {
                                 </p>
                             </div>
                             <div className="text-[#808080] font-roboto text-md flex items-center gap-2">
-                                <span>{getAuthorName(featuredPost.authors)}</span>
+                                <span className='font-bold'>{getAuthorName(featuredPost.authors)}</span>
                                 <span>·</span>
                                 {featuredPost.updatedAt && (
                                     <span><NepaliDateTime updatedAt={featuredPost.updatedAt!} /></span>
@@ -90,7 +90,7 @@ function Tourism({ posts }: SummaryProps) {
                                         {post.excerpt}
                                     </p>
                                     <div className="text-[#808080] font-roboto text-md flex items-center gap-2 mt-1.5">
-                                        <span>{getAuthorName(post.authors)}</span>
+                                        <span className='font-bold'>{getAuthorName(post.authors)}</span>
                                         <span>·</span>
                                         {post.updatedAt && (
                                             <span><NepaliDateTime updatedAt={post.updatedAt} /></span>

@@ -259,7 +259,7 @@ const PostPage = () => {
                 if (!postRes.ok) throw new Error(`Failed to fetch post. Status: ${postRes.status}`);
 
                 const postResult = await postRes.json();
-                const fetchedPost = postResult?.post?.[0];
+                const fetchedPost = postResult?.post;
                 if (!fetchedPost) throw new Error('Post not found.');
                 setPostData(fetchedPost);
 

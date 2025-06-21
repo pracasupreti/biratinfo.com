@@ -67,6 +67,20 @@ const tagOptions = [
     { value: 'traffic-update', en: 'Traffic Update', np: 'यातायात जानकारी' }
 ];
 
+const Language = [
+    { value: 'english', language: 'English' },
+    { value: 'nepali', language: 'Nepali' },
+    { value: 'hindi', language: 'Hindi' },
+    { value: 'maithali', language: 'Maithali' },
+    { value: 'bhojpuri', language: 'Bhojpuri' },
+    { value: 'tharu', language: 'Tharu' },
+    { value: 'nepal bhasha', language: 'Nepal bhasha' },
+    { value: 'sanskrit', language: 'Sanskrit' },
+    { value: 'urdu', language: 'Urdu' },
+    { value: 'arabic', language: 'Arabic' },
+    { value: 'korean', language: 'Korean' },
+]
+
 
 export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps) {
     const router = useRouter();
@@ -275,8 +289,11 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                                 <SelectValue placeholder="Select language" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="english">English</SelectItem>
-                                <SelectItem value="nepali">Nepali</SelectItem>
+                                {Language.map((item, index) =>
+                                    <SelectItem key={index} value={item.value}>{item.language}</SelectItem>
+                                )}
+
+
                             </SelectContent>
                         </Select>
                     </div>
@@ -316,6 +333,19 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                         {errors.heroBanner && <p className="text-red-500 text-xs mt-0.5">{errors.heroBanner}</p>}
                     </div>
 
+                    {/* Hero Image Credit */}
+                    <div className="space-y-1">
+                        <Label htmlFor="imageCredit" className='text-sm font-medium text-gray-800'>Hero Image Credit</Label>
+                        <Input
+                            id="heroImageCredit"
+                            value={heroImageCredit}
+                            onChange={(e) => setField('heroImageCredit', e.target.value)}
+                            placeholder="Image credit"
+                            className="w-full bg-gray-100 h-8"
+                        />
+                        {errors.heroImageCredit && <p className="text-red-500 text-xs mt-0.5">{errors.heroImageCredit}</p>}
+                    </div>
+
                     {/* OG Banner */}
                     <div className='space-y-1'>
                         <FileUploadSection
@@ -331,30 +361,7 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                         {errors.ogBanner && <p className="text-red-500 text-xs mt-0.5">{errors.ogBanner}</p>}
                     </div>
 
-                    {/* Sponsored Ads */}
-                    <FileUploadSection
-                        label="Sponsored Ads"
-                        field="sponsoredAds"
-                        value={sponsoredAds}
-                        isUploading={isSponsoredAdsUploading}
-                        handleFileUpload={handleFileUpload}
-                        router={router}
-                        isEditor={isEditor}
-                        isOtherUploading={isHeroUploading || isOgUploading || isSubmitting}
-                    />
 
-                    {/* Hero Image Credit */}
-                    <div className="space-y-1">
-                        <Label htmlFor="imageCredit" className='text-sm font-medium text-gray-800'>Hero Image Credit</Label>
-                        <Input
-                            id="heroImageCredit"
-                            value={heroImageCredit}
-                            onChange={(e) => setField('heroImageCredit', e.target.value)}
-                            placeholder="Image credit"
-                            className="w-full bg-gray-100 h-8"
-                        />
-                        {errors.heroImageCredit && <p className="text-red-500 text-xs mt-0.5">{errors.heroImageCredit}</p>}
-                    </div>
 
                     {/* Og Image Credit */}
                     <div className="space-y-1">
@@ -368,6 +375,19 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                         />
                         {errors.ogImageCredit && <p className="text-red-500 text-xs mt-0.5">{errors.ogImageCredit}</p>}
                     </div>
+
+                    {/* Sponsored Ads */}
+                    <FileUploadSection
+                        label="Sponsored Ads"
+                        field="sponsoredAds"
+                        value={sponsoredAds}
+                        isUploading={isSponsoredAdsUploading}
+                        handleFileUpload={handleFileUpload}
+                        router={router}
+                        isEditor={isEditor}
+                        isOtherUploading={isHeroUploading || isOgUploading || isSubmitting}
+                    />
+
 
                     {/* Access */}
                     <div className="space-y-1">

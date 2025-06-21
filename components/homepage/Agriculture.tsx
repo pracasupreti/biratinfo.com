@@ -49,7 +49,7 @@ function Agriculture({ posts }: SummaryProps) {
                                 </p>
                             </div>
                             <div className="text-[#808080] font-roboto text-md flex items-center gap-2">
-                                <span>{getAuthorName(featuredPost.authors)}</span>
+                                <span className='font-bold'>{getAuthorName(featuredPost.authors)}</span>
                                 <span>·</span>
                                 {featuredPost.updatedAt && (
                                     <span><NepaliDateTime updatedAt={featuredPost.updatedAt!} /></span>
@@ -78,7 +78,7 @@ function Agriculture({ posts }: SummaryProps) {
                                         {post.excerpt}
                                     </p>
                                     <div className="text-[#808080] font-roboto text-md flex items-center gap-2">
-                                        <span>{getAuthorName(featuredPost.authors)}</span>
+                                        <span className='font-bold'>{getAuthorName(featuredPost.authors)}</span>
                                         <span>·</span>
                                         {featuredPost.updatedAt && (
                                             <span><NepaliDateTime updatedAt={featuredPost.updatedAt!} /></span>

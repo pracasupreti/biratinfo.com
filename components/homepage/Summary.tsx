@@ -18,8 +18,10 @@ function Summary({ posts }: SummaryProps) {
             </div>
         )
     }
+
+    const currentPost = posts.slice(0, 5)
     // First post will be featured, rest will be in grid
-    const [featuredPost, ...gridPosts] = posts
+    const [featuredPost, ...gridPosts] = currentPost
 
     return (
         <div className="w-full px-4 lg:px-16 md:px-5 py-10">

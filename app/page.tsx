@@ -66,7 +66,7 @@ export default function Page() {
         const options: RequestInit = { headers, cache: 'no-store' }
 
         // Fetch banner and hero in parallel
-        const heroRes = await fetch(`${backend_uri}/api/posts/tags-summary/breaking-news`, options)
+        const heroRes = await fetch(`${backend_uri}/api/posts/featured-news`, options)
 
 
         if (!heroRes.ok) {

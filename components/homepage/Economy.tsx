@@ -60,7 +60,7 @@ function Economy({ posts }: SummaryProps) {
                                         {post.excerpt}
                                     </p>
                                     <div className="text-[#808080] font-roboto text-md flex items-center gap-2 mt-1.5">
-                                        <span>{getAuthorName(post.authors)}</span>
+                                        <span className='font-bold'>{getAuthorName(post.authors)}</span>
                                         <span>·</span>
                                         {post.updatedAt && (
                                             <span><NepaliDateTime updatedAt={post.updatedAt} /></span>

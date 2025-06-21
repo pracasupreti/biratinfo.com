@@ -58,7 +58,7 @@ function Technology({ posts }: SummaryProps) {
                                         <AvatarFallback>{post?.authors[0]?.firstName.slice(0, 2).toUpperCase()}</AvatarFallback>
                                     </Avatar>
                                 </div>
-                                <span className="font-inter font-[500] text-md text-[#808080]">
+                                <span className="font-inter font-bold text-md text-[#808080]">
                                     {getAuthorName(post.authors)}
                                 </span>
                             </div>
