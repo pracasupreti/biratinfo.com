@@ -127,9 +127,9 @@ export default function Dashboard() {
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between">
                             <CardTitle>Recent Approved Posts</CardTitle>
-                            <Button onClick={() => router.push('/editor/post-form')}>
+                            <Button onClick={() => router.push('/editor/post')}>
                                 <PlusCircle className="mr-2 h-4 w-4" />
-                                Write Post
+                                Write a Post
                             </Button>
                         </CardHeader>
                         <CardContent>

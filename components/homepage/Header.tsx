@@ -1,244 +1,32 @@
-'use client'
-import { ChevronDown, HomeIcon, Loader2 } from 'lucide-react';
-import Image from 'next/image'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
-import MobileNav from '../MobileNav';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { useAuth } from '@clerk/nextjs';
+// components/Header.tsx (Server Component)
+import BannerSection from './BannerSection';
+import HeaderClient from './HeaderClient';
+
+import Logo from './Logo';
+import MobileHeader from './MobileHeader';
+import { navConfig, othersDropdownConfig } from './NavConfig';
 
 
 
-const nav = [
-    { name: <HomeIcon size={16} />, path: "/" },
-    { name: "राजनीति", path: "/politics" },
-    { name: "प्रबिधि", path: "/technology" },
-    { name: "साहित्य", path: "/literature" },
-    { name: "अर्थ", path: "/economy" },
-    { name: "सम्पादकीय ", path: "/a" },
-    { name: "बिचार", path: "/a" },
-    { name: "प्रदेश", path: "/a" },
-    { name: "खेलकुद", path: "/a" },
-    { name: "रोजगार", path: "/a" },
-    { name: "मनोरंजन", path: "/a" },
-    { name: "सुरक्षा", path: "/a" },
-    { name: "अन्य", path: "/a" }
-];
-
-const othersDropdown = [
-    { name: 'पर्यटन', path: '/tourism' },
-    { name: 'स्वास्थ्य', path: '/health' },
-    { name: 'शिक्षा', path: '/education' },
-    { name: 'अन्तराष्ट्रिय', path: '/international' },
-    { name: 'पोस्ट न्युज ', path: '/sign-up' }
-];
-
-function Header() {
-    const pathname = usePathname();
-    const [sponsorBanner, setSponsorBanner] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const { getToken } = useAuth()
-    let token: string | null
-
-
-    useEffect(() => {
-        const fetchBanner = async () => {
-            token = await getToken()
-            othersDropdown[4].path = token ? '/manager' : '/sign-in'
-            try {
-                const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
-                const apiKey = process.env.NEXT_PUBLIC_API_SPECIAL_KEY;
-
-                if (!backend_uri || !apiKey) {
-                    throw new Error('Missing backend configuration');
-                }
-
-                const headers = { 'x-special-key': apiKey };
-                const response = await fetch(
-                    `${backend_uri}/api/active-banner?name=header_banner`,
-                    { headers, cache: 'no-store' }
-                );
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch banner');
-                }
-
-                const data = await response.json();
-                setSponsorBanner(data?.url || null);
-            } catch (err) {
-                console.error('Banner fetch error:', err);
-                setError('Failed to load sponsor banner');
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        if (!sponsorBanner && isLoading) {
-            fetchBanner();
-        }
-    }, [sponsorBanner, isLoading]);
-
+export default function Header() {
     return (
         <header>
-            {/* TOPBAR */}
+            {/* Desktop Header */}
             <div className='md:flex md:flex-col hidden'>
                 <div className='w-full py-1 h-5 bg-text-color flex flex-col sm:flex-row items-center justify-between px-2 md:px-4 lg:px-8 xl:px-16 text-white'>
-                    {/* Optional: Add breaking news ticker here */}
+                    {/* Breaking news ticker can go here */}
                 </div>
 
-                <div className='flex flex-col md:flex-row items-center justify-between w-full pt-1 gap-2 md:gap-6 max-w-5xl mx-auto px-4'>
-                    <div className='relative w-full max-w-[140px] md:max-w-[200px] lg:max-w-[240px] aspect-[4/1] flex items-center gap-1'>
-                        <div className='relative h-full flex-[1]'>
-                            <Image
-                                src='/logo.svg'
-                                alt='Birat Info Logo'
-                                fill
-                                className='object-contain'
-                                priority
-                            />
-                        </div>
-                        <div className='relative h-full' style={{ width: '70%' }}>
-                            <Image
-                                src='/BIRATINFO.svg'
-                                alt='Birat Info Text Logo'
-                                fill
-                                className='object-contain'
-                                priority
-                            />
-                        </div>
-                    </div>
-
-                    {/* Banner Section */}
-                    <div className="relative w-full max-w-[400px] lg:max-w-[500px] xl:max-w-[600px] aspect-[6/1] bg-gray-50 rounded-md">
-                        {isLoading ? (
-                            <div className="w-full h-full flex items-center justify-center">
-                                <Loader2 className='animate-spin h-6 w-6 text-gray-400' />
-                            </div>
-                        ) : error ? (
-                            <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
-                                {error}
-                            </div>
-                        ) : sponsorBanner ? (
-                            <Image
-                                src={sponsorBanner}
-                                alt='Sponsor Banner'
-                                fill
-                                className="object-contain"
-                                priority
-                                onError={() => {
-                                    setError('Failed to load banner image');
-                                    setSponsorBanner(null);
-                                }}
-                            />
-                        ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
-                                Sponsor banner spot available
-                            </div>
-                        )}
-                    </div>
+                <div className='flex flex-col md:flex-row items-center justify-between w-full gap-2 md:gap-6 max-w-5xl mx-auto px-4 py-2'>
+                    <Logo />
+                    <BannerSection />
                 </div>
 
-                <nav className='w-full bg-text-color hidden md:flex items-center overflow-x-auto whitespace-nowrap scrollbar-hide px-1 lg:px-6 xl:px-16 font-alata text-white'>
-                    <div className='mx-auto flex md:gap-0 lg:gap-2 min-w-fit'>
-                        {nav.map((item, index) => {
-                            const isActive = pathname === item.path;
-                            if (item.name === 'अन्य') {
-                                return (
-                                    <DropdownMenu key={index}>
-                                        <DropdownMenuTrigger asChild>
-                                            <div
-                                                className={`px-2 py-1 h-8 flex items-center relative cursor-pointer ${isActive ? 'bg-green-950 text-white' : ''} hover:bg-green-950 text-white transition duration-200`}
-                                            >
-                                                <span className='text-xs md:text-[12px] lg:text-[16px] xl:text-[18px] flex items-center justify-center gap-1'>
-                                                    {item.name}
-                                                    <div className='mt-0.5'>
-                                                        <ChevronDown size={15} />
-                                                    </div>
-                                                </span>
-                                            </div>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent
-                                            className='absolute mt-1 z-50 bg-text-color text-white shadow-lg'
-                                            align='start'
-                                        >
-                                            {othersDropdown.map((dropItem, dropIndex) => (
-                                                <DropdownMenuItem
-                                                    key={dropIndex}
-                                                    asChild
-                                                    className='cursor-pointer hover:bg-green-950 px-4 py-2 text-sm'
-                                                >
-                                                    <Link href={dropItem.path}>
-                                                        {dropItem.name}
-                                                    </Link>
-                                                </DropdownMenuItem>
-                                            ))}
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                );
-                            }
-
-                            return (
-                                <div
-                                    key={index}
-                                    className={`px-2 py-1 h-8 flex items-center ${isActive ? 'bg-green-950 text-white' : ''} hover:bg-green-950 text-white transition duration-200`}
-                                >
-                                    <Link
-                                        href={item.path}
-                                        className='shrink-0 transition duration-200 text-xs md:text-[12px] lg:text-[16px] xl:text-[18px]'
-                                        aria-label={`Navigate to ${typeof item.name === 'string' ? item.name : 'section'}`}
-                                    >
-                                        {item.name}
-                                    </Link>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </nav>
+                <HeaderClient navConfig={navConfig} othersDropdownConfig={othersDropdownConfig} />
             </div>
 
-            {/* MOBILE NAV */}
-            <div className='md:hidden'>
-                <div className='flex items-center justify-between px-3 py-2'>
-                    <div className='relative flex items-center gap-1 h-6 w-auto'>
-                        <div className='relative h-6 w-[24px]'>
-                            <Image
-                                src='/logo.svg'
-                                alt='Birat Info Logo'
-                                fill
-                                className='object-contain'
-                                priority
-                            />
-                        </div>
-                        <div className='relative h-6 w-[70px]'>
-                            <Image
-                                src='/BIRATINFO.svg'
-                                alt='Birat Info Text Logo'
-                                fill
-                                className='object-contain'
-                                priority
-                            />
-                        </div>
-                    </div>
-
-                    <div className='h-4 flex items-center'>
-                        <MobileNav />
-                    </div>
-                </div>
-
-                <div className='relative w-full aspect-[4/1]'>
-                    <Image
-                        src='/images/homepage/MobileNavAdvertisement.png'
-                        alt='Sponsor Logo'
-                        fill
-                        className='object-cover'
-                        priority
-                    />
-                </div>
-            </div>
+            {/* Mobile Header */}
+            <MobileHeader navConfig={navConfig} othersDropdownConfig={othersDropdownConfig} />
         </header>
     );
 }
-
-export default Header;

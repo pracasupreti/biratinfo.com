@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import { useSearchParams } from 'next/navigation'
-
 import Loader from '@/components/Loader'
 import { SearchUsers } from '../SearchUsers'
 import { UserTable } from '../UserTable'
-
 
 interface User {
     id: string
@@ -19,7 +17,7 @@ interface User {
     posts: number
 }
 
-export default function AuthorsPage() {
+function AuthorsContent() {
     const { getToken } = useAuth()
     const [users, setUsers] = useState<User[]>([])
     const [loading, setLoading] = useState(true)
@@ -35,7 +33,6 @@ export default function AuthorsPage() {
                 const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
                 if (!backend_uri || !token) throw new Error('Missing token or API endpoint')
 
-                // 1. Get all users from Clerk (Using cutom-route)
                 const clerkRes = await fetch('/api/clerk-users')
                 const clerkUsers = await clerkRes.json()
 
@@ -45,7 +42,6 @@ export default function AuthorsPage() {
                         user.emailAddresses[0]?.emailAddress.toLowerCase().includes(query))
                 )
 
-                // 2. Enrich with post counts
                 const enrichedUsers = await Promise.all(
                     filtered.map(async (user: any) => {
                         try {
@@ -108,5 +104,13 @@ export default function AuthorsPage() {
                 currentRole="manager"
             />
         </div>
+    )
+}
+
+export default function AuthorsPage() {
+    return (
+        <Suspense fallback={<Loader />}>
+            <AuthorsContent />
+        </Suspense>
     )
 }

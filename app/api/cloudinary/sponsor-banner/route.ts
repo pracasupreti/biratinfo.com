@@ -21,6 +21,7 @@ export async function GET() {
         img.public_id.startsWith(`${folder}/`) &&
         img.tags?.includes('sponsor_banner')
     )
+    if (!filteredImages) throw new Error('Banner not found')
 
     return NextResponse.json({ success: true, filteredImages })
 }

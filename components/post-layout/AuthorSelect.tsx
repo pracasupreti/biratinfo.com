@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import { useAuth } from '@clerk/nextjs'
 import { Label } from '../ui/label'
@@ -36,6 +36,18 @@ export function AuthorSelect({
     const [isOpen, setIsOpen] = useState(false)
     const [search, setSearch] = useState('')
     const { getToken } = useAuth()
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -98,8 +110,8 @@ export function AuthorSelect({
 
             <div className="relative">
                 <div
-                    className="flex flex-wrap gap-1 items-center min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-                    onClick={() => setIsOpen(true)}
+                    className="flex flex-wrap gap-1 items-center min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 cursor-pointer"
+                    onClick={() => setIsOpen(prev => !prev)}
                 >
                     {value.length > 0 ? (
                         value.map(userId => {
@@ -131,19 +143,22 @@ export function AuthorSelect({
                             )
                         })
                     ) : (
-                        <span className="text-muted-foreground">Select authors</span>
+                        <span className="text-muted-foreground"></span>
                     )}
                     {value.length < maxSelections && (
                         <Input
                             type="text"
                             value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            onChange={(e) => {
+                                setSearch(e.target.value);
+                                setIsOpen(true);
+                            }}
                             onClick={(e) => e.stopPropagation()}
                             className="flex-1 min-w-[100px] h-auto p-0 border-0 shadow-none focus-visible:ring-0"
                             placeholder={value.length === 0 ? 'Select authors' : ''}
                         />
                     )}
-                    <ChevronDown className="h-4 w-4 opacity-50" />
+                    <ChevronDown className={`h-4 w-4 opacity-50 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                 </div>
 
                 {isOpen && (

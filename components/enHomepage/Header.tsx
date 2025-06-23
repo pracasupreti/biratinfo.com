@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
 import React from 'react'
-import MobileNav from '../MobileNav';
+// import MobileNav from '../MobileNav';
 
 function Header() {
     const nav = [
@@ -114,7 +114,7 @@ function Header() {
                     </div>
 
                     <div className='h-7'>
-                        <MobileNav />
+                        {/* <MobileNav /> */}
                     </div>
                 </div>
 

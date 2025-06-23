@@ -18,11 +18,14 @@ export function PostForm() {
         postInNetwork,
         errors,
         setField,
+        addToFeaturedIn,
+        removeFromFeaturedIn,
+        addToPostInNetwork,
+        removeFromPostInNetwork,
         updateBlock
     } = usePostStore()
 
     const maxChars = 70
-
     return (
         <Card className="mb-3 shadow-sm rounded-lg border">
             <CardContent className="space-y-4 p-6">
@@ -96,20 +99,22 @@ export function PostForm() {
                 {/* Featured In Section */}
                 <Card className="border rounded-lg shadow-sm bg-gray-100">
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-sm font-semibold">Featured In</CardTitle>
+                        <CardTitle className="text-sm font-semibold">Featured In Network</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    <CardContent className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3 md:gap-x-16 ">
                         {FEATURED_SITES.map((site, i) => (
-                            <div key={site} className="flex items-center space-x-2">
+                            <div key={`featured-${site}`} className="flex items-center space-x-2">
                                 <Checkbox
                                     id={`featured-${i}`}
-                                    checked={featuredIn[i]}
+                                    checked={featuredIn.includes(site)}
                                     onCheckedChange={(checked) => {
-                                        const newFeaturedIn = [...featuredIn]
-                                        newFeaturedIn[i] = checked as boolean
-                                        setField('featuredIn', newFeaturedIn)
+                                        if (checked) {
+                                            addToFeaturedIn(site);
+                                        } else {
+                                            removeFromFeaturedIn(site);
+                                        }
                                     }}
-                                    className="h-4 w-4 border-green-500 data-[state=checked]:bg-green-700 cursor-pointer data-[state=checked]:border-green-500"
+                                    className={`h-4 w-4 border-green-500 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 cursor-pointer`}
                                 />
                                 <Label htmlFor={`featured-${i}`} className="text-sm font-normal cursor-pointer">
                                     {site}
@@ -124,18 +129,20 @@ export function PostForm() {
                     <CardHeader className="pb-3">
                         <CardTitle className="text-sm font-semibold">Post in Network</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    <CardContent className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3 md:gap-x-16">
                         {NETWORK_SITES.map((site, i) => (
-                            <div key={site} className="flex items-center space-x-2">
+                            <div key={`network-${site}`} className="flex items-center space-x-2">
                                 <Checkbox
                                     id={`network-${i}`}
-                                    checked={postInNetwork[i]}
+                                    checked={postInNetwork.includes(site)}
                                     onCheckedChange={(checked) => {
-                                        const newPostInNetwork = [...postInNetwork]
-                                        newPostInNetwork[i] = checked as boolean
-                                        setField('postInNetwork', newPostInNetwork)
+                                        if (checked) {
+                                            addToPostInNetwork(site)  // only adds to postInNetwork
+                                        } else {
+                                            removeFromPostInNetwork(site)  // only removes
+                                        }
                                     }}
-                                    className="h-4 w-4 border-green-500 data-[state=checked]:bg-green-700 cursor-pointer data-[state=checked]:border-green-500"
+                                    className={`h-4 w-4 border-green-500 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 cursor-pointer`}
                                 />
                                 <Label htmlFor={`network-${i}`} className="text-sm font-normal cursor-pointer">
                                     {site}
@@ -150,11 +157,11 @@ export function PostForm() {
 }
 
 const FEATURED_SITES = [
-    'bhadrapur.com', 'belauri.com', 'chandragadhi.com', 'digitalkoshi.com',
-    'koshinfo.com', 'uhabi.com', 'jhorahat.com', 'sriyog.net'
+    'biratinfo.com', 'bhadrapur.com', 'belauri.com', 'chandragadhi.com', 'digitalkoshi.com',
+    'koshiinfo.com', 'duhabi.com', 'jhorahat.com', 'sriyog.net', 'sunsaritimes.com', 'birtacity.com', 'karmashil.com'
 ]
 
 const NETWORK_SITES = [
-    'bhadrapur.com', 'belauri.com', 'chandragadhi.com', 'digitalkoshi.com',
-    'koshinfo.com', 'uhabi.com', 'jhorahat.com', 'sriyog.net'
+    'biratinfo.com', 'bhadrapur.com', 'belauri.com', 'chandragadhi.com', 'digitalkoshi.com',
+    'koshiinfo.com', 'duhabi.com', 'jhorahat.com', 'sriyog.net', 'sunsaritimes.com', 'birtacity.com', 'karmashil.com'
 ]

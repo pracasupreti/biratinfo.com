@@ -50,7 +50,7 @@ export default function Sidebar() {
                         />
                     </button>
                     <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${expandedSections.posts ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
-                        <Link href={'/manager/post-form'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                        <Link href={'/manager/post'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
                             Write a Post
                         </Link>
                         <Link href={'/manager/published-posts'} className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
@@ -84,9 +84,9 @@ export default function Sidebar() {
             </nav>
 
             {/* Footer */}
-            <div className="p-4 border-t border-gray-200 cursor-pointer">
+            <div className="bg-text-color">
                 <SignOutButton >
-                    <div className="flex items-center p-2 text-red-600 hover:bg-red-50 rounded-md font-medium transition-colors duration-200">
+                    <div className="flex items-center p-3 text-white hover:bg-green-950 font-medium cursor-pointer">
                         <LogOut className="mr-2 h-4 w-4 transition-transform duration-200 hover:scale-110" />
                         Log Out
                     </div>

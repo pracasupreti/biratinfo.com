@@ -34,7 +34,6 @@ export default function SponsorBannerManager() {
             if (!response.ok) throw new Error('Failed to fetch banners')
 
             const data = await response.json()
-            console.log(data)
             return data ? data.filteredImages : []
         } catch (error) {
             console.error('Error fetching banners:', error)
@@ -45,17 +44,24 @@ export default function SponsorBannerManager() {
 
     async function fetchActiveBanner() {
         try {
-            const token = await getToken()
-            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
-            if (!backend_uri) throw new Error("Missing API endpoint")
+            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
+            const apiKey = process.env.NEXT_PUBLIC_API_SPECIAL_KEY;
 
-            const response = await fetch(`${backend_uri}/api/active-banner?name=header_banner`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            })
-            if (!response.ok) throw new Error('Failed to fetch active banner')
-            const data = await response.json()
+            if (!backend_uri || !apiKey) {
+                throw new Error('Missing backend configuration');
+            }
+
+            const headers = { 'x-special-key': apiKey };
+            const response = await fetch(
+                `${backend_uri}/api/active-banner?name=header_banner`,
+                { headers, cache: 'no-store' }
+            );
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch banner');
+            }
+
+            const data = await response.json();
             return data ? data.url : null
         } catch (error) {
             console.error('Error fetching active banner:', error)
@@ -81,7 +87,7 @@ export default function SponsorBannerManager() {
         }
 
         loadData()
-    })
+    }, [activeBannerUrl])
 
     const handleSetActive = async (url: string) => {
         try {
@@ -148,7 +154,6 @@ export default function SponsorBannerManager() {
             toast.error(error instanceof Error ? error.message : 'Failed to delete banner')
         }
     }
-    console.log(banners)
 
     if (isLoading) {
         return (

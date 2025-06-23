@@ -22,5 +22,7 @@ export async function GET() {
         img.tags?.includes('header_banner')
     )
 
+    if (!filteredImages) throw new Error('Banner not found')
+
     return NextResponse.json({ success: true, filteredImages })
 }

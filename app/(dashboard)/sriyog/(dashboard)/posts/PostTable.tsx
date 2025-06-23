@@ -6,7 +6,14 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationLink, PaginationNext } from '@/components/ui/pagination'
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationPrevious,
+    PaginationLink,
+    PaginationNext
+} from '@/components/ui/pagination'
 import { Search, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Post from '@/types/Post'
@@ -26,7 +33,7 @@ export function PostTable({
     allPosts,
     title,
     description,
-    postsPerPage = 10,
+    postsPerPage = 10
 }: PostTableProps) {
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -38,7 +45,6 @@ export function PostTable({
     const [searchQuery, setSearchQuery] = useState(searchParam || '')
     const [sortConfig, setSortConfig] = useState<{ key: keyof Post; direction: 'asc' | 'desc' } | null>(null)
 
-    // Filter, sort and paginate posts
     const filteredPosts = allPosts.filter(post =>
         post.englishTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.nepaliTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -47,12 +53,8 @@ export function PostTable({
 
     const sortedPosts = [...filteredPosts].sort((a, b) => {
         if (!sortConfig) return 0
-        if (a[sortConfig.key]! < b[sortConfig.key]!) {
-            return sortConfig.direction === 'asc' ? -1 : 1
-        }
-        if (a[sortConfig.key]! > b[sortConfig.key]!) {
-            return sortConfig.direction === 'asc' ? 1 : -1
-        }
+        if (a[sortConfig.key]! < b[sortConfig.key]!) return sortConfig.direction === 'asc' ? -1 : 1
+        if (a[sortConfig.key]! > b[sortConfig.key]!) return sortConfig.direction === 'asc' ? 1 : -1
         return 0
     })
 
@@ -87,7 +89,7 @@ export function PostTable({
         return date.toLocaleDateString('en-US', {
             month: 'short',
             day: 'numeric',
-            year: 'numeric',
+            year: 'numeric'
         })
     }
 
@@ -97,14 +99,14 @@ export function PostTable({
             const response = await fetch(`/api/posts/${postId}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`
                 }
             })
 
             if (!response.ok) throw new Error('Failed to delete post')
 
             toast.success('Post deleted successfully')
-            router.refresh() // Refresh the page after deletion
+            router.refresh()
         } catch (error) {
             toast.error('Failed to delete post')
             console.error('Delete error:', error)
@@ -138,7 +140,7 @@ export function PostTable({
                 </form>
             </div>
 
-            {/* Posts Grid */}
+            {/* No Posts */}
             {paginatedPosts.length === 0 ? (
                 <Card>
                     <CardContent className="p-6 text-center text-muted-foreground">
@@ -152,101 +154,85 @@ export function PostTable({
                         <CardContent className="grid grid-cols-12 gap-4 items-center">
                             <div className="col-span-1 font-medium">ID</div>
                             <div className="col-span-3 font-medium">Title</div>
-                            <div className="col-span-2 font-medium flex items-center justify-center">Authors</div>
-                            <div className="col-span-1 font-medium">Category</div>
-                            <div className="col-span-1 font-medium flex items-center justify-center">Tags</div>
-                            <div className="col-span-2 font-medium flex items-center justify-center">Date</div>
-                            <div className="col-span-1 font-medium">Status</div>
-                            <div className="col-span-1 font-medium text-center">Actions</div>
+                            <div className="col-span-2 font-medium text-center">Authors</div>
+                            <div className="col-span-2 font-medium text-center">Category</div>
+                            <div className="col-span-2 font-medium text-center">Tags</div>
+                            <div className="col-span-1 font-medium text-center">Status</div>
+                            <div className="col-span-1 font-medium text-center">Date</div>
                         </CardContent>
                     </Card>
 
                     {/* Posts */}
-                    {paginatedPosts.map((post) => (
+                    {paginatedPosts.map(post => (
                         <Card key={post._id} className="hover:shadow-md transition-shadow">
-                            <CardContent className="grid grid-cols-12 gap-4 px-4 py-3 items-center">
+                            <CardContent className="grid grid-cols-12 gap-4 px-4 py-3 items-center text-sm">
                                 {/* ID */}
-                                <div className="col-span-1">
-                                    <span className="font-mono text-sm">{getSequentialId(post)}</span>
-                                </div>
+                                <div className="col-span-1 font-mono">{getSequentialId(post)}</div>
 
                                 {/* Title */}
-                                <div className="col-span-3 space-y-1">
-                                    <h3 className="font-medium line-clamp-1">{post.englishTitle}</h3>
-                                    <p className="text-sm text-muted-foreground line-clamp-2">{post.excerpt}</p>
+                                <div className="col-span-3 overflow-hidden">
+                                    <h3 className="font-medium truncate" title={post.englishTitle}>{post.nepaliTitle}</h3>
+                                    <p className="text-muted-foreground text-xs truncate" title={post.excerpt}>{post.excerpt}</p>
                                 </div>
 
                                 {/* Authors */}
-                                <div className="col-span-2 flex items-center justify-center">
-                                    <div className="flex flex-col gap-2">
-                                        {(post.authors || []).slice(0, 2).map((authorId, index) => (
-                                            <AuthorDisplay key={index} authorId={authorId} />
-                                        ))}
-                                    </div>
+                                <div className="col-span-2 flex flex-col gap-1 items-center">
+                                    {(post.authors || []).slice(0, 2).map((authorId, index) => (
+                                        <AuthorDisplay key={index} authorId={authorId} />
+                                    ))}
                                 </div>
 
                                 {/* Category */}
-                                <div className="col-span-1">
-                                    <Badge variant="outline" className="text-sm w-full text-center">
-                                        {post.category}
+                                <div className="col-span-2">
+                                    <Badge
+                                        variant="outline"
+                                        className="text-xs w-full text-center break-words px-2 py-1 whitespace-normal"
+                                        title={post.category}
+                                    >
+                                        {post.category || 'N/A'}
                                     </Badge>
                                 </div>
 
                                 {/* Tags */}
-                                <div className="col-span-1 flex justify-center">
-                                    <div className="flex flex-col gap-1">
-                                        {(post.tags || []).slice(0, 3).map((tag, index) => (
-                                            <Badge
-                                                key={index}
-                                                variant="secondary"
-                                                className="text-xs px-2 py-0.5 w-fit"
-                                            >
-                                                #{tag}
-                                            </Badge>
-                                        ))}
+                                <div className="col-span-2 flex justify-center">
+                                    <div className="flex flex-wrap gap-1 max-w-full justify-center">
+                                        {(post.tags && post.tags.length > 0) ? (
+                                            post.tags.slice(0, 3).map((tag, index) => (
+                                                <Badge
+                                                    key={index}
+                                                    variant="secondary"
+                                                    className="text-xs px-2 py-0.5 break-words max-w-[6rem] truncate"
+                                                    title={`#${tag}`}
+                                                >
+                                                    #{tag}
+                                                </Badge>
+                                            ))
+                                        ) : (
+                                            <Badge variant="secondary" className="text-xs px-2 py-0.5">N/A</Badge>
+                                        )}
                                     </div>
                                 </div>
 
-                                {/* Date */}
-                                <div className="col-span-2 text-sm text-muted-foreground whitespace-nowrap flex items-center justify-center">
-                                    {formatDate(post.createdAt)}
-                                </div>
-
                                 {/* Status */}
-                                <div className="col-span-1">
+                                <div className="col-span-1 text-center">
                                     <Badge
                                         variant="outline"
                                         className={cn(
-                                            "capitalize w-full text-center",
-                                            post.status === 'approved' && "bg-green-500/10 text-green-700 border-green-300",
-                                            post.status === 'pending' && "bg-yellow-500/10 text-yellow-700 border-yellow-300",
-                                            post.status === 'draft' && "bg-gray-500/10 text-gray-700 border-gray-300",
-                                            post.status === 'scheduled' && "bg-orange-500/10 text-orange-700 border-orange-300",
-                                            post.status === 'rejected' && "bg-red-500/10 text-red-700 border-red-300"
+                                            'capitalize w-full text-center',
+                                            post.status === 'approved' && 'bg-green-500/10 text-green-700 border-green-300',
+                                            post.status === 'pending' && 'bg-yellow-500/10 text-yellow-700 border-yellow-300',
+                                            post.status === 'draft' && 'bg-gray-500/10 text-gray-700 border-gray-300',
+                                            post.status === 'scheduled' && 'bg-orange-500/10 text-orange-700 border-orange-300',
+                                            post.status === 'rejected' && 'bg-red-500/10 text-red-700 border-red-300'
                                         )}
                                     >
                                         {post.status}
                                     </Badge>
                                 </div>
 
-                                {/* Actions */}
-                                <div className="col-span-1 flex justify-center gap-2">
-                                    {/* <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={() => router.push(`/admin/edit/${post._id}`)}
-                                        className="hover:bg-blue-50 hover:text-blue-600"
-                                    >
-                                        <Edit className="h-4 w-4" />
-                                    </Button> */}
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={() => handleDelete(post._id)}
-                                        className="hover:bg-red-50 hover:text-red-600 cursor-pointer"
-                                    >
-                                        <Trash2 className="h-4 w-4" />
-                                    </Button>
+                                {/* Date */}
+                                <div className="col-span-1 text-center text-muted-foreground">
+                                    {formatDate(post.createdAt)}
                                 </div>
                             </CardContent>
                         </Card>
@@ -268,6 +254,7 @@ export function PostTable({
                                 isActive={currentPage > 1}
                             />
                         </PaginationItem>
+
                         {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                             const page = currentPage <= 3
                                 ? i + 1
@@ -289,6 +276,7 @@ export function PostTable({
                                 </PaginationItem>
                             )
                         })}
+
                         <PaginationItem>
                             <PaginationNext
                                 href="#"

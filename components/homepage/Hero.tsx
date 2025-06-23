@@ -2,9 +2,9 @@ import { Clock2Icon, TagIcon } from 'lucide-react'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import NepaliDateTime from './NepaliDate'
-import { categoryOptions } from '../post-layout/Sidebar'
 import NepaliTimeDisplay from './NepaliTime'
 import Link from 'next/link'
+import { categoryOptions } from '@/types/Post'
 
 interface Author {
     firstName: string
@@ -42,7 +42,7 @@ function Hero({ data }: HeroProps) {
     const authorAvatar = author?.avatar || ''
     return (
         <section
-            className="w-full min-h-[calc(100vh-139px)] bg-cover bg-no-repeat bg-center flex items-end justify-center"
+            className="w-full min-h-[calc(100vh-128px)] bg-cover bg-no-repeat bg-center flex items-end justify-center"
             style={{
                 backgroundImage: `url('${data?.heroBanner || 'placeholder-image'}')`,
             }}

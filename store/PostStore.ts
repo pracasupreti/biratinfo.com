@@ -10,8 +10,8 @@ export interface PostState {
     nepaliTitle: string
     blocks: Block[]
     excerpt: string
-    featuredIn: boolean[]
-    postInNetwork: boolean[]
+    featuredIn: string[]
+    postInNetwork: string[]
     category: string
     tags: string[]
     date: string
@@ -37,6 +37,10 @@ export interface PostState {
     resetStore: () => void
     initialize: (postData: Partial<PostState>) => void
     updateBlock: (index: number, content: string, link?: string) => void
+    addToFeaturedIn: (site: string) => void
+    removeFromFeaturedIn: (site: string) => void
+    addToPostInNetwork: (site: string) => void
+    removeFromPostInNetwork: (site: string) => void
     addAuthor: (author: string) => void
     removeAuthor: (index: number) => void
     addTag: (tag: string) => void
@@ -49,8 +53,8 @@ export const usePostStore = create<PostState>((set, get) => ({
     nepaliTitle: '',
     blocks: Array(4).fill({ content: '', link: undefined }), // Initialize with empty blocks
     excerpt: '',
-    featuredIn: Array(8).fill(false),
-    postInNetwork: Array(8).fill(false),
+    featuredIn: [],
+    postInNetwork: [],
     category: '',
     tags: [],
     date: '',
@@ -121,6 +125,46 @@ export const usePostStore = create<PostState>((set, get) => ({
         })
     },
 
+    // Add site to featuredIn and postInNetwork (if not already present)
+    addToFeaturedIn: (site: string) => {
+        set(state => {
+            const featuredIn = new Set(state.featuredIn || []);
+            const postInNetwork = new Set(state.postInNetwork || []);
+
+            featuredIn.add(site);        // always add to featuredIn
+            postInNetwork.add(site);     // sync with postInNetwork
+
+            return {
+                featuredIn: Array.from(featuredIn),
+                postInNetwork: Array.from(postInNetwork)
+            };
+        });
+    },
+
+    // Remove site from featuredIn (but not from postInNetwork)
+    removeFromFeaturedIn: (site: string) => {
+        set(state => ({
+            featuredIn: (state.featuredIn || []).filter(s => s !== site),
+            postInNetwork: (state.postInNetwork || []).filter(s => s !== site)
+        }));
+    },
+
+    // Add site to postInNetwork only
+    addToPostInNetwork: (site: string) => {
+        set(state => {
+            const postInNetwork = new Set(state.postInNetwork || []);
+            postInNetwork.add(site);
+            return { postInNetwork: Array.from(postInNetwork) };
+        });
+    },
+
+    // Remove site from postInNetwork only
+    removeFromPostInNetwork: (site: string) => {
+        set(state => ({
+            postInNetwork: (state.postInNetwork || []).filter(s => s !== site)
+        }));
+    },
+
     // Set an error manually
     setError: (field, message) => {
         set(state => ({
@@ -181,8 +225,8 @@ export const usePostStore = create<PostState>((set, get) => ({
             nepaliTitle: '',
             blocks: Array(4).fill({ content: '', link: undefined }),
             excerpt: '',
-            featuredIn: Array(8).fill(false),
-            postInNetwork: Array(8).fill(false),
+            featuredIn: [],
+            postInNetwork: [],
             category: '',
             tags: [],
             date: '',
@@ -209,8 +253,8 @@ export const usePostStore = create<PostState>((set, get) => ({
             nepaliTitle: postData.nepaliTitle || '',
             blocks: postData.blocks || Array(4).fill({ content: '', link: undefined }),
             excerpt: postData.excerpt || '',
-            featuredIn: postData.featuredIn || Array(8).fill(false),
-            postInNetwork: postData.postInNetwork || Array(8).fill(false),
+            featuredIn: postData.featuredIn || [],
+            postInNetwork: postData.postInNetwork || [],
             category: postData.category || '',
             tags: postData.tags || [],
             date: postData.date || '',

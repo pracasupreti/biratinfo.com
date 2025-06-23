@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import { useSearchParams } from 'next/navigation'
-
 import Loader from '@/components/Loader'
 import { SearchUsers } from '../SearchUsers'
 import { UserTable } from '../UserTable'
-
 
 interface User {
     id: string
@@ -19,7 +17,7 @@ interface User {
     posts: number
 }
 
-export default function AdminPage() {
+function AdminContent() {
     const { getToken } = useAuth()
     const [users, setUsers] = useState<User[]>([])
     const [loading, setLoading] = useState(true)
@@ -35,7 +33,7 @@ export default function AdminPage() {
                 const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
                 if (!backend_uri || !token) throw new Error('Missing token or API endpoint')
 
-                // 1. Get all users from Clerk (Using cutom-route)
+                // 1. Get all users from Clerk (Using custom-route)
                 const clerkRes = await fetch('/api/clerk-users')
                 const clerkUsers = await clerkRes.json()
 
@@ -78,7 +76,7 @@ export default function AdminPage() {
 
                 setUsers(enrichedUsers)
             } catch (error) {
-                console.error('Error loading authors:', error)
+                console.error('Error loading admins:', error)
             } finally {
                 setLoading(false)
             }
@@ -100,13 +98,21 @@ export default function AdminPage() {
                 </div>
             </div>
 
-            <SearchUsers placeholder="Search authors by name or email..." />
+            <SearchUsers placeholder="Search admins by name or email..." />
 
             <UserTable
                 users={users}
                 availableRoles={['editor', 'manager', 'admin']}
-                currentRole="manager"
+                currentRole="admin"
             />
         </div>
+    )
+}
+
+export default function AdminPage() {
+    return (
+        <Suspense fallback={<Loader />}>
+            <AdminContent />
+        </Suspense>
     )
 }

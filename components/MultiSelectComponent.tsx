@@ -53,7 +53,7 @@ export function MultiSelect({
             <div className="relative">
                 <div
                     className="flex flex-wrap gap-1 items-center min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => setIsOpen((prev) => !prev)}
                 >
                     {
                         value.map(val => {

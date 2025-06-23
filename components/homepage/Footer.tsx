@@ -10,15 +10,15 @@ function Footer() {
                 <div className='flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left'>
                     <h2 className='text-[20px] font-bold text-gray-900 font-orienta'>विराट इन्फर्म्याटिक्स प्रा. लि.</h2>
                     <div className='flex gap-4 justify-center'>
-                        {['facebook', 'twitter', 'youtube', 'instagram'].map((icon) => (
+                        {[{ name: 'facebook', path: 'https://www.facebook.com/biratinfo' }, { name: 'twitter', path: '#' }, { name: 'youtube', path: '#' }, { name: 'instagram', path: '#' }].map((icon) => (
                             <Link
-                                key={icon}
-                                href="#"
+                                key={icon.name}
+                                href={icon.path}
                                 className='w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center shadow-sm hover:bg-gray-300 transition-colors'
                                 aria-label={`Follow us on ${icon}`}
                             >
                                 <Image
-                                    src={`/images/kasinHomepage/${icon}.svg`}
+                                    src={`/images/kasinHomepage/${icon.name}.svg`}
                                     alt={`${icon} icon`}
                                     width={20}
                                     height={20}

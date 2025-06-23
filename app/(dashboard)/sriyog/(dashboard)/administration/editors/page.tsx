@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import { useSearchParams } from 'next/navigation'
 
 import Loader from '@/components/Loader'
 import { SearchUsers } from '../SearchUsers'
 import { UserTable } from '../UserTable'
-
 
 interface User {
     id: string
@@ -19,7 +18,8 @@ interface User {
     posts: number
 }
 
-export default function EditorPage() {
+// Move the main component logic to a separate component that uses useSearchParams
+function EditorContent() {
     const { getToken } = useAuth()
     const [users, setUsers] = useState<User[]>([])
     const [loading, setLoading] = useState(true)
@@ -108,5 +108,13 @@ export default function EditorPage() {
                 currentRole="manager"
             />
         </div>
+    )
+}
+
+export default function EditorPage() {
+    return (
+        <Suspense fallback={<Loader />}>
+            <EditorContent />
+        </Suspense>
     )
 }

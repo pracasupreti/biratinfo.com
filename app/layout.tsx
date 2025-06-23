@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Alata, Jost, Orienta, IBM_Plex_Serif, Roboto, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import ScheduledPostChecker from "@/components/ScheduledPostChecker";
 
 const geistSans = Geist({
@@ -49,8 +49,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "BIRAT INFO | Digital Archive of News & Information",
-  description: "Digital Archive of News & Information",
+  title: "BIRATINFO | Digital Archive of Information",
+  description: "Digital Archive of Information",
 
 };
 
@@ -70,17 +70,9 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} ${alata.variable} ${jost.variable} ${orienta.variable} ${ibm_plex_serif.variable} ${roboto.variable} ${inter.variable} antialiased`}
         >
           <>
-            <ClerkLoading>
-              <div className="flex items-center justify-center min-h-screen">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-500 border-solid" />
-              </div>
-            </ClerkLoading>
-
-            <ClerkLoaded>
-              <ScheduledPostChecker />
-              {children}
-              <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
-            </ClerkLoaded>
+            <ScheduledPostChecker />
+            {children}
+            <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
           </>
         </body>
       </html>

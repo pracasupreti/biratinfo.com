@@ -73,8 +73,8 @@ export default function ManagerSidebar() {
                         />
                     </button>
                     <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ${expandedSections.myposts ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
-                        <Link href="/editor/post-form" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm">
-                            Create Post
+                        <Link href="/editor/post" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm">
+                            Write a Post
                         </Link>
                         <Link href="/editor/my-posts/published-posts" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm">
                             Published Posts
@@ -101,9 +101,9 @@ export default function ManagerSidebar() {
             </nav>
 
             {/* Footer */}
-            <div className="p-4 border-t border-gray-200">
+            <div className="bg-text-color">
                 <SignOutButton>
-                    <div className="flex items-center p-2 text-red-600 hover:bg-red-50 rounded-md font-medium">
+                    <div className="flex items-center p-3 text-white hover:bg-green-950 font-medium cursor-pointer">
                         <LogOut className="mr-2 h-4 w-4" />
                         Log Out
                     </div>

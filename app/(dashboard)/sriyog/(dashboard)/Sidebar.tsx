@@ -10,6 +10,7 @@ export default function Sidebar() {
         categories: false,
         banners: false,
         administration: false,
+        network: false
     })
 
     const toggleSection = (section: string) => {
@@ -145,6 +146,28 @@ export default function Sidebar() {
                     </div>
                 </div>
 
+                {/* Network Section */}
+                <div className="mb-2">
+                    <button
+                        onClick={() => toggleSection('network')}
+                        className="w-full flex justify-between items-center p-2 text-gray-700 hover:bg-gray-100 rounded-md font-medium transition-colors duration-200"
+                    >
+                        <span>Networks</span>
+                        <ChevronDown
+                            size={16}
+                            className={`transition-transform duration-200 ${expandedSections.network ? 'rotate-0' : '-rotate-90'}`}
+                        />
+                    </button>
+                    <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${expandedSections.network ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
+                        <Link href="/sriyog/networks/current-networks" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                            Current Networks
+                        </Link>
+                        <Link href="/sriyog/networks/add-network" className="block p-2 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors duration-200">
+                            Add a Network
+                        </Link>
+                    </div>
+                </div>
+
 
                 {/* Account Section */}
                 <div className="mb-2">
@@ -159,9 +182,9 @@ export default function Sidebar() {
             </nav>
 
             {/* Footer */}
-            <div className="p-4 border-t border-gray-200 cursor-pointer">
+            <div className="bg-text-color">
                 <SignOutButton >
-                    <div className="flex items-center p-2 text-red-600 hover:bg-red-50 rounded-md font-medium transition-colors duration-200">
+                    <div className="flex items-center p-3 text-white hover:bg-green-950 font-medium cursor-pointer">
                         <LogOut className="mr-2 h-4 w-4 transition-transform duration-200 hover:scale-110" />
                         Log Out
                     </div>
