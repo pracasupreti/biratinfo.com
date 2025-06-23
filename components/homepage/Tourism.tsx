@@ -82,7 +82,7 @@ function Tourism({ posts }: SummaryProps) {
                                 </div>
 
                                 <div className="flex flex-col gap-0.5 sm:w-[60%]">
-                                    <Link href={`/${featuredPost.category}/${featuredPost.categoryId}`} className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color hover:underline line-clamp-2">
+                                    <Link href={`/${gridPosts[0].category}/${gridPosts[0].categoryId}`} className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color hover:underline line-clamp-2">
                                         {post.nepaliTitle}
                                     </Link>
                                     <p className="text-[#808080] font-ibm_plex_serif font-medium text-base line-clamp-2">
