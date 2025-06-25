@@ -37,11 +37,11 @@ function Summary({ posts }: SummaryProps) {
                             />
                         </div>
                         <div className="flex flex-col gap-3">
-                            <p className="text-text-color font-orienta text-sm sm:text-base font-[700]">
+                            <Link href={`/category/${featuredPost.category}`} className="text-text-color font-orienta text-sm sm:text-base font-[700] hover:underline">
                                 {getNepaliCategory(featuredPost.category)}
-                            </p>
+                            </Link>
                             <Link
-                                href={`/${featuredPost.category}/${featuredPost.categoryId}`}
+                                href={`/category/${featuredPost.category}/${featuredPost.categoryId}`}
                                 className="text-text-color font-ibm_plex_serif font-bold text-xl lg:text-2xl hover:underline"
                             >
                                 {featuredPost.nepaliTitle}
@@ -66,11 +66,11 @@ function Summary({ posts }: SummaryProps) {
                                 />
                             </div>
                             <div className='flex flex-col gap-1'>
-                                <p className="text-text-color font-orienta text-sm sm:text-base font-[700]">
+                                <Link href={`/category/${post.category}`} className="text-text-color font-orienta text-sm sm:text-base font-[700] hover:underline">
                                     {getNepaliCategory(post.category)}
-                                </p>
+                                </Link>
                                 <Link
-                                    href={`/${post.category}/${post.categoryId}`}
+                                    href={`/category/${post.category}/${post.categoryId}`}
                                     className="text-text-color font-ibm_plex_serif font-semibold text-md hover:underline line-clamp-2"
                                 >
                                     {post.nepaliTitle}

@@ -27,7 +27,7 @@ const Lifestyle = ({ posts }: SummaryProps) => {
         <section className='w-full px-4 lg:px-16 md:px-5 py-10'>
             <div className='max-w-8xl mx-auto md:mx-12 lg:mx-20 flex flex-col gap-10'>
                 <div className='flex flex-col gap-2'>
-                    <p className='text-text-color font-orienta text-[18px] font-[700]'>{getNepaliCategory('lifestyle')}</p>
+                    <Link href={'/category/lifestyle'} className='text-text-color font-orienta text-[18px] font-[700] hover:underline'>{getNepaliCategory('lifestyle')}</Link>
                     <div className='w-full h-[2px] bg-[#ebebeb]' />
                 </div>
 
@@ -43,7 +43,7 @@ const Lifestyle = ({ posts }: SummaryProps) => {
                                 />
                             </div>
 
-                            <Link href={`/${post.category}/${post.categoryId}`} className='font-ibm_plex_serif font-bold text-[16px] md:text-[18px] leading-snug text-text-color line-clamp-2 hover:underline cursor-pointer'>
+                            <Link href={`/category/${post.category}/${post.categoryId}`} className='font-ibm_plex_serif font-bold text-[16px] md:text-[18px] leading-snug text-text-color line-clamp-2 hover:underline cursor-pointer'>
                                 {post.nepaliTitle}
                             </Link>
 

@@ -35,7 +35,7 @@ function Economy({ posts }: SummaryProps) {
             <div className="max-w-8xl mx-auto md:mx-12 lg:mx-20 flex flex-col gap-10">
                 {/* Header */}
                 <div className="flex flex-col gap-2">
-                    <p className="text-text-color font-orienta text-[18px] font-[700]">{getNepaliCategory('economy')}</p>
+                    <Link href={'/category/economy'} className="text-text-color font-orienta text-[18px] font-[700] hover:underline">{getNepaliCategory('economy')}</Link>
                     <div className="w-full h-[2px] bg-[#ebebeb]" />
                 </div>
 
@@ -54,7 +54,7 @@ function Economy({ posts }: SummaryProps) {
                                 </div>
 
                                 <div className="flex flex-col gap-2 lg:w-[60%]">
-                                    <Link href={`/${post.category}/${post.categoryId}`} className="text-text-color font-ibm_plex_serif font-bold text-[16px] md:text-[18px] leading-snug cursor-pointer line-clamp-2 hover:underline">
+                                    <Link href={`/category/${post.category}/${post.categoryId}`} className="text-text-color font-ibm_plex_serif font-bold text-[16px] md:text-[18px] leading-snug cursor-pointer line-clamp-2 hover:underline">
                                         {post.nepaliTitle}
                                     </Link>
                                     <p className="text-[#808080] font-ibm_plex_serif font-medium text-base line-clamp-2">

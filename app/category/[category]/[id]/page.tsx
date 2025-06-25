@@ -12,6 +12,7 @@ import { getNepaliCategory } from '@/components/homepage/Hero';
 import SocialShare from '@/components/SocialShare';
 
 
+
 const getAuthorName = (authors: Author[] | undefined): string => {
     if (!authors || authors.length === 0) return 'अज्ञात';
     return `${authors[0].firstName} ${authors[0].lastName}`.trim() || 'अज्ञात';
@@ -130,53 +131,36 @@ const ArticleContent = ({ post }: { post: SinglePost }) => {
                     );
                 })}
             </div>
-
-            {/* Optional mobile-only ad below content */}
-            {post.sponsoredAds && (
-                <div className="mt-8 lg:hidden">
-                    <div className="bg-white p-3 rounded-lg shadow-md border border-gray-200 max-w-md mx-auto">
-                        <Image
-                            src={post.sponsoredAds}
-                            alt="Sponsor Advertisement"
-                            width={300}
-                            height={500}
-                            className="w-full h-auto object-contain"
-                        />
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
 
 const RelatedPostCard = ({ post }: { post: IPost }) => (
-    <Link href={`/post/${post.category}/${post._id}`} className="block group">
-        <article className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col hover:shadow-lg transition-shadow duration-300">
-            <div className="relative h-48">
-                {post.heroBanner ? (
-                    <Image
-                        src={post.heroBanner}
-                        alt={post.nepaliTitle}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                    />
-                ) : (
-                    <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm p-4 text-center">
-                        तस्वीर उपलब्ध छैन
-                    </div>
-                )}
-            </div>
-            <div className="p-4 flex flex-col flex-grow">
-                <h5 className="font-semibold text-base line-clamp-3 mb-2 text-text-color group-hover:text-primary transition-colors">
-                    {post.nepaliTitle}
-                </h5>
-                <p className="text-sm text-gray-600 line-clamp-2 mt-auto">
-                    {post.excerpt}
-                </p>
-            </div>
-        </article>
-    </Link>
+    <article className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col hover:shadow-xl transition-shadow duration-300">
+        <div className="relative h-48">
+            {post.heroBanner ? (
+                <Image
+                    src={post.heroBanner}
+                    alt={post.nepaliTitle}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                />
+            ) : (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm p-4 text-center">
+                    तस्वीर उपलब्ध छैन
+                </div>
+            )}
+        </div>
+        <div className="p-4 flex flex-col flex-grow">
+            <Link href={`/category/${post.category}/${post.categoryId}`} className="font-semibold text-base mb-2 text-text-color hover:underline transition-colors line-clamp-2 ">
+                {post.nepaliTitle}
+            </Link>
+            <p className="text-sm text-gray-600 line-clamp-2 mt-auto">
+                {post.excerpt}
+            </p>
+        </div>
+    </article>
 );
 
 export default async function PostPage({ params }: { params: Promise<{ category: string; id: string }> }) {
@@ -215,9 +199,10 @@ export default async function PostPage({ params }: { params: Promise<{ category:
 
         const relatedResult = await relatedRes.json();
 
-        const relatedPosts: IPost[] = Array.isArray(relatedResult?.posts)
-            ? relatedResult.posts.filter((p: IPost) => p._id !== id).slice(0, 4)
+        const relatedPosts: IPost[] = Array.isArray(relatedResult?.post)
+            ? relatedResult.post.filter((p: IPost) => p.categoryId !== id).slice(0, 4)
             : [];
+
 
         return (
             <div className="bg-gray-50 min-h-screen flex flex-col">
@@ -225,20 +210,28 @@ export default async function PostPage({ params }: { params: Promise<{ category:
 
                 <PostHero post={fetchedPost} />
 
-                <main className="flex-1 py-8 md:py-12 bg-white">
+                <main className="flex-1 pb-8 bg-white">
                     <ArticleContent post={fetchedPost} />
                     <SocialShare />
                 </main>
 
                 {relatedPosts.length > 0 ? (
-                    <section className="bg-gray-50 py-12 border-t">
-                        <div className="max-w-4xl mx-auto px-4">
+                    <section className="bg-gray-100 py-12 border-t">
+                        <div className="max-w-6xl mx-auto px-4">
                             <h4 className="text-3xl font-bold mb-8 text-center text-text-color">
                                 सम्बन्धित खबरहरू
                             </h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div className="flex flex-wrap justify-center gap-6">
                                 {relatedPosts.map((post) => (
-                                    <RelatedPostCard key={post._id} post={post} />
+                                    <div key={post._id} className={`
+                        w-full 
+                        ${relatedPosts.length >= 4 ? 'sm:w-[calc(50%-1.5rem)] lg:w-[calc(25%-1.5rem)]' : ''}
+                        ${relatedPosts.length === 3 ? 'sm:w-[calc(33.333%-1.5rem)]' : ''}
+                        ${relatedPosts.length === 2 ? 'sm:w-[calc(50%-1.5rem)]' : ''}
+                        ${relatedPosts.length === 1 ? 'sm:w-[calc(100%-1.5rem)] max-w-md' : ''}
+                    `}>
+                                        <RelatedPostCard post={post} />
+                                    </div>
                                 ))}
                             </div>
                         </div>
@@ -250,16 +243,13 @@ export default async function PostPage({ params }: { params: Promise<{ category:
                         </div>
                     </section>
                 )}
-
                 <Footer />
             </div>
         );
 
     } catch (error: any) {
         return (
-            <div className="p-4 text-center text-red-600">
-                {error?.message || 'Unexpected error occurred.'}
-            </div>
+            console.error('Error fetching authors:', error)
         )
     }
 

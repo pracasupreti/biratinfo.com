@@ -64,7 +64,7 @@ export default function RootLayout({
       <html lang="en">
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <script type="text/javascript" src={`https://platform-api.sharethis.com/js/sharethis.js#property=${process.env.NEXT_PUBLIC_SHARETHIS_URL}&product=inline-share-buttons&source=platform`} async></script>
+          <script type="text/javascript" src={`https://platform-api.sharethis.com/js/sharethis.js#property=${process.env.NEXT_PUBLIC_SHARETHIS_URL}&product=sop&source=platform`} async></script>
         </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${alata.variable} ${jost.variable} ${orienta.variable} ${ibm_plex_serif.variable} ${roboto.variable} ${inter.variable} antialiased`}

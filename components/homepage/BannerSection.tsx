@@ -64,6 +64,7 @@ export default function BannerSection({ mobile = false }: { mobile?: boolean }) 
                                 setError('Failed to load banner image');
                                 setSponsorBanner(null);
                             }}
+                            unoptimized
                         />
                     </Link>
                 ) : (

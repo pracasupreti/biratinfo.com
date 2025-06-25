@@ -57,7 +57,7 @@ export interface IPost {
 
 export interface PostsResponse {
     success: boolean;
-    post: IPost;
+    post: IPost[];
 }
 
 export type LatestSummariesByCategory = PostsResponse[] | null;

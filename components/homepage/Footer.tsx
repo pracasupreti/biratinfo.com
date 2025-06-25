@@ -10,12 +10,14 @@ function Footer() {
                 <div className='flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left'>
                     <h2 className='text-[20px] font-bold text-gray-900 font-orienta'>विराट इन्फर्म्याटिक्स प्रा. लि.</h2>
                     <div className='flex gap-4 justify-center'>
-                        {[{ name: 'facebook', path: 'https://www.facebook.com/biratinfo' }, { name: 'twitter', path: '#' }, { name: 'youtube', path: '#' }, { name: 'instagram', path: '#' }].map((icon) => (
+                        {[{ name: 'facebook', path: 'https://www.facebook.com/biratinfo' }, { name: 'twitter', path: 'https://x.com/biratinfo' }, { name: 'youtube', path: 'https://www.youtube.com/@biratinfo' }, { name: 'instagram', path: 'https://www.instagram.com/biratinfo/' }].map((icon) => (
                             <Link
                                 key={icon.name}
                                 href={icon.path}
                                 className='w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center shadow-sm hover:bg-gray-300 transition-colors'
                                 aria-label={`Follow us on ${icon}`}
+                                target='_blank'
+                                rel='noopener noreferrer'
                             >
                                 <Image
                                     src={`/images/kasinHomepage/${icon.name}.svg`}
@@ -108,13 +110,15 @@ function Footer() {
                 {/* Copyright */}
                 <div className='pt-6 border-t-[0.3px] border-[#444444]'>
                     <div className='flex flex-col md:flex-row justify-between items-center gap-3 text-[14px] text-gray-500 text-center md:text-left'>
-                        <div className='flex gap-3 md:flex-row flex-col'>
-                            <p className='text-[#444444] font-roboto'>Copyright © 2025 BIRAT Informatics Pvt. Ltd. | </p>
-                            <p className='text-[#444444] font-roboto'>A Product of SRIYOG Consulting</p>
+                        <div className='flex md:gap-1 gap-3 md:flex-row flex-col'>
+                            <p className='text-[#444444] font-roboto hidden md:flex'>Copyright © 2025 BIRAT Informatics Pvt. Ltd. | </p>
+                            <p className='text-[#444444] font-roboto md:hidden'>Copyright © 2025 BIRAT Informatics Pvt.</p>
+                            <div className='text-[#444444] font-roboto'>A Product of <Link href={'https://sriyog.com/'} target='_blank'
+                                rel='noopener noreferrer' className='hover:text-text-color transition-all hover:underline'>SRIYOG Consulting</Link></div>
                         </div>
                         <div className='flex flex-wrap justify-center gap-3 md:gap-4 text-[#444444]'>
-                            <Link href="#" className='hover:text-gray-700 transition-colors font-roboto'>Terms & Conditions</Link>
-                            <Link href="#" className='hover:text-gray-700 transition-colors font-roboto'>Privacy Policy</Link>
+                            <Link href="/terms" className='hover:text-gray-700 transition-colors font-roboto'>Terms & Conditions</Link>
+                            <Link href="/privacy-policy" className='hover:text-gray-700 transition-colors font-roboto'>Privacy Policy</Link>
                             <Link href="#" className='hover:text-gray-700 transition-colors font-roboto'>Advertise</Link>
                         </div>
                     </div>

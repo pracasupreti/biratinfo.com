@@ -281,7 +281,7 @@ export default function SponsorBannerManager() {
                             resourceType: 'image',
                             multiple: false,
                             maxFiles: 1,
-                            clientAllowedFormats: ['png', 'jpg', 'jpeg', 'webp'],
+                            clientAllowedFormats: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'avif'],
                             maxImageFileSize: 5000000,
                         }}
                         onSuccess={(result: any) => {

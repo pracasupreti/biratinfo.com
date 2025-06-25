@@ -7,6 +7,7 @@ import Hero from '@/components/homepage/Hero'
 import Body from '@/components/homepage/Body'
 import Footer from '@/components/homepage/Footer'
 import { PostsResponse } from '@/types/Post'
+import { notFound } from 'next/navigation'
 
 // Define categories
 const CATEGORIES = [
@@ -29,9 +30,7 @@ export default async function Page() {
 
   if (!backend_uri || !apiKey) {
     return (
-      <div className="p-4 text-center text-red-600">
-        Something went wrong!!!. Please try again after certain time
-      </div>
+      notFound()
     )
   }
 

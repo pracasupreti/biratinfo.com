@@ -4,18 +4,18 @@ import Image from 'next/image';
 
 export const navConfig = [
   { name: "होमपेज", path: "/" },
-  { name: "राजनीति", path: "/politics" },
-  { name: "प्रबिधि", path: "/technology" },
-  { name: "साहित्य", path: "/literature" },
-  { name: "अर्थ", path: "/economy" },
-  { name: "सम्पादकीय", path: "/editorial" },
-  { name: "बिचार", path: "/opinion" },
-  { name: "प्रदेश", path: "/state" },
-  { name: "खेलकुद", path: "/sports" },
-  { name: "रोजगार", path: "/employment" },
-  { name: "मनोरंजन", path: "/entertainment" },
-  { name: "सुरक्षा", path: "/security" },
-  { name: "अन्य", path: "/others" },
+  { name: "राजनीति", path: "/category/politics" },
+  { name: "प्रबिधि", path: "/category/technology" },
+  { name: "साहित्य", path: "/category/literature" },
+  { name: "अर्थ", path: "/category/economy" },
+  { name: "सम्पादकीय", path: "/category/editorial" },
+  { name: "बिचार", path: "/category/opinion" },
+  { name: "प्रदेश", path: "/category/state" },
+  { name: "खेलकुद", path: "/category/sports" },
+  { name: "रोजगार", path: "/category/employment" },
+  { name: "मनोरंजन", path: "/category/entertainment" },
+  { name: "सुरक्षा", path: "/category/security" },
+  { name: "अन्य", path: "/category/others" },
   {
     name: <Tooltip>
       <TooltipTrigger className='flex items-center justify-center cursor-pointer'>
@@ -30,9 +30,9 @@ export const navConfig = [
 ];
 
 export const othersDropdownConfig = [
-  { name: 'पर्यटन', path: '/tourism' },
-  { name: 'स्वास्थ्य', path: '/health' },
-  { name: 'शिक्षा', path: '/education' },
-  { name: 'अन्तराष्ट्रिय', path: '/international' },
+  { name: 'पर्यटन', path: '/category/tourism' },
+  { name: 'स्वास्थ्य', path: '/category/health' },
+  { name: 'शिक्षा', path: '/category/education' },
+  { name: 'अन्तराष्ट्रिय', path: '/category/international' },
   { name: 'पोस्ट न्युज', path: '/sign-in' }
 ];
