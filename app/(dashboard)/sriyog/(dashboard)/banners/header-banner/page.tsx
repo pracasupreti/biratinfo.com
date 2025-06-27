@@ -1,159 +1,257 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { CldImage, CldUploadWidget } from 'next-cloudinary'
-import { toast } from 'react-hot-toast'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Trash2, CheckCircle } from 'lucide-react'
-import { useAuth } from '@clerk/nextjs'
+import { useState, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
+import { useAuth } from '@clerk/nextjs';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent } from '@/components/ui/card';
+import { BannerCategorySection } from './BannerCategorySection';
+import { BannerUploadSection } from './BannerUploadSection';
+import { Banner, ContentCategory } from '@/types/types';
+import ActiveBannersSection from './ActiveBannersSection';
 
-interface CloudinaryBanner {
-    public_id: string
-    secure_url: string
-    width: number
-    height: number
-    context?: {
-        custom?: {
-            name?: string
-        }
-    }
-}
+const CONTENT_CATEGORIES: ContentCategory[] = [
+    'Sports', 'Economy', 'Politics', 'Entertainment', 'Technology', 'Health', 'Tourism', 'Agriculture', 'Education', 'Lifestyle'
+];
 
 export default function SponsorBannerManager() {
-    const [banners, setBanners] = useState<CloudinaryBanner[]>([])
-    const [activeBannerUrl, setActiveBannerUrl] = useState<string | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
-    const { getToken } = useAuth()
+    const [banners, setBanners] = useState<Record<ContentCategory, Banner[]>>(
+        () =>
+            CONTENT_CATEGORIES.reduce((acc, cat) => {
+                acc[cat] = [];
+                return acc;
+            }, {} as Record<ContentCategory, Banner[]>)
+    );
 
-    async function fetchBanners() {
-        try {
-            const response = await fetch('/api/cloudinary/header-banner')
-            if (!response.ok) throw new Error('Failed to fetch banners')
+    const [activeBanners, setActiveBanners] = useState<Record<ContentCategory, Banner | null>>(
+        () =>
+            CONTENT_CATEGORIES.reduce((acc, cat) => {
+                acc[cat] = null;
+                return acc;
+            }, {} as Record<ContentCategory, Banner | null>)
+    );
 
-            const data = await response.json()
-            return data ? data.filteredImages : []
-        } catch (error) {
-            console.error('Error fetching banners:', error)
-            toast.error('Failed to load banners')
-            return []
-        }
-    }
+    const [isLoading, setIsLoading] = useState(true);
+    const { getToken } = useAuth();
 
-    async function fetchActiveBanner() {
+    const fetchBanners = async () => {
         try {
             const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
             const apiKey = process.env.NEXT_PUBLIC_API_SPECIAL_KEY;
+            if (!backend_uri || !apiKey) throw new Error('Missing backend configuration');
 
-            if (!backend_uri || !apiKey) {
-                throw new Error('Missing backend configuration');
-            }
+            const res = await fetch(`${backend_uri}/api/header-banners`, {
+                headers: { 'x-special-key': apiKey },
+                cache: 'no-store',
+            });
 
-            const headers = { 'x-special-key': apiKey };
-            const response = await fetch(
-                `${backend_uri}/api/active-banner?name=header_banner`,
-                { headers, cache: 'no-store' }
-            );
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch banner');
-            }
-
-            const data = await response.json();
-            return data ? data.url : null
-        } catch (error) {
-            console.error('Error fetching active banner:', error)
-            return null
+            if (!res.ok) throw new Error('Failed to fetch banners');
+            const data: Banner[] = await res.json();
+            return Array.isArray(data) ? data : [data];
+        } catch (err) {
+            console.error('Error fetching banners:', err);
+            toast.error('Failed to load banners');
+            return [];
         }
-    }
+    };
 
     useEffect(() => {
-        const loadData = async () => {
+        const load = async () => {
+            setIsLoading(true);
+            const loadingToast = toast.loading('Loading banners...');
             try {
-                const [bannersData, activeUrl] = await Promise.all([
-                    fetchBanners(),
-                    fetchActiveBanner()
-                ])
+                const data = await fetchBanners();
 
-                setBanners(bannersData)
-                setActiveBannerUrl(activeUrl)
-            } catch (error) {
-                console.error('Initialization error:', error)
+                const newBanners: Record<ContentCategory, Banner[]> = {} as Record<ContentCategory, Banner[]>;
+                const newActive: Record<ContentCategory, Banner | null> = {} as Record<ContentCategory, Banner | null>;
+
+                CONTENT_CATEGORIES.forEach(cat => {
+                    newBanners[cat] = data.filter(b => b.category === cat);
+                    newActive[cat] = data.find(b => b.category === cat && b.status === 'active') || null;
+                });
+
+                setBanners(newBanners);
+                setActiveBanners(newActive);
+                toast.success('Banners loaded successfully', { id: loadingToast });
+            } catch (error: any) {
+                console.error(error.message)
+                toast.error('Failed to load banners', { id: loadingToast });
             } finally {
-                setIsLoading(false)
+                setIsLoading(false);
             }
+        };
+
+        load();
+    }, []);
+
+    const handleSetActive = async (bannerId: string, category: ContentCategory) => {
+        const loadingToast = toast.loading(`Activating ${category} banner...`);
+        try {
+            const token = await getToken();
+            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
+            if (!backend_uri) throw new Error("Missing API endpoint");
+
+            const response = await fetch(`${backend_uri}/api/header-banners/active-banner/${bannerId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    status: 'active',
+                    category,
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to set active banner');
+            }
+
+            const bannersData = await fetchBanners();
+
+            const categorized: Record<ContentCategory, Banner[]> = {} as any;
+            const active: Record<ContentCategory, Banner | null> = {} as any;
+
+            CONTENT_CATEGORIES.forEach(cat => {
+                categorized[cat] = bannersData.filter(b => b.category === cat);
+                active[cat] = bannersData.find(b => b.category === cat && b.status === 'active') || null;
+            });
+
+            setBanners(categorized);
+            setActiveBanners(active);
+
+            toast.success(`${category} banner activated successfully`, { id: loadingToast });
+        } catch (error) {
+            console.error('Error setting active banner:', error);
+            toast.error(error instanceof Error ? error.message : 'Failed to update banner', { id: loadingToast });
+        }
+    };
+
+    const handleDelete = async (bannerId: string) => {
+        if (!confirm('Are you sure you want to delete this banner?')) return;
+
+        const loadingToast = toast.loading('Deleting banner...');
+        try {
+            const token = await getToken();
+            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
+            if (!backend_uri) throw new Error('Missing API endpoint');
+
+            const bannerRes = await fetch(`${backend_uri}/api/banners/${bannerId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (!bannerRes.ok) throw new Error('Failed to fetch banner');
+
+            const banner: Banner = await bannerRes.json();
+
+            await fetch(`${backend_uri}/api/banners/${bannerId}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            setBanners(prev => ({
+                ...prev,
+                [banner.category]: prev[banner.category].filter(b => b._id !== bannerId),
+            }));
+
+            if (activeBanners[banner.category]?._id === bannerId) {
+                setActiveBanners(prev => ({ ...prev, [banner.category]: null }));
+            }
+
+            toast.success('Banner deleted successfully', { id: loadingToast });
+        } catch (err: any) {
+            console.error('Delete error:', err);
+            toast.error(err.message || 'Failed to delete banner', { id: loadingToast });
+        }
+    };
+
+    const handleUpdateLink = async (bannerId: string, link: string) => {
+        const loadingToast = toast.loading('Updating banner link...');
+        try {
+            const token = await getToken();
+            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
+            if (!backend_uri) throw new Error('Missing API endpoint');
+
+            const res = await fetch(`${backend_uri}/api/header-banners/set-link/${bannerId}`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ link }),
+            });
+
+            if (!res.ok) throw new Error('Failed to update banner link');
+
+            const bannersData = await fetchBanners();
+
+            const categorized: Record<ContentCategory, Banner[]> = {} as any;
+            const active: Record<ContentCategory, Banner | null> = {} as any;
+
+            CONTENT_CATEGORIES.forEach(cat => {
+                categorized[cat] = bannersData.filter(b => b.category === cat);
+                active[cat] = bannersData.find(b => b.category === cat && b.status === 'active') || null;
+            });
+
+            setBanners(categorized);
+            setActiveBanners(active);
+
+            toast.success('Link updated successfully', { id: loadingToast });
+        } catch (err: any) {
+            console.error('Link update error:', err);
+            toast.error(err.message || 'Failed to update banner link', { id: loadingToast });
+        }
+    };
+
+    const handleUploadSuccess = async (result: any, category: ContentCategory) => {
+        const loadingToast = toast.loading('Uploading banner...');
+        const url = result?.info?.secure_url;
+        if (!url) {
+            toast.error('Upload failed: no URL found', { id: loadingToast });
+            return;
         }
 
-        loadData()
-    }, [activeBannerUrl])
-
-    const handleSetActive = async (url: string) => {
         try {
-            const token = await getToken()
-            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
-            if (!backend_uri) throw new Error("Missing API endpoint")
+            const token = await getToken();
+            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
+            if (!backend_uri) throw new Error("Missing API endpoint");
 
-            const response = await fetch(`${backend_uri}/api/active-banner`, {
+            const response = await fetch(`${backend_uri}/api/header-banners`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ url, name: 'header_banner' })
-            })
+                body: JSON.stringify({
+                    url,
+                    category,
+                    name: 'header_banner',
+                    status: 'inactive'
+                })
+            });
 
-            if (!response.ok) {
-                const errorData = await response.json()
-                throw new Error(errorData.error || 'Failed to set active banner')
-            }
+            if (!response.ok) throw new Error('Failed to save banner to backend');
 
-            setActiveBannerUrl(url)
-            toast.success('Banner activated successfully')
+            const bannersData = await fetchBanners();
+
+            const categorized: Record<ContentCategory, Banner[]> = {} as any;
+            const activeData: Record<ContentCategory, Banner | null> = {} as any;
+
+            CONTENT_CATEGORIES.forEach(cat => {
+                categorized[cat] = bannersData.filter(b => b.category === cat);
+                activeData[cat] = bannersData.find(b => b.category === cat && b.status === 'active') || null;
+            });
+
+            setBanners(categorized);
+            setActiveBanners(activeData);
+
+            toast.success('Banner uploaded successfully', { id: loadingToast });
         } catch (error) {
-            console.error('Error setting active banner:', error)
-            toast.error(error instanceof Error ? error.message : 'Failed to update banner')
+            console.error('Error handling upload:', error);
+            toast.error(error instanceof Error ? error.message : 'Failed to process upload', { id: loadingToast });
         }
-    }
-
-    const handleDelete = async (publicId: string) => {
-        if (!confirm('Are you sure you want to delete this banner?')) return
-
-        try {
-            // Delete from Cloudinary
-            const deleteResponse = await fetch('/api/cloudinary/header-banner', {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ publicId })
-            })
-
-            if (!deleteResponse.ok) throw new Error('Failed to delete banner')
-
-            // Update local state
-            setBanners(prev => prev.filter(b => b.public_id !== publicId))
-
-            // If this was the active banner, clear it
-            if (activeBannerUrl?.includes(publicId)) {
-                setActiveBannerUrl(null)
-                const token = await getToken()
-                const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
-                if (backend_uri) {
-                    await fetch(`${backend_uri}/api/active-banner`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                        },
-                    })
-                }
-            }
-
-            toast.success('Banner deleted successfully')
-        } catch (error) {
-            console.error('Error deleting banner:', error)
-            toast.error(error instanceof Error ? error.message : 'Failed to delete banner')
-        }
-    }
+    };
 
     if (isLoading) {
         return (
@@ -173,139 +271,34 @@ export default function SponsorBannerManager() {
                     ))}
                 </div>
             </div>
-        )
+        );
     }
 
     return (
         <div className="space-y-6 p-6">
-            {/* Active Banner */}
-            <Card className='bg-gray-200'>
-                <CardHeader>
-                    <CardTitle>Current Active Banner</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {activeBannerUrl ? (
-                        <div className="relative w-full flex items-center justify-center rounded-md overflow-hidden">
-                            <CldImage
-                                src={activeBannerUrl}
-                                alt="Active header banner"
-                                width={1200}
-                                height={300}
-                                className="object-contain w-full h-auto max-h-[180px]"
-                                sizes="(max-width: 768px) 100vw, 1200px"
-                            />
-                        </div>
-                    ) : (
-                        <div className="h-40 flex items-center justify-center bg-muted rounded-md">
-                            <p className="text-muted-foreground">No active banner selected</p>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
+            <ActiveBannersSection
+                activeBanners={activeBanners}
+                onEditLink={(bannerId) => {
+                    console.log('Edit link for banner:', bannerId);
+                }}
+            />
 
+            {CONTENT_CATEGORIES.map(category => (
+                <BannerCategorySection
+                    key={category}
+                    category={category}
+                    banners={banners[category]}
+                    activeBannerId={activeBanners[category]?._id || null}
+                    onSetActive={handleSetActive}
+                    onDelete={handleDelete}
+                    onUpdateLink={handleUpdateLink}
+                />
+            ))}
 
-            {/* Banner Library */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Banner Library</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {banners.length === 0 ? (
-                        <p className="text-muted-foreground">No banners available</p>
-                    ) : (
-                        <div className="space-y-4">
-                            {banners.map((banner) => (
-                                <Card
-                                    key={banner.public_id}
-                                    className={activeBannerUrl === banner.secure_url ? 'border-2 border-green-300 bg-gray-200' : 'bg-gray-200'}
-                                >
-                                    <CardContent className="flex flex-col sm:flex-row gap-4 items-center p-4">
-                                        <div className="relative w-full flex items-center justify-center rounded-md overflow-hidden">
-                                            <CldImage
-                                                src={banner.public_id}
-                                                alt="Header banner"
-                                                width={1200}
-                                                height={300}
-                                                className="object-contain w-full h-auto max-h-[180px]"
-                                                sizes="(max-width: 768px) 100vw, 1200px"
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
-                                            <Button
-                                                onClick={() => handleSetActive(banner.secure_url)}
-                                                disabled={activeBannerUrl === banner.secure_url}
-                                                className="gap-2 cursor-pointer"
-                                                variant={
-                                                    activeBannerUrl === banner.secure_url ? 'default' : 'outline'
-                                                }
-                                            >
-                                                {activeBannerUrl === banner.secure_url ? (
-                                                    <>
-                                                        <CheckCircle className="h-4 w-4" />
-                                                        Active
-                                                    </>
-                                                ) : (
-                                                    'Set Active'
-                                                )}
-                                            </Button>
-                                            <Button
-                                                onClick={() => handleDelete(banner.public_id)}
-                                                variant="destructive"
-                                                className="gap-2 cursor-pointer"
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                                Delete
-                                            </Button>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
-
-            {/* Upload Banner */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Upload New Banner</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <CldUploadWidget
-                        uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_ADVERTISEMENT_UPLOAD_PRESET}
-                        options={{
-                            folder: 'biratinfo/advertisement',
-                            context: { name: 'header banner' },
-                            tags: ['header_banner'],
-                            resourceType: 'image',
-                            multiple: false,
-                            maxFiles: 1,
-                            clientAllowedFormats: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'avif'],
-                            maxImageFileSize: 5000000,
-                        }}
-                        onSuccess={(result: any) => {
-                            if (result?.info) {
-                                const newBanner: CloudinaryBanner = {
-                                    public_id: result.info.public_id,
-                                    secure_url: result.info.secure_url,
-                                    width: result.info.width,
-                                    height: result.info.height,
-                                    context: result.info.context,
-                                }
-                                setBanners(prev => [...prev, newBanner])
-                                handleSetActive(newBanner.secure_url)
-                            }
-                        }}
-                    >
-                        {({ open }) => (
-                            <Button onClick={() => open()} className="gap-2">
-                                Upload New Banner
-                            </Button>
-                        )}
-                    </CldUploadWidget>
-                </CardContent>
-            </Card>
+            <BannerUploadSection
+                onUploadSuccess={handleUploadSuccess}
+                categories={CONTENT_CATEGORIES}
+            />
         </div>
-    )
+    );
 }

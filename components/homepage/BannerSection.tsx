@@ -22,7 +22,7 @@ export default function BannerSection({ mobile = false }: { mobile?: boolean }) 
 
                 const headers = { 'x-special-key': apiKey };
                 const response = await fetch(
-                    `${backend_uri}/api/active-banner?name=header_banner`,
+                    `${backend_uri}/api/header-banners/active-banner?category=sports`,
                     { headers, cache: 'no-store' }
                 );
 
