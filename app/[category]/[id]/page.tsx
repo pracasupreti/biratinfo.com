@@ -195,7 +195,7 @@ const RelatedPostCard = ({ post }: { post: IPost }) => (
             )}
         </div>
         <div className="p-4 flex flex-col flex-grow">
-            <Link href={`/category/${post.category}/${post.categoryId}`} className="font-semibold text-base mb-2 text-text-color hover:underline transition-colors line-clamp-2 ">
+            <Link href={`/${post.category}/${post.categoryId}`} className="font-semibold text-base mb-2 text-text-color hover:underline transition-colors line-clamp-2 ">
                 {post.nepaliTitle}
             </Link>
             <p className="text-sm text-gray-600 line-clamp-2 mt-auto">

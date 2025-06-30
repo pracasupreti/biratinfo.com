@@ -13,7 +13,7 @@ export default function Header() {
         <header>
             {/* Desktop Header */}
             <div className='md:flex md:flex-col hidden'>
-                <div className='w-full py-1 h-5 bg-text-color flex flex-col sm:flex-row items-center justify-between px-2 md:px-4 lg:px-8 xl:px-16 text-white'>
+                <div className='w-full h-[5px] bg-text-color flex flex-col sm:flex-row items-center justify-between px-2 md:px-4 lg:px-8 xl:px-16 text-white'>
                     {/* Breaking news ticker can go here */}
                 </div>
 
