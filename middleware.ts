@@ -12,8 +12,8 @@ const protectedRoutes = [
 // Public routes that don't require authentication
 const isPublicRoute = createRouteMatcher([
     '/',
-    '/category(.*)',
-    '/author',
+    '/:category(.*)',
+    '/author(.*)',
     '/privacy-policy',
     '/terms',
     '/advertise',
