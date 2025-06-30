@@ -71,7 +71,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
 
 
 const PostHero = ({ post }: { post: SinglePost }) => (
-    <div className="relative w-full h-[50vh] md:h-[83vh] overflow-hidden">
+    <div className="relative w-full h-[50vh] md:h-[85vh] overflow-hidden">
         {post.heroBanner ? (
             <Image
                 src={post.heroBanner}
@@ -228,7 +228,7 @@ export default async function PostPage({ params }: { params: Promise<{ category:
             `${backend_uri}/api/posts/full/${category}/${id}`,
             options
         );
-        if (!postRes.ok) throw new Error(`Failed to fetch post. Status: ${postRes.status}`);
+        if (!postRes.ok) return NotFound();
 
         const postResult = await postRes.json();
         const fetchedPost: SinglePost = postResult?.post;

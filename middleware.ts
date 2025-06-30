@@ -1,6 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import type { Roles } from '@/types/globals';
+import { categoryOptions } from './types/Post';
 
 // Define protected routes and their required roles
 const protectedRoutes = [
@@ -9,10 +10,13 @@ const protectedRoutes = [
     { path: '/manager', role: 'manager' },
 ];
 
+// Dynamically generate public category route matchers
+const categoryMatchers = categoryOptions.map((c) => `/${c.value}/:path*`);
+
 // Public routes that don't require authentication
 const isPublicRoute = createRouteMatcher([
     '/',
-    '/:category(.*)',
+    ...categoryMatchers,
     '/author(.*)',
     '/privacy-policy',
     '/terms',
@@ -78,9 +82,6 @@ export default clerkMiddleware(async (auth, req) => {
 // Middleware configuration - runs on all routes except static files
 export const config = {
     matcher: [
-        // Skip Next.js internals and all static files, unless found in search params
-        '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-        // Always run for API routes
-        '/(api|trpc)(.*)',
+        '/((?!_next|.*\\.(?:ico|png|jpg|jpeg|svg|webp|css|js|json|ttf|woff2?|map)).*)',
     ],
-}
+};

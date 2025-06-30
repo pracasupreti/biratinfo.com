@@ -44,7 +44,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         const categoryBlocks = await res.json()
         const allPosts: IPost[] = categoryBlocks.post;
 
-        if (!allPosts) return NotFound()
+        if (allPosts.length == 0) return NotFound()
 
 
         return (
@@ -85,7 +85,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
                                         <div>
                                             <Link
-                                                href={`/category/${post.category}/${post.categoryId}`}
+                                                href={`/${post.category}/${post.categoryId}`}
                                                 className="font-ibm_plex_serif font-bold text-xl lg:text-2xl cursor-pointer text-text-color mt-3 hover:underline line-clamp-1"
                                             >
                                                 {post.nepaliTitle}

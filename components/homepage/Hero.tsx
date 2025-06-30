@@ -43,7 +43,7 @@ function Hero({ data }: HeroProps) {
     const authorAvatar = author?.avatar || ''
     return (
         <section
-            className="w-full min-h-[calc(100vh-128px)] bg-cover bg-no-repeat bg-center flex items-end justify-center"
+            className="w-full min-h-[calc(100vh-111px)] bg-cover bg-no-repeat bg-center flex items-end justify-center"
             style={{
                 backgroundImage: `url('${data?.heroBanner || 'placeholder-image'}')`,
             }}
