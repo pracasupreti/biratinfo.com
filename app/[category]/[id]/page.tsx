@@ -9,9 +9,9 @@ import Footer from '@/components/homepage/Footer';
 import Header from '@/components/homepage/Header';
 import NepaliTimeDisplay from '@/components/homepage/NepaliTime';
 import { getNepaliCategory } from '@/components/homepage/Hero';
-import SocialShare from '@/components/SocialShare';
-
-
+import ClapButton from '@/components/Interactions/ClapButton';
+import CommentsSection from '@/components/Interactions/CommentsSection';
+import SocialShareClientWrapper from '@/components/SocialShareWrapper';
 
 const getAuthorName = (authors: Author[] | undefined): string => {
     if (!authors || authors.length === 0) return 'अज्ञात';
@@ -27,6 +27,47 @@ const API_CONFIG = {
     backend_uri: process.env.NEXT_PUBLIC_BACKEND_URL,
     apiKey: process.env.NEXT_PUBLIC_API_SPECIAL_KEY,
 };
+
+export async function generateMetadata({ params }: { params: Promise<{ category: string; id: string }> }) {
+    const { category, id } = await params;
+    const { backend_uri, apiKey } = API_CONFIG;
+
+    if (!backend_uri || !apiKey) return {};
+
+    const headers = { 'x-special-key': apiKey };
+    const options: RequestInit = { headers, next: { revalidate: 60 } };
+
+    const postRes = await fetch(`${backend_uri}/api/posts/full/${category}/${id}`, options);
+    if (!postRes.ok) return {};
+
+    const postResult = await postRes.json();
+    const post: SinglePost = postResult?.post;
+
+    return {
+        title: post.nepaliTitle,
+        description: post.excerpt,
+        openGraph: {
+            title: post.nepaliTitle,
+            description: post.excerpt,
+            url: `${process.env.NEXT_PUBLIC_SITE_URL}/${category}/${id}`,
+            images: [
+                {
+                    url: post.ogBanner || post.heroBanner,
+                    width: 1200,
+                    height: 630,
+                },
+            ],
+            type: 'article',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: post.nepaliTitle,
+            description: post.excerpt,
+            images: [post.ogBanner || post.heroBanner],
+        },
+    };
+}
+
 
 const PostHero = ({ post }: { post: SinglePost }) => (
     <div className="relative w-full h-[50vh] md:h-[83vh] overflow-hidden">
@@ -181,7 +222,7 @@ export default async function PostPage({ params }: { params: Promise<{ category:
     const options: RequestInit = { headers, cache: 'no-store' }
 
     try {
-
+        // Fetch the main post
         const postRes = await fetch(
             `${backend_uri}/api/posts/full/${category}/${id}`,
             options
@@ -192,6 +233,18 @@ export default async function PostPage({ params }: { params: Promise<{ category:
         const fetchedPost: SinglePost = postResult?.post;
         if (!fetchedPost) throw new Error('Post not found.');
 
+        // Fetch interaction data (claps and comments)
+        const interactionRes = await fetch(
+            `${backend_uri}/api/posts/${fetchedPost._id}/interaction`,
+            options
+        );
+        const interactionData = interactionRes.ok ? await interactionRes.json() : {
+            claps: 0,
+            comments: [],
+            hasClapped: false
+        };
+
+        // Fetch related posts
         const relatedRes = await fetch(
             `${backend_uri}/api/posts/category-summary/${fetchedPost.category}`,
             options
@@ -212,7 +265,22 @@ export default async function PostPage({ params }: { params: Promise<{ category:
 
                 <main className="flex-1 pb-8 bg-white">
                     <ArticleContent post={fetchedPost} />
-                    <SocialShare />
+
+                    <div className="max-w-4xl mx-auto px-4">
+                        <ClapButton
+                            postId={fetchedPost._id}
+                            initialClaps={interactionData.claps}
+                            initialHasClapped={interactionData.hasClapped}
+                        />
+                    </div>
+
+                    <SocialShareClientWrapper />
+
+                    <CommentsSection
+                        postId={fetchedPost._id}
+                        initialComments={interactionData.comments}
+                        initialLimitReached={interactionData.comments?.length >= 10}
+                    />
                 </main>
 
                 {relatedPosts.length > 0 ? (

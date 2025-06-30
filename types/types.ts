@@ -1,5 +1,5 @@
 // types/types.ts
-export type ContentCategory = 'Sports' | 'Economy' | 'Politics' | 'Entertainment' | 'Technology' | 'Health' | 'Tourism' | 'Agriculture' | 'Education' | 'Lifestyle';
+export type ContentCategory = 'Home' | 'Sports' | 'Economy' | 'Politics' | 'Entertainment' | 'Technology' | 'Health' | 'Tourism' | 'Agriculture' | 'Education' | 'Lifestyle';
 
 export interface Banner {
     _id: string;

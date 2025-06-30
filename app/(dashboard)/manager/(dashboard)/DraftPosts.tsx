@@ -1,4 +1,3 @@
-'use client'
 import { Button } from '@/components/ui/button'
 import { Pencil, Clock, FileText } from 'lucide-react'
 import { useRouter } from 'next/navigation'

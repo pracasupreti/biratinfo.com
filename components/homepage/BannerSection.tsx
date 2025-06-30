@@ -1,14 +1,19 @@
 // components/BannerSection.tsx (Client Component)
 'use client'
+import { categoryOptions } from '@/types/Post';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function BannerSection({ mobile = false }: { mobile?: boolean }) {
     const [sponsorBanner, setSponsorBanner] = useState<string | null>(null);
+    const [link, setLink] = useState<string>("/");
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const pathname = usePathname();
+
 
     useEffect(() => {
         const fetchBanner = async () => {
@@ -20,9 +25,19 @@ export default function BannerSection({ mobile = false }: { mobile?: boolean }) 
                     throw new Error('Missing backend configuration');
                 }
 
+                // Determine category dynamically
+                let category = 'home';
+                const matchedCategory = categoryOptions.find((option) =>
+                    pathname.includes(option.value)
+                );
+
+                if (matchedCategory) {
+                    category = matchedCategory.value;
+                }
+
                 const headers = { 'x-special-key': apiKey };
                 const response = await fetch(
-                    `${backend_uri}/api/header-banners/active-banner?category=sports`,
+                    `${backend_uri}/api/header-banners/active-banner?category=${category}`,
                     { headers, cache: 'no-store' }
                 );
 
@@ -30,6 +45,7 @@ export default function BannerSection({ mobile = false }: { mobile?: boolean }) 
 
                 const data = await response.json();
                 setSponsorBanner(data?.url || null);
+                setLink(data?.link || "#");
             } catch (err) {
                 console.error('Banner fetch error:', err);
                 setError('Failed to load sponsor banner');
@@ -39,7 +55,7 @@ export default function BannerSection({ mobile = false }: { mobile?: boolean }) 
         };
 
         fetchBanner();
-    }, []);
+    }, [pathname]); // Re-run when pathname changes
 
     if (mobile) {
         return (
@@ -87,7 +103,7 @@ export default function BannerSection({ mobile = false }: { mobile?: boolean }) 
                     {error}
                 </div>
             ) : sponsorBanner ? (
-                <Link href="#">
+                <Link href={link}>
                     <Image
                         src={sponsorBanner}
                         alt='Sponsor Banner'

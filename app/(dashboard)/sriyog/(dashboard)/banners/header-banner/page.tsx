@@ -12,7 +12,7 @@ import { Banner, ContentCategory } from '@/types/types';
 import ActiveBannersSection from './ActiveBannersSection';
 
 const CONTENT_CATEGORIES: ContentCategory[] = [
-    'Sports', 'Economy', 'Politics', 'Entertainment', 'Technology', 'Health', 'Tourism', 'Agriculture', 'Education', 'Lifestyle'
+    'Home', 'Sports', 'Economy', 'Politics', 'Entertainment', 'Technology', 'Health', 'Tourism', 'Agriculture', 'Education', 'Lifestyle'
 ];
 
 export default function SponsorBannerManager() {
@@ -67,8 +67,8 @@ export default function SponsorBannerManager() {
                 const newActive: Record<ContentCategory, Banner | null> = {} as Record<ContentCategory, Banner | null>;
 
                 CONTENT_CATEGORIES.forEach(cat => {
-                    newBanners[cat] = data.filter(b => b.category === cat);
-                    newActive[cat] = data.find(b => b.category === cat && b.status === 'active') || null;
+                    newBanners[cat] = data.filter(b => b.category === cat.toLowerCase());
+                    newActive[cat] = data.find(b => b.category === cat.toLowerCase() && b.status === 'active') || null;
                 });
 
                 setBanners(newBanners);
@@ -115,8 +115,8 @@ export default function SponsorBannerManager() {
             const active: Record<ContentCategory, Banner | null> = {} as any;
 
             CONTENT_CATEGORIES.forEach(cat => {
-                categorized[cat] = bannersData.filter(b => b.category === cat);
-                active[cat] = bannersData.find(b => b.category === cat && b.status === 'active') || null;
+                categorized[cat] = bannersData.filter(b => b.category === cat.toLowerCase());
+                active[cat] = bannersData.find(b => b.category === cat.toLowerCase() && b.status === 'active') || null;
             });
 
             setBanners(categorized);
@@ -190,8 +190,8 @@ export default function SponsorBannerManager() {
             const active: Record<ContentCategory, Banner | null> = {} as any;
 
             CONTENT_CATEGORIES.forEach(cat => {
-                categorized[cat] = bannersData.filter(b => b.category === cat);
-                active[cat] = bannersData.find(b => b.category === cat && b.status === 'active') || null;
+                categorized[cat] = bannersData.filter(b => b.category === cat.toLowerCase());
+                active[cat] = bannersData.find(b => b.category === cat.toLowerCase() && b.status === 'active') || null;
             });
 
             setBanners(categorized);
@@ -239,8 +239,8 @@ export default function SponsorBannerManager() {
             const activeData: Record<ContentCategory, Banner | null> = {} as any;
 
             CONTENT_CATEGORIES.forEach(cat => {
-                categorized[cat] = bannersData.filter(b => b.category === cat);
-                activeData[cat] = bannersData.find(b => b.category === cat && b.status === 'active') || null;
+                categorized[cat] = bannersData.filter(b => b.category === cat.toLowerCase());
+                activeData[cat] = bannersData.find(b => b.category === cat.toLowerCase() && b.status === 'active') || null;
             });
 
             setBanners(categorized);
@@ -278,9 +278,6 @@ export default function SponsorBannerManager() {
         <div className="space-y-6 p-6">
             <ActiveBannersSection
                 activeBanners={activeBanners}
-                onEditLink={(bannerId) => {
-                    console.log('Edit link for banner:', bannerId);
-                }}
             />
 
             {CONTENT_CATEGORIES.map(category => (

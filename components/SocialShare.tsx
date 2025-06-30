@@ -23,7 +23,7 @@ function SocialShare() {
                         यो खबर सेयर गर्नुहोस्:
                     </h3>
                     <div className="flex items-center gap-2">
-                        <div className="sharethis-inline-share-buttons"></div>
+                        <ShareThis />
                         <Button
                             variant="outline"
                             size="sm"
@@ -35,7 +35,7 @@ function SocialShare() {
                             ) : (
                                 <CopyIcon className="w-4 h-4" />
                             )}
-                            {isCopied ? 'लिङ्क कपि भयो' : 'लिङ्क कपि'}
+                            {isCopied ? 'लिङ्क कपि भयो' : 'लिङ्क कपि गर्नुहोस'}
                         </Button>
                     </div>
                 </div>
@@ -45,3 +45,26 @@ function SocialShare() {
 }
 
 export default SocialShare
+
+
+// components/ShareThis.tsx
+import { useEffect } from 'react';
+
+const ShareThis = () => {
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = `https://platform-api.sharethis.com/js/sharethis.js#property=${process.env.NEXT_PUBLIC_SHARETHIS_URL}&product=inline-share-buttons&source=platform`;
+        script.async = true;
+        document.body.appendChild(script);
+    }, []);
+
+    return (
+        <div className="sharethis-inline-share-buttons"></div>
+    );
+};
+
+
+
+
+
+

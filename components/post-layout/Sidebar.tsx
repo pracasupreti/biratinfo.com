@@ -17,6 +17,7 @@ import Image from 'next/image'
 import { AuthorSelect } from './AuthorSelect'
 import { MultiSelect } from '../MultiSelectComponent'
 import { resizeAndCompressImage } from '../CompressFile'
+import { categoryOptions, Language, tagOptions } from '@/types/Post'
 
 interface PostSidebarProps {
     isEditing?: boolean,
@@ -24,62 +25,8 @@ interface PostSidebarProps {
     isWriting?: boolean
 }
 
-export const categoryOptions = [
-    { value: 'news', en: 'News', np: 'समाचार' },
-    { value: 'sports', en: 'Sports', np: 'खेलकुद' },
-    { value: 'entertainment', en: 'Entertainment', np: 'मनोरञ्जन' },
-    { value: 'politics', en: 'Politics', np: 'राजनीति' },
-    { value: 'tourism', en: 'Tourism', np: 'पर्यटन' },
-    { value: 'education', en: 'Education', np: 'शिक्षा' },
-    { value: 'health', en: 'Health', np: 'स्वास्थ्य' },
-    { value: 'technology', en: 'Technology', np: 'विज्ञान र प्रविधि' },
-    { value: 'economy', en: 'Economy', np: 'अर्थ / कारोबार' },
-    { value: 'agriculture', en: 'Agriculture', np: 'कृषि' },
-    { value: 'culture', en: 'Culture', np: 'संस्कृति' },
-    { value: 'environment', en: 'Environment', np: 'पर्यावरण' },
-    { value: 'opinion', en: 'Opinion', np: 'विचार' },
-    { value: 'crime', en: 'Crime', np: 'अपराध' },
-    { value: 'lifestyle', en: 'Lifestyle', np: 'जीवनशैली' },
-    { value: 'international', en: 'International', np: 'अन्तर्राष्ट्रिय' },
-];
 
-const tagOptions = [
-    { value: 'breaking-news', en: 'Breaking News', np: 'ताजा खबर' },
-    { value: 'covid19', en: 'COVID-19', np: 'कोभिड-१९' },
-    { value: 'election', en: 'Election', np: 'निर्वाचन' },
-    { value: 'visit-nepal-2025', en: 'Visit Nepal 2025', np: 'भ्रमण वर्ष २०२५' },
-    { value: 'budget-2025', en: 'Budget 2025', np: 'बजेट २०२५' },
-    { value: 'startup-ecosystem', en: 'Startup Ecosystem', np: 'स्टार्टअप वातावरण' },
-    { value: 'weather-alert', en: 'Weather Alert', np: 'मौसम जानकारी' },
-    { value: 'earthquake', en: 'Earthquake', np: 'भूकम्प' },
-    { value: 'kathmandu', en: 'Kathmandu', np: 'काठमाडौं' },
-    { value: 'loadshedding', en: 'Loadshedding', np: 'लोडसेडिङ' },
-    { value: 'floods', en: 'Floods', np: 'बाढी' },
-    { value: 'gold-price', en: 'Gold Price', np: 'सुनको मूल्य' },
-    { value: 'business', en: 'Business', np: 'व्यापार' },
-    { value: 'stock-market', en: 'Stock Market', np: 'सेयर बजार' },
-    { value: 'nepal-cricket', en: 'Nepal Cricket', np: 'नेपाल क्रिकेट' },
-    { value: 'tech-news', en: 'Tech News', np: 'प्रविधि समाचार' },
-    { value: 'ncell', en: 'Ncell', np: 'एनसेल' },
-    { value: 'movie', en: 'Movie', np: 'चलचित्र' },
-    { value: 'festival', en: 'Festival', np: 'चाडपर्व' },
-    { value: 'himalayas', en: 'Himalayas', np: 'हिमालय' },
-    { value: 'traffic-update', en: 'Traffic Update', np: 'यातायात जानकारी' }
-];
 
-const Language = [
-    { value: 'english', language: 'English' },
-    { value: 'nepali', language: 'Nepali' },
-    { value: 'hindi', language: 'Hindi' },
-    { value: 'maithali', language: 'Maithali' },
-    { value: 'bhojpuri', language: 'Bhojpuri' },
-    { value: 'tharu', language: 'Tharu' },
-    { value: 'nepal bhasha', language: 'Nepal bhasha' },
-    { value: 'sanskrit', language: 'Sanskrit' },
-    { value: 'urdu', language: 'Urdu' },
-    { value: 'arabic', language: 'Arabic' },
-    { value: 'korean', language: 'Korean' },
-]
 
 
 export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps) {

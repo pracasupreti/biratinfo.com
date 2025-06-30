@@ -38,9 +38,9 @@ function Footer() {
                         <ul className='space-y-3 text-gray-600'>
                             {[
                                 'अध्यक्ष : सुधीर नेपाल',
-                                'सम्पादक : उमेश शर्मा',
+                                'सम्पादक : ललिता घिमिरे',
                                 'प्रविधि : प्रकाश उप्रेती',
-                                'जनसम्पर्क अधिकृत : प्रियंका शर्मा'
+                                'जनसम्पर्क अधिकृत : सुरज माझी'
                             ].map((item, index) => (
                                 <li key={index} className='text-[16px] font-ibm_plex_serif'>{item}</li>
                             ))}
@@ -67,7 +67,7 @@ function Footer() {
                                 <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
                                     <PhoneCallIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p className='text-[16px] text-center md:text-left font-ibm_plex_serif'>+९७७-९८५११-५२७७४</p>
+                                <Link href={'tel:+977-01-4548068'} className='text-[16px] text-center md:text-left font-ibm_plex_serif'>+९७७-१-४५४८०६८</Link>
                             </li>
                             <li className='flex items-center gap-3'>
                                 <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
@@ -119,7 +119,7 @@ function Footer() {
                         <div className='flex flex-wrap justify-center gap-3 md:gap-4 text-[#444444]'>
                             <Link href="/terms" className='hover:text-gray-700 transition-colors font-roboto'>Terms & Conditions</Link>
                             <Link href="/privacy-policy" className='hover:text-gray-700 transition-colors font-roboto'>Privacy Policy</Link>
-                            <Link href="#" className='hover:text-gray-700 transition-colors font-roboto'>Advertise</Link>
+                            <Link href="/advertise" className='hover:text-gray-700 transition-colors font-roboto'>Advertise</Link>
                         </div>
                     </div>
                 </div>

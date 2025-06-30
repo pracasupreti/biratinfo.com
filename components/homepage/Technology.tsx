@@ -28,7 +28,7 @@ function Technology({ posts }: SummaryProps) {
         <div className="w-full px-4 lg:px-16 md:px-5 py-10">
             <div className="max-w-8xl mx-auto md:mx-12 lg:mx-20 flex flex-col gap-10">
                 <div className="flex flex-col gap-2">
-                    <Link href={'/category/technology'} className="text-text-color font-orienta text-[18px] font-[700] hover:underline">{getNepaliCategory('technology')}</Link>
+                    <Link href={'/technology'} className="text-text-color font-orienta text-[18px] font-[700] hover:underline">{getNepaliCategory('technology')}</Link>
                     <div className="w-full h-[2px] bg-[#ebebeb]" />
                 </div>
 
@@ -44,7 +44,7 @@ function Technology({ posts }: SummaryProps) {
                                 />
                             </div>
 
-                            <Link href={`/category/${post.category}/${post.categoryId}`} className="font-ibm_plex_serif font-bold text-[18px] cursor-pointer text-text-color line-clamp-1 hover:underline">
+                            <Link href={`/${post.category}/${post.categoryId}`} className="font-ibm_plex_serif font-bold text-[18px] cursor-pointer text-text-color line-clamp-1 hover:underline">
                                 {post.nepaliTitle}
                             </Link>
                             <p className="font-ibm_plex_serif font-[500] text-base text-[#808080] line-clamp-2">

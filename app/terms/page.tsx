@@ -1,6 +1,7 @@
 import { Metadata, NextPage } from 'next';
 import Header from '@/components/homepage/Header';
 import Footer from '@/components/homepage/Footer';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: "Terms & Conditions | Birat Informatics",
@@ -14,7 +15,7 @@ const TermsAndConditions: NextPage = () => {
             <Header />
 
             <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 md:p-8">
+                <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 md:p-8">
                     <div className="text-center mb-10">
                         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Terms & Conditions</h1>
                         <p className="text-gray-600">Effective Date: June 25, 2023</p>
@@ -116,7 +117,7 @@ const TermsAndConditions: NextPage = () => {
                         <div className="mb-10">
                             <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b pb-2 border-gray-200">8. Privacy</h2>
                             <p>
-                                Your use of our platform is also governed by our <a href="/privacy-policy" className="text-blue-600 hover:underline">Privacy Policy</a>, which outlines how we collect and manage your data.
+                                Your use of our platform is also governed by our <Link href="/privacy-policy" className="text-blue-600 hover:underline">Privacy Policy</Link>, which outlines how we collect and manage your data.
                             </p>
                         </div>
 
@@ -150,9 +151,9 @@ const TermsAndConditions: NextPage = () => {
                             <div className="mt-4 bg-gray-50 p-4 rounded-lg">
                                 <p className="font-medium">Birat Informatics Pvt. Ltd.</p>
                                 <p>📍 Kamalpokhari, Kathmandu, Nepal</p>
-                                <p>📧 Email: <a href="mailto:info@biratinfo.com" className="text-blue-600 hover:underline">info@biratinfo.com</a></p>
+                                <p>📧 Email: <Link href="mailto:info@biratinfo.com" className="text-blue-600 hover:underline">info@biratinfo.com</Link></p>
                                 <p>📞 Phone: +977-9851152774</p>
-                                <p>🌐 Website: <a href="https://www.biratinfo.com" className="text-blue-600 hover:underline">www.biratinfo.com</a></p>
+                                <p>🌐 Website: <Link href="https://www.biratinfo.com" className="text-blue-600 hover:underline">www.biratinfo.com</Link></p>
                             </div>
                         </div>
                     </div>

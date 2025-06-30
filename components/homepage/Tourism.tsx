@@ -31,7 +31,7 @@ function Tourism({ posts }: SummaryProps) {
             <div className="max-w-8xl mx-auto md:mx-12 lg:mx-20 flex flex-col gap-10">
                 {/* Header */}
                 <div className="flex flex-col gap-2">
-                    <Link href={'/category/tourism'} className="text-text-color font-orienta text-lg font-[700] hover:underline">
+                    <Link href={'/tourism'} className="text-text-color font-orienta text-lg font-[700] hover:underline">
                         {getNepaliCategory('tourism')}
                     </Link>
                     <div className="w-full h-[2px] bg-[#ebebeb]" />
@@ -51,7 +51,7 @@ function Tourism({ posts }: SummaryProps) {
                                         className="object-cover"
                                     />
                                 </div>
-                                <Link href={`/category/${featuredPost.category}/${featuredPost.categoryId}`} className="font-ibm_plex_serif font-bold text-xl lg:text-2xl cursor-pointer text-text-color mt-3 hover:underline line-clamp-1">
+                                <Link href={`/${featuredPost.category}/${featuredPost.categoryId}`} className="font-ibm_plex_serif font-bold text-xl lg:text-2xl cursor-pointer text-text-color mt-3 hover:underline line-clamp-1">
                                     {featuredPost.nepaliTitle}
                                 </Link>
                                 <p className="text-[#808080] font-ibm_plex_serif font-medium text-xs sm:text-sm lg:text-base mt-1.5 line-clamp-3">
@@ -82,7 +82,7 @@ function Tourism({ posts }: SummaryProps) {
                                 </div>
 
                                 <div className="flex flex-col gap-0.5 sm:w-[60%]">
-                                    <Link href={`/category/${gridPosts[0].category}/${gridPosts[0].categoryId}`} className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color hover:underline line-clamp-2">
+                                    <Link href={`/${gridPosts[0].category}/${gridPosts[0].categoryId}`} className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color hover:underline line-clamp-2">
                                         {post.nepaliTitle}
                                     </Link>
                                     <p className="text-[#808080] font-ibm_plex_serif font-medium text-base line-clamp-2">

@@ -37,11 +37,11 @@ function Summary({ posts }: SummaryProps) {
                             />
                         </div>
                         <div className="flex flex-col gap-3">
-                            <Link href={`/category/${featuredPost.category}`} className="text-text-color font-orienta text-sm sm:text-base font-[700] hover:underline">
+                            <Link href={`/${featuredPost.category}`} className="text-text-color font-orienta text-sm sm:text-base font-[700] hover:underline">
                                 {getNepaliCategory(featuredPost.category)}
                             </Link>
                             <Link
-                                href={`/category/${featuredPost.category}/${featuredPost.categoryId}`}
+                                href={`/${featuredPost.category}/${featuredPost.categoryId}`}
                                 className="text-text-color font-ibm_plex_serif font-bold text-xl lg:text-2xl hover:underline"
                             >
                                 {featuredPost.nepaliTitle}
@@ -66,11 +66,11 @@ function Summary({ posts }: SummaryProps) {
                                 />
                             </div>
                             <div className='flex flex-col gap-1'>
-                                <Link href={`/category/${post.category}`} className="text-text-color font-orienta text-sm sm:text-base font-[700] hover:underline">
+                                <Link href={`/${post.category}`} className="text-text-color font-orienta text-sm sm:text-base font-[700] hover:underline">
                                     {getNepaliCategory(post.category)}
                                 </Link>
                                 <Link
-                                    href={`/category/${post.category}/${post.categoryId}`}
+                                    href={`/${post.category}/${post.categoryId}`}
                                     className="text-text-color font-ibm_plex_serif font-semibold text-md hover:underline line-clamp-2"
                                 >
                                     {post.nepaliTitle}

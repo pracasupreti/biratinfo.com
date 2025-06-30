@@ -31,7 +31,7 @@ function Agriculture({ posts }: SummaryProps) {
         <div className="w-full px-4 lg:px-16 md:px-5 py-10">
             <div className="max-w-8xl mx-auto md:mx-12 lg:mx-20 flex flex-col gap-10">
                 <div className="flex flex-col gap-2">
-                    <Link href={'/category/agriculture'} className="text-text-color font-orienta text-[18px] font-[700] hover:underline">{getNepaliCategory('agriculture')}</Link>
+                    <Link href={'/agriculture'} className="text-text-color font-orienta text-[18px] font-[700] hover:underline">{getNepaliCategory('agriculture')}</Link>
                     <div className="w-full h-[2px] bg-[#ebebeb]" />
                 </div>
 
@@ -41,7 +41,7 @@ function Agriculture({ posts }: SummaryProps) {
                         <div className="flex-1 flex flex-col gap-5 h-full justify-between">
                             <div>
                                 <div className={`w-full aspect-[3/2] bg-cover bg-center bg-no-repeat rounded-xl`} style={{ backgroundImage: `url(${featuredPost.heroBanner})` }} />
-                                <Link href={`/category/${featuredPost.category}/${featuredPost.categoryId}`} className="font-ibm_plex_serif font-bold text-[16px] md:text-[18px] lg:text-[20px] cursor-pointer text-text-color mt-4 hover:underline line-clamp-1">
+                                <Link href={`/${featuredPost.category}/${featuredPost.categoryId}`} className="font-ibm_plex_serif font-bold text-[16px] md:text-[18px] lg:text-[20px] cursor-pointer text-text-color mt-4 hover:underline line-clamp-1">
                                     {featuredPost.nepaliTitle}
                                 </Link>
                                 <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-[16px] mt-2 line-clamp-3">
@@ -71,7 +71,7 @@ function Agriculture({ posts }: SummaryProps) {
                                     />
                                 </div>
                                 <div className="flex flex-col gap-1 sm:w-[60%]">
-                                    <Link href={`/category/${post.category}/${post.categoryId}`} className="font-ibm_plex_serif font-semibold text-[16px] md:text-[18px] cursor-pointer text-text-color hover:underline line-clamp-1">
+                                    <Link href={`/${post.category}/${post.categoryId}`} className="font-ibm_plex_serif font-semibold text-[16px] md:text-[18px] cursor-pointer text-text-color hover:underline line-clamp-1">
                                         {post.nepaliTitle}
                                     </Link>
                                     <p className="text-[#808080] font-ibm_plex_serif font-medium text-[16px] line-clamp-2">

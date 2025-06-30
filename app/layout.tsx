@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Alata, Jost, Orienta, IBM_Plex_Serif, Roboto, Inter 
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics } from '@vercel/analytics/next';
 import ScheduledPostChecker from "@/components/ScheduledPostChecker";
 
 const geistSans = Geist({
@@ -51,8 +52,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "BIRATINFO | Digital Archive of Information",
   description: "Digital Archive of Information",
-
+  metadataBase: new URL('https://87f6-2400-1a00-4b8e-ea74-1357-53d-4860-2836.ngrok-free.app'),
 };
+
 
 export default function RootLayout({
   children,
@@ -64,7 +66,6 @@ export default function RootLayout({
       <html lang="en">
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <script type="text/javascript" src={`https://platform-api.sharethis.com/js/sharethis.js#property=${process.env.NEXT_PUBLIC_SHARETHIS_URL}&product=sop&source=platform`} async></script>
         </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${alata.variable} ${jost.variable} ${orienta.variable} ${ibm_plex_serif.variable} ${roboto.variable} ${inter.variable} antialiased`}
@@ -72,6 +73,7 @@ export default function RootLayout({
           <>
             <ScheduledPostChecker />
             {children}
+            <Analytics />
             <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
           </>
         </body>

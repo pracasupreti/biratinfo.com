@@ -1,4 +1,3 @@
-'use client'
 import { UserButton } from '@clerk/nextjs'
 import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
