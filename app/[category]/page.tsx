@@ -2,11 +2,11 @@
 import Footer from "@/components/homepage/Footer";
 import { Author, IPost } from "@/types/Post";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import Image from "next/image";
 import NepaliDateTime from "@/components/homepage/NepaliDate";
 import Header from "@/components/homepage/Header";
 import { getNepaliCategory } from "@/components/homepage/Hero";
+import NotFound from "../not-found";
 
 const getAuthorName = (authors: Author[] | undefined): string => {
     if (!authors || authors.length === 0) return 'अज्ञात';
@@ -27,7 +27,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
     if (!backend_uri || !apiKey) {
         return (
-            notFound()
+            NotFound()
         )
     }
 
@@ -43,6 +43,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         }
         const categoryBlocks = await res.json()
         const allPosts: IPost[] = categoryBlocks.post;
+
+        if (!allPosts) return NotFound()
 
 
         return (

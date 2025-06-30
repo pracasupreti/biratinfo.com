@@ -12,6 +12,7 @@ import { getNepaliCategory } from '@/components/homepage/Hero';
 import ClapButton from '@/components/Interactions/ClapButton';
 import CommentsSection from '@/components/Interactions/CommentsSection';
 import SocialShareClientWrapper from '@/components/SocialShareWrapper';
+import NotFound from '@/app/not-found';
 
 const getAuthorName = (authors: Author[] | undefined): string => {
     if (!authors || authors.length === 0) return 'अज्ञात';
@@ -231,7 +232,7 @@ export default async function PostPage({ params }: { params: Promise<{ category:
 
         const postResult = await postRes.json();
         const fetchedPost: SinglePost = postResult?.post;
-        if (!fetchedPost) throw new Error('Post not found.');
+        if (!fetchedPost) return NotFound()
 
         // Fetch interaction data (claps and comments)
         const interactionRes = await fetch(

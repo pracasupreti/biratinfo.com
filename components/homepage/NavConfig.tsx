@@ -30,9 +30,9 @@ export const navConfig = [
 ];
 
 export const othersDropdownConfig = [
-  { name: 'पर्यटन', path: '/category/tourism' },
-  { name: 'स्वास्थ्य', path: '/category/health' },
-  { name: 'शिक्षा', path: '/category/education' },
-  { name: 'अन्तराष्ट्रिय', path: '/category/international' },
+  { name: 'पर्यटन', path: '/tourism' },
+  { name: 'स्वास्थ्य', path: '/health' },
+  { name: 'शिक्षा', path: '/education' },
+  { name: 'अन्तराष्ट्रिय', path: '/international' },
   { name: 'पोस्ट न्युज', path: '/sign-in' }
 ];
