@@ -27,6 +27,11 @@ function Economy({ posts }: SummaryProps) {
         return `${firstAuthor.firstName} ${firstAuthor.lastName}`.trim()
     }
 
+    const getAuthorId = (authors?: Author[] | string[]): string | undefined => {
+        if (!authors || authors.length === 0 || typeof authors[0] === 'string') return undefined;
+        return (authors[0] as Author).clerkId;
+    };
+
     // Determine which posts to display
     const displayedPosts = showAll ? posts : posts.slice(0, 4)
 
@@ -46,8 +51,8 @@ function Economy({ posts }: SummaryProps) {
                             <div key={index} className="flex flex-col lg:flex-row gap-5 group">
                                 <div className="w-full lg:w-[40%] aspect-[3/2] relative md:group-hover:translate-y-[-8px] md:transition md:duration-400 rounded-xl overflow-hidden">
                                     <Image
-                                        src={post.heroBanner || '/images/placeholder.jpg'}
-                                        alt={post.nepaliTitle}
+                                        src={post.heroBanner?.url || '/images/placeholder.jpg'}
+                                        alt={post.title}
                                         fill
                                         className="object-cover"
                                     />
@@ -55,13 +60,13 @@ function Economy({ posts }: SummaryProps) {
 
                                 <div className="flex flex-col gap-2 lg:w-[60%]">
                                     <Link href={`/${post.category}/${post.categoryId}`} className="text-text-color font-ibm_plex_serif font-bold text-[16px] md:text-[18px] leading-snug cursor-pointer line-clamp-2 hover:underline">
-                                        {post.nepaliTitle}
+                                        {post.title}
                                     </Link>
                                     <p className="text-[#808080] font-ibm_plex_serif font-medium text-base line-clamp-2">
                                         {post.excerpt}
                                     </p>
                                     <div className="text-[#808080] font-roboto text-md flex items-center gap-2 mt-1.5">
-                                        <span className='font-bold'>{getAuthorName(post.authors)}</span>
+                                        <Link href={`/author/${getAuthorId(post.authors)}`} className='font-bold'>{getAuthorName(post.authors)}</Link>
                                         <span>·</span>
                                         {post.updatedAt && (
                                             <span><NepaliDateTime updatedAt={post.updatedAt} /></span>

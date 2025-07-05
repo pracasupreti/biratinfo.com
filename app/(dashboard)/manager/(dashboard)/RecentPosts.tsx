@@ -86,7 +86,7 @@ export default function RecentPosts({ posts, loading = false }: RecentPostsProps
                                 href={`/posts/${post._id}`}
                                 className="font-medium text-gray-900 hover:underline line-clamp-1"
                             >
-                                {post.englishTitle || post.nepaliTitle}
+                                {post.title}
                             </Link>
                             <p className="text-sm text-gray-600 line-clamp-1 mt-1">
                                 {post.excerpt || 'No excerpt available'}

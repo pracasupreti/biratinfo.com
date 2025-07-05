@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client'
 import { Clock, AlertCircle, X, Check, PenTool, Tag, Bookmark, User } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import Post from '@/types/Post'

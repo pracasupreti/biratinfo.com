@@ -2,7 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { Clock } from 'lucide-react'
-import { FaFacebookF, FaTwitter, FaYoutube, FaDribbble } from 'react-icons/fa'
+import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram, FaTiktok } from 'react-icons/fa'
 import { notFound } from 'next/navigation'
 import Header from '@/components/homepage/Header'
 import Footer from '@/components/homepage/Footer'
@@ -11,16 +11,29 @@ import NepaliTimeDisplay, { convertToNepaliNum } from '@/components/homepage/Nep
 import { getNepaliCategory } from '@/components/homepage/Hero'
 import Link from 'next/link'
 
+interface ImageData {
+    url: string
+    public_id: string
+}
+
+interface socialLinks {
+    facebook: string,
+    instagram: string,
+    twitter: string,
+    youtube: string,
+    tiktok: string
+}
+
 interface Post {
-    nepaliTitle: string
+    title: string
     category: string
     categoryId: number
     excerpt: string
     createdAt: Date
     updatedAt: Date
     readingTime: number | string
-    heroBanner?: string
-    ogBanner?: string
+    heroBanner?: ImageData
+    ogBanner?: ImageData
     _id: string
 }
 
@@ -30,6 +43,8 @@ interface AuthorData {
     lastName: string | null
     imageUrl: string
     joinedDate: Date
+    bio: string
+    socialLinks: socialLinks
     totalPosts: number
     topCategories: string[]
     allposts: Post[]
@@ -117,7 +132,7 @@ export default async function AuthorPage({ params }: { params: Promise<{ authorI
                                     {/* Author Description in Nepali */}
                                     <div className="mb-6 text-text-color text-lg leading-relaxed">
                                         <p >
-                                            सुधीर नेपाल बिगत ३० वर्ष देखि विभिन्न विधाहरुमा कलम चलाउदै आउनु भएको छ ।  वहाको पत्रकारिताको यात्रा कान्तिपुर, नयाँ सडक, फार वेस्ट टाइम्स, कसिन मिडिया हुदै अहिले विराटइन्फोमा प्रधान सम्पादकको रुपमा कार्यरत हुनुहुन्छ ।  वहाको मुख्य रुचि राजनीति, समाज र पर्यटनमा रहेको छ ।
+                                            {author.bio}
 
                                         </p>
                                     </div>
@@ -125,18 +140,19 @@ export default async function AuthorPage({ params }: { params: Promise<{ authorI
                                     {/* Social Links */}
                                     <div className="flex gap-4">
                                         {[
-                                            { icon: <FaFacebookF size={18} />, color: 'bg-blue-600' },
-                                            { icon: <FaTwitter size={18} />, color: 'bg-sky-500' },
-                                            { icon: <FaYoutube size={18} />, color: 'bg-red-600' },
-                                            { icon: <FaDribbble size={18} />, color: 'bg-pink-500' }
+                                            { icon: <FaFacebookF />, color: 'bg-blue-600', link: author.socialLinks.facebook ? author.socialLinks.facebook : '#', },
+                                            { icon: <FaTwitter />, color: 'bg-sky-500', link: author.socialLinks.twitter ? author.socialLinks.twitter : '#' },
+                                            { icon: <FaInstagram />, color: 'bg-pink-500', link: author.socialLinks.instagram ? author.socialLinks.instagram : '#' },
+                                            { icon: <FaYoutube />, color: 'bg-red-600', link: author.socialLinks.youtube ? author.socialLinks.youtube : '#' },
+                                            { icon: <FaTiktok />, color: 'bg-black', link: author.socialLinks.tiktok ? author.socialLinks.tiktok : '#' }
                                         ].map((social, i) => (
-                                            <a
+                                            <Link
                                                 key={i}
-                                                href="#"
+                                                href={social.link}
                                                 className={`p-3 rounded-full text-white ${social.color} hover:opacity-90 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5`}
                                             >
                                                 {social.icon}
-                                            </a>
+                                            </Link>
                                         ))}
                                     </div>
 
@@ -244,8 +260,8 @@ export default async function AuthorPage({ params }: { params: Promise<{ authorI
                                         >
                                             <div className="relative h-52 w-full overflow-hidden">
                                                 <Image
-                                                    src={post.heroBanner || '/images/default-banner.jpg'}
-                                                    alt={post.nepaliTitle}
+                                                    src={post.heroBanner?.url || '/images/default-banner.jpg'}
+                                                    alt={post.title}
                                                     fill
                                                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                                                 />
@@ -256,7 +272,7 @@ export default async function AuthorPage({ params }: { params: Promise<{ authorI
                                             </div>
                                             <div className="p-6">
                                                 <Link href={`/category/${post.category}/${post.categoryId}`} className="text-xl font-bold mb-3 text-[#2f5d62] transition-colors line-clamp-2 hover:underline cursor-pointer">
-                                                    {post.nepaliTitle}
+                                                    {post.title}
                                                 </Link>
                                                 <p className="text-gray-600 mb-4 line-clamp-3">
                                                     {post.excerpt}
@@ -290,8 +306,8 @@ export default async function AuthorPage({ params }: { params: Promise<{ authorI
                                             >
                                                 <div className="relative h-52 w-full overflow-hidden">
                                                     <Image
-                                                        src={post.heroBanner || '/images/default-banner.jpg'}
-                                                        alt={post.nepaliTitle}
+                                                        src={post.heroBanner?.url || '/images/default-banner.jpg'}
+                                                        alt={post.title}
                                                         fill
                                                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                                                     />
@@ -302,7 +318,7 @@ export default async function AuthorPage({ params }: { params: Promise<{ authorI
                                                 </div>
                                                 <div className="p-6">
                                                     <Link href={`/category/${post.category}/${post.categoryId}`} className="text-xl font-bold mb-3 text-[#2f5d62] transition-colors line-clamp-2 hover:underline">
-                                                        {post.nepaliTitle}
+                                                        {post.title}
                                                     </Link>
                                                     <p className="text-gray-600 mb-4 line-clamp-3">
                                                         {post.excerpt}

@@ -75,8 +75,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                                     <div key={post._id} className="flex flex-col gap-4 justify-between">
                                         <div className="w-full aspect-[3/2] relative rounded-xl overflow-hidden">
                                             <Image
-                                                src={post.heroBanner || '/images/placeholder.jpg'}
-                                                alt={post.nepaliTitle}
+                                                src={post.heroBanner?.url || '/images/placeholder.jpg'}
+                                                alt={post.title}
                                                 fill
                                                 className="object-cover"
                                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -88,7 +88,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                                                 href={`/${post.category}/${post.categoryId}`}
                                                 className="font-ibm_plex_serif font-bold text-xl lg:text-2xl cursor-pointer text-text-color mt-3 hover:underline line-clamp-1"
                                             >
-                                                {post.nepaliTitle}
+                                                {post.title}
                                             </Link>
                                             <p className="text-[#808080] font-ibm_plex_serif font-medium text-xs sm:text-sm lg:text-base mt-1.5 line-clamp-3">
                                                 {post.excerpt}
@@ -96,7 +96,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                                         </div>
 
                                         <div className="text-[#808080] font-roboto text-md flex items-center gap-2">
-                                            <span className='font-bold'>{getAuthorName(post.authors)}</span>
+                                            <Link href={`/author/${post.authors[0]?.clerkId}`} className='font-bold'>{getAuthorName(post.authors)}</Link>
                                             <span>·</span>
                                             {post.updatedAt && (
                                                 <span><NepaliDateTime updatedAt={post.updatedAt} /></span>

@@ -1,117 +1,78 @@
-'use client'
-import { useEffect, useState } from 'react'
-import { useAuth } from '@clerk/nextjs'
-import Post from '@/types/Post'
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import QuickStats from './QuickStats'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import RecentPosts from './RecentPosts'
 import DraftPosts from './DraftPosts'
-import Loader from '@/components/Loader'
 import { Button } from '@/components/ui/button'
 import { PlusCircle } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { auth } from '@clerk/nextjs/server'
 
 
-export default function Dashboard() {
-    const [pendingPosts, setPendingPosts] = useState<Post[]>([]);
-    const [rejectedPosts, setRejectedPosts] = useState<Post[]>([]);
-    const [approvedPosts, setApprovedPosts] = useState<Post[]>([]);
-    const [draftPosts, setDraftPosts] = useState<Post[]>([]);
-    const [scheduledPosts, setScheduledPosts] = useState<Post[]>([]);
-    const [loading, setLoading] = useState(true);
-    const { getToken } = useAuth();
-    const router = useRouter();
+function extractPosts(data: any): any[] {
+    if (Array.isArray(data?.posts)) return data.posts;
+    if (Array.isArray(data?.posts?.posts)) return data.posts.posts;
+    return [];
+}
 
-    useEffect(() => {
-        async function fetchAllPostsByStatus(status: string) {
-            const token = await getToken();
-            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+async function fetchAllPostsByStatus(status: string, token: string) {
+    const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
 
-            if (!backend_uri) throw new Error("Missing api endpoint")
-            const response = await fetch(`${backend_uri}/api/posts/allpost/${status}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-            });
+    if (!backend_uri) throw new Error("Missing api endpoint")
+    const response = await fetch(`${backend_uri}/api/posts/allpost/${status}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        cache: 'no-store'
+    });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch posts');
-            }
+    if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+    }
 
-            const data = await response.json();
-            return data.posts;
-        }
+    const data = await response.json();
+    return data?.success ? extractPosts(data) : [];
+}
 
+async function fetchPostsByStatus(status: string, token: string) {
+    const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
 
+    if (!backend_uri) throw new Error("Missing api endpoint")
+    const response = await fetch(`${backend_uri}/api/posts/status/${status}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        cache: 'no-store'
+    });
 
-        const fetchPosts = async () => {
-            try {
-                const [pendingRes, approvedRes, rejectedRes] = await Promise.all([
-                    fetchAllPostsByStatus('pending'),
-                    fetchAllPostsByStatus('approved'),
-                    fetchAllPostsByStatus('rejected'),
-                ]);
+    if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+    }
 
-                setPendingPosts(pendingRes?.success && pendingRes.posts ? pendingRes.posts : []);
-                setRejectedPosts(rejectedRes?.success && rejectedRes.posts ? rejectedRes.posts : []);
-                setApprovedPosts(approvedRes?.success && approvedRes.posts ? approvedRes.posts : []);
+    const data = await response.json();
+    return data?.success ? extractPosts(data) : [];
+}
 
-            } catch (error) {
-                console.error("Failed to fetch posts:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+export default async function Dashboard() {
+    const { getToken } = await auth();
+    const token = await getToken();
 
-        fetchPosts();
-    }, [getToken]);
+    if (!token) {
+        throw new Error('Authentication required');
+    }
 
-    useEffect(() => {
-        async function fetchPostsByStatus(status: string) {
-            const token = await getToken();
-            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
-
-            if (!backend_uri) throw new Error("Missing api endpoint")
-            const response = await fetch(`${backend_uri}/api/posts/status/${status}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch posts');
-            }
-
-            const data = await response.json();
-            return data.posts;
-        }
-
-        const fetchPosts = async () => {
-            try {
-                const [draftsRes, scheduledRes] = await Promise.all([
-                    fetchPostsByStatus('draft'),
-                    fetchPostsByStatus('scheduled'),
-                ]);
-                setDraftPosts(draftsRes?.success && draftsRes.posts ? draftsRes.posts : []);
-                setScheduledPosts(scheduledRes?.success && scheduledRes.posts ? scheduledRes.posts : []);
-            } catch (error) {
-                console.error("Failed to fetch posts:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchPosts();
-    }, [getToken]);
-
-    if (loading) return <Loader />;
-
-
-
+    // Fetch all posts in parallel with error handling
+    const [pendingPosts, approvedPosts, rejectedPosts, draftPosts, scheduledPosts] = await Promise.all([
+        fetchAllPostsByStatus('pending', token).catch(() => []),
+        fetchAllPostsByStatus('approved', token).catch(() => []),
+        fetchAllPostsByStatus('rejected', token).catch(() => []),
+        fetchPostsByStatus('draft', token).catch(() => []),
+        fetchPostsByStatus('scheduled', token).catch(() => [])
+    ]);
     return (
         <div className="container mx-auto px-4 py-8 space-y-8">
             <QuickStats
@@ -127,9 +88,11 @@ export default function Dashboard() {
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between">
                             <CardTitle>Recent Approved Posts</CardTitle>
-                            <Button onClick={() => router.push('/editor/post')}>
-                                <PlusCircle className="mr-2 h-4 w-4" />
-                                Write a Post
+                            <Button asChild>
+                                <Link href="/editor/post">
+                                    <PlusCircle className="mr-2 h-4 w-4" />
+                                    Write a Post
+                                </Link>
                             </Button>
                         </CardHeader>
                         <CardContent>

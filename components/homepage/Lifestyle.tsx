@@ -36,15 +36,16 @@ const Lifestyle = ({ posts }: SummaryProps) => {
                         <div className='flex flex-col gap-3 group' key={index}>
                             <div className='w-full aspect-[16/9] relative md:group-hover:translate-y-[-8px] md:transition md:duration-400 rounded-md overflow-hidden'>
                                 <Image
-                                    src={post.heroBanner || '/images/placeholder.jpg'}
-                                    alt={post.nepaliTitle}
+                                    src={post.heroBanner?.url || '/images/placeholder.jpg'}
+                                    alt={post.title}
                                     fill
                                     className='object-cover'
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px"
                                 />
                             </div>
 
                             <Link href={`/${post.category}/${post.categoryId}`} className='font-ibm_plex_serif font-bold text-[16px] md:text-[18px] leading-snug text-text-color line-clamp-2 hover:underline cursor-pointer'>
-                                {post.nepaliTitle}
+                                {post.title}
                             </Link>
 
                             <p className='text-[#808080] font-ibm_plex_serif font-medium text-[14px] line-clamp-2'>
@@ -57,9 +58,9 @@ const Lifestyle = ({ posts }: SummaryProps) => {
                                         <AvatarFallback>{post?.authors[0]?.firstName.slice(0, 2).toUpperCase()}</AvatarFallback>
                                     </Avatar>
                                 </div>
-                                <span className="font-inter font-bold text-md text-[#808080]">
+                                <Link href={`/author/${post?.authors[0]?.clerkId}`} className="font-inter font-bold text-md text-[#808080]">
                                     {getAuthorName(post.authors)}
-                                </span>
+                                </Link>
                             </div>
                         </div>
                     ))}

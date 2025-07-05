@@ -24,11 +24,11 @@ function Body({ data }: BodyProps) {
         ['sports', 'health', 'education', 'entertainment', 'culture'].includes(post.category?.toLowerCase())
     );
 
-    const tourismPosts = allPosts.filter(post => post.category?.toLowerCase() === 'tourism' && !post.tags?.includes('breaking-news'));
-    const economyPosts = allPosts.filter(post => post.category?.toLowerCase() === 'economy');
-    const technologyPosts = allPosts.filter(post => post.category?.toLowerCase() === 'technology');
-    const agriculturePosts = allPosts.filter(post => post.category?.toLowerCase() === 'agriculture');
-    const lifestylePosts = allPosts.filter(post => post.category?.toLowerCase() === 'lifestyle');
+    const tourismPosts = allPosts.filter(post => post.category?.toLowerCase() === 'tourism' && !post.featuredIn.includes('biratinfo.com'));
+    const economyPosts = allPosts.filter(post => post.category?.toLowerCase() === 'economy' && !post.featuredIn.includes('biratinfo.com'));
+    const technologyPosts = allPosts.filter(post => post.category?.toLowerCase() === 'technology' && !post.featuredIn.includes('biratinfo.com'));
+    const agriculturePosts = allPosts.filter(post => post.category?.toLowerCase() === 'agriculture' && !post.featuredIn.includes('biratinfo.com'));
+    const lifestylePosts = allPosts.filter(post => post.category?.toLowerCase() === 'lifestyle' && !post.featuredIn.includes('biratinfo.com'));
 
 
     return (

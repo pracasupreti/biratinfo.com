@@ -1,6 +1,4 @@
 // app/(admin)/users/_components/UserTable.tsx
-'use client'
-
 import {
     Table,
     TableBody,

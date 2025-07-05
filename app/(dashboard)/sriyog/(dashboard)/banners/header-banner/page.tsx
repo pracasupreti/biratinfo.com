@@ -75,7 +75,7 @@ export default function SponsorBannerManager() {
                 setActiveBanners(newActive);
                 toast.success('Banners loaded successfully', { id: loadingToast });
             } catch (error: any) {
-                console.error(error.message)
+                console.error(error.message);
                 toast.error('Failed to load banners', { id: loadingToast });
             } finally {
                 setIsLoading(false);
@@ -100,7 +100,7 @@ export default function SponsorBannerManager() {
                 },
                 body: JSON.stringify({
                     status: 'active',
-                    category,
+                    category: category.toLowerCase(),
                 }),
             });
 
@@ -136,28 +136,29 @@ export default function SponsorBannerManager() {
         try {
             const token = await getToken();
             const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
-            if (!backend_uri) throw new Error('Missing API endpoint');
+            if (!backend_uri) throw new Error('Missing backend configuration');
 
-            const bannerRes = await fetch(`${backend_uri}/api/banners/${bannerId}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            if (!bannerRes.ok) throw new Error('Failed to fetch banner');
-
-            const banner: Banner = await bannerRes.json();
-
-            await fetch(`${backend_uri}/api/banners/${bannerId}`, {
+            const deleteRes = await fetch(`${backend_uri}/api/header-banners?id=${bannerId}`, {
                 method: 'DELETE',
-                headers: { Authorization: `Bearer ${token}` },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
-            setBanners(prev => ({
-                ...prev,
-                [banner.category]: prev[banner.category].filter(b => b._id !== bannerId),
-            }));
+            if (!deleteRes.ok) throw new Error('Failed to delete banner');
 
-            if (activeBanners[banner.category]?._id === bannerId) {
-                setActiveBanners(prev => ({ ...prev, [banner.category]: null }));
-            }
+            const bannersData = await fetchBanners();
+
+            const categorized: Record<ContentCategory, Banner[]> = {} as any;
+            const active: Record<ContentCategory, Banner | null> = {} as any;
+
+            CONTENT_CATEGORIES.forEach(cat => {
+                categorized[cat] = bannersData.filter(b => b.category === cat.toLowerCase());
+                active[cat] = bannersData.find(b => b.category === cat.toLowerCase() && b.status === 'active') || null;
+            });
+
+            setBanners(categorized);
+            setActiveBanners(active);
 
             toast.success('Banner deleted successfully', { id: loadingToast });
         } catch (err: any) {
@@ -225,7 +226,7 @@ export default function SponsorBannerManager() {
                 },
                 body: JSON.stringify({
                     url,
-                    category,
+                    category: category.toLowerCase(),
                     name: 'header_banner',
                     status: 'inactive'
                 })
@@ -276,9 +277,7 @@ export default function SponsorBannerManager() {
 
     return (
         <div className="space-y-6 p-6">
-            <ActiveBannersSection
-                activeBanners={activeBanners}
-            />
+            <ActiveBannersSection activeBanners={activeBanners} />
 
             {CONTENT_CATEGORIES.map(category => (
                 <BannerCategorySection

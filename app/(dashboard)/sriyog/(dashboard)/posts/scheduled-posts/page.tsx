@@ -1,62 +1,57 @@
-'use client'
-import Loader from '@/components/Loader'
-import Post from '@/types/Post'
-import { useAuth } from '@clerk/nextjs'
-import { useEffect, useState } from 'react'
-import { PostTable } from '../PostTable'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { auth } from '@clerk/nextjs/server'
+import { PostTable } from '../PostTable';
 
-export default function ScheduledPosts() {
-    const [scheduledPosts, setScheduledPosts] = useState<Post[]>([])
-    const [loading, setLoading] = useState(true)
-    const { getToken } = useAuth()
+function extractPosts(data: any): any[] {
+    if (Array.isArray(data?.posts)) return data.posts;
+    if (Array.isArray(data?.posts?.posts)) return data.posts.posts;
+    return [];
+}
 
-    useEffect(() => {
-        async function fetchPostsByStatus(status: string) {
-            const token = await getToken()
-            const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+export default async function ScheduledPosts() {
+    const { getToken } = await auth()
+    const token = await getToken()
 
-            if (!backend_uri) throw new Error("Missing api endpoint")
-            const response = await fetch(`${backend_uri}/api/posts/allpost/${status}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-            })
+    if (!token) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <p>Unauthorized. Please sign in.</p>
+            </div>
+        )
+    }
 
+    try {
+        const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+        if (!backend_uri) throw new Error("Missing API endpoint")
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch posts')
-            }
+        const response = await fetch(`${backend_uri}/api/posts/allpost/scheduled`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
 
-            const data = await response.json()
-            return data.posts
+        if (!response.ok) {
+            throw new Error('Failed to fetch posts')
         }
 
-        const fetchPosts = async () => {
-            try {
-                const [scheduledRes] = await Promise.all([
-                    fetchPostsByStatus('scheduled'),
-                ]);
-                setScheduledPosts(scheduledRes?.success && scheduledRes.posts ? scheduledRes.posts : []);
-            } catch (error) {
-                console.error("Failed to fetch posts:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        const data = await response.json()
+        const scheduledPosts = data?.success ? extractPosts(data) : [];
 
-        fetchPosts()
-    }, [getToken])
-
-    if (loading) return <Loader />
-
-
-    return (
-        <PostTable
-            allPosts={scheduledPosts}
-            title="Scheduled Posts"
-            description="Manage all scheduled articles"
-        />
-    )
+        return (
+            <PostTable
+                allPosts={scheduledPosts}
+                title="Scheduled Posts"
+                description="Manage all scheduled articles"
+            />
+        )
+    } catch (error) {
+        console.error("Failed to fetch posts:", error)
+        return (
+            <div className="flex items-center justify-center h-64">
+                <p>Error loading posts. Please try again later.</p>
+            </div>
+        )
+    }
 }

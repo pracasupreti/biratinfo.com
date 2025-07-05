@@ -52,29 +52,39 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
             };
 
             const submissionData = {
-                englishTitle: state.englishTitle,
-                nepaliTitle: state.nepaliTitle,
-                blocks: state.blocks,
+                title: state.title,
+                content: state.content,
                 excerpt: state.excerpt,
-                featuredIn: state.featuredIn,
-                postInNetwork: state.postInNetwork,
-                category: state.category,
-                tags: state.tags,
-                date: state.date,
-                time: state.time,
-                authors: state.authors,
-                language: state.language,
-                readingTime: state.readingTime,
+                isNepali: state.isNepali || false, // Add isNepali field based on new schema
+                featuredIn: state.featuredIn || [],
+                postInNetwork: state.postInNetwork || [],
+
+                // Media fields
                 heroBanner: state.heroBanner,
                 ogBanner: state.ogBanner,
-                heroImageCredit: state.heroImageCredit,
-                ogImageCredit: state.ogImageCredit,
-                sponsoredAds: state.sponsoredAds,
+                heroImageCredit: state.heroImageCredit || undefined,
+                ogImageCredit: state.ogImageCredit || undefined,
+                sponsoredAds: state.sponsoredAds || undefined,
+                audio: state.audio, // Changed from audioFile to audio
+                audioCredit: state.audioCredit || '',
+
+                // CTA field
+                ctas: state.ctas || [],
+
+                // Other fields
+                category: state.category,
+                tags: state.tags || [],
+                date: state.date,
+                time: state.time,
+                authors: state.authors || [],
+                language: state.language,
+                readingTime: state.readingTime || '5 min',
                 access: state.access,
-                audioFile: state.audioFile,
                 canonicalUrl: state.canonicalUrl,
-                status: determineStatus()
-            }
+
+                // Status
+                status: determineStatus(),
+            };
 
             if (!id) throw new Error('Post ID is required to update the post')
             const token = await getToken()

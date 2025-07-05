@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -18,9 +18,9 @@ import { Search, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Post from '@/types/Post'
 import { useAuth } from '@clerk/nextjs'
-import { toast } from 'sonner'
 import AuthorDisplay from '@/components/AuthorDisplay'
 import { Card, CardContent } from '@/components/ui/card'
+import toast from 'react-hot-toast'
 
 interface PostTableProps {
     allPosts: Post[]
@@ -43,47 +43,61 @@ export function PostTable({
 
     const [currentPage, setCurrentPage] = useState(pageParam ? parseInt(pageParam) : 1)
     const [searchQuery, setSearchQuery] = useState(searchParam || '')
-    const [sortConfig, setSortConfig] = useState<{ key: keyof Post; direction: 'asc' | 'desc' } | null>(null)
 
-    const filteredPosts = allPosts.filter(post =>
-        post.englishTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.nepaliTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-    )
+    // Memoized filtered and sorted posts
+    const processedPosts = useMemo(() => {
+        const filtered = allPosts.filter(post => {
+            const searchLower = searchQuery.toLowerCase()
+            return (
+                post.title?.toLowerCase().includes(searchLower) ||
+                post.excerpt?.toLowerCase().includes(searchLower) ||
+                post.category?.toLowerCase().includes(searchLower) ||
+                post.tags?.some(tag => tag.toLowerCase().includes(searchLower))
+            )
+        })
 
-    const sortedPosts = [...filteredPosts].sort((a, b) => {
-        if (!sortConfig) return 0
-        if (a[sortConfig.key]! < b[sortConfig.key]!) return sortConfig.direction === 'asc' ? -1 : 1
-        if (a[sortConfig.key]! > b[sortConfig.key]!) return sortConfig.direction === 'asc' ? 1 : -1
-        return 0
-    })
+        // Sort by updatedAt (newest first)
+        return filtered.sort((a, b) => {
+            const dateA = new Date(a.updatedAt || 0).getTime()
+            const dateB = new Date(b.updatedAt || 0).getTime()
+            return dateB - dateA
+        })
+    }, [allPosts, searchQuery])
 
-    const totalPages = Math.ceil(sortedPosts.length / postsPerPage)
-    const paginatedPosts = sortedPosts.slice(
-        (currentPage - 1) * postsPerPage,
-        currentPage * postsPerPage
-    )
+    // Memoized pagination data
+    const paginationData = useMemo(() => {
+        const totalPages = Math.ceil(processedPosts.length / postsPerPage)
+        const paginatedPosts = processedPosts.slice(
+            (currentPage - 1) * postsPerPage,
+            currentPage * postsPerPage
+        )
+        return { totalPages, paginatedPosts }
+    }, [processedPosts, currentPage, postsPerPage])
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page)
-        updateUrlParams(page, searchQuery)
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
+    const { totalPages, paginatedPosts } = paginationData
 
-    const handleSearch = (query: string) => {
-        setSearchQuery(query)
-        setCurrentPage(1)
-        updateUrlParams(1, query)
-    }
-
-    const updateUrlParams = (page: number, query: string) => {
+    // Update URL params
+    const updateUrlParams = useCallback((page: number, query: string) => {
         const params = new URLSearchParams()
         if (query) params.set('search', query)
         if (page > 1) params.set('page', page.toString())
         router.replace(`?${params.toString()}`, { scroll: false })
-    }
+    }, [router])
 
-    const formatDate = (dateString: string | Date | null): string => {
+    const handlePageChange = useCallback((page: number) => {
+        setCurrentPage(page)
+        updateUrlParams(page, searchQuery)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [searchQuery, updateUrlParams])
+
+    const handleSearch = useCallback((query: string) => {
+        setSearchQuery(query)
+        setCurrentPage(1)
+        updateUrlParams(1, query)
+    }, [updateUrlParams])
+
+    // Date formatting
+    const formatDate = useCallback((dateString: string | Date | null): string => {
         if (!dateString) return 'N/A'
         const date = new Date(dateString)
         return date.toLocaleDateString('en-US', {
@@ -91,12 +105,17 @@ export function PostTable({
             day: 'numeric',
             year: 'numeric'
         })
-    }
+    }, [])
 
+    // Delete post handler
     const handleDelete = async (postId: string) => {
+        const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+        if (!backend_uri) throw new Error("Missing api endpoint")
+
+        toast.loading("Deleting post...")
         try {
             const token = await getToken()
-            const response = await fetch(`/api/posts/${postId}`, {
+            const response = await fetch(`${backend_uri}/api/posts/id/${postId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -113,9 +132,21 @@ export function PostTable({
         }
     }
 
-    const getSequentialId = (post: Post) => {
-        return filteredPosts.findIndex(p => p._id === post._id) + 1
-    }
+    const getSequentialId = useCallback((post: Post) => {
+        return processedPosts.findIndex(p => p._id === post._id) + 1
+    }, [processedPosts])
+
+    // Status badge styling
+    const getStatusBadgeClass = useCallback((status: string) => {
+        const statusClasses = {
+            approved: "bg-green-500/10 text-green-700 border-green-300",
+            pending: "bg-yellow-500/10 text-yellow-700 border-yellow-300",
+            draft: "bg-gray-500/10 text-gray-700 border-gray-300",
+            scheduled: "bg-orange-500/10 text-orange-700 border-orange-300",
+            rejected: "bg-red-500/10 text-red-700 border-red-300"
+        }
+        return cn("capitalize w-full text-center", statusClasses[status as keyof typeof statusClasses])
+    }, [])
 
     return (
         <div className="space-y-6 p-6 md:p-8">
@@ -153,12 +184,12 @@ export function PostTable({
                     <Card className="hidden sm:grid">
                         <CardContent className="grid grid-cols-12 gap-4 items-center">
                             <div className="col-span-1 font-medium">ID</div>
-                            <div className="col-span-3 font-medium">Title</div>
+                            <div className="col-span-4 font-medium">Title</div>
                             <div className="col-span-2 font-medium text-center">Authors</div>
                             <div className="col-span-2 font-medium text-center">Category</div>
-                            <div className="col-span-2 font-medium text-center">Tags</div>
                             <div className="col-span-1 font-medium text-center">Status</div>
                             <div className="col-span-1 font-medium text-center">Date</div>
+                            <div className="col-span-1 font-medium text-center">Actions</div>
                         </CardContent>
                     </Card>
 
@@ -170,8 +201,8 @@ export function PostTable({
                                 <div className="col-span-1 font-mono">{getSequentialId(post)}</div>
 
                                 {/* Title */}
-                                <div className="col-span-3 overflow-hidden">
-                                    <h3 className="font-medium truncate" title={post.englishTitle}>{post.nepaliTitle}</h3>
+                                <div className="col-span-4 overflow-hidden">
+                                    <h3 className="font-medium truncate" title={post.title}>{post.title}</h3>
                                     <p className="text-muted-foreground text-xs truncate" title={post.excerpt}>{post.excerpt}</p>
                                 </div>
 
@@ -193,38 +224,11 @@ export function PostTable({
                                     </Badge>
                                 </div>
 
-                                {/* Tags */}
-                                <div className="col-span-2 flex justify-center">
-                                    <div className="flex flex-wrap gap-1 max-w-full justify-center">
-                                        {(post.tags && post.tags.length > 0) ? (
-                                            post.tags.slice(0, 3).map((tag, index) => (
-                                                <Badge
-                                                    key={index}
-                                                    variant="secondary"
-                                                    className="text-xs px-2 py-0.5 break-words max-w-[6rem] truncate"
-                                                    title={`#${tag}`}
-                                                >
-                                                    #{tag}
-                                                </Badge>
-                                            ))
-                                        ) : (
-                                            <Badge variant="secondary" className="text-xs px-2 py-0.5">N/A</Badge>
-                                        )}
-                                    </div>
-                                </div>
-
                                 {/* Status */}
                                 <div className="col-span-1 text-center">
                                     <Badge
                                         variant="outline"
-                                        className={cn(
-                                            'capitalize w-full text-center',
-                                            post.status === 'approved' && 'bg-green-500/10 text-green-700 border-green-300',
-                                            post.status === 'pending' && 'bg-yellow-500/10 text-yellow-700 border-yellow-300',
-                                            post.status === 'draft' && 'bg-gray-500/10 text-gray-700 border-gray-300',
-                                            post.status === 'scheduled' && 'bg-orange-500/10 text-orange-700 border-orange-300',
-                                            post.status === 'rejected' && 'bg-red-500/10 text-red-700 border-red-300'
-                                        )}
+                                        className={getStatusBadgeClass(post.status)}
                                     >
                                         {post.status}
                                     </Badge>
@@ -233,6 +237,18 @@ export function PostTable({
                                 {/* Date */}
                                 <div className="col-span-1 text-center text-muted-foreground">
                                     {formatDate(post.createdAt)}
+                                </div>
+
+                                {/* Delete Action */}
+                                <div className="col-span-1 flex justify-center">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => handleDelete(post._id)}
+                                        className="h-8 w-8 text-red-500 hover:text-red-700 cursor-pointer"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
                                 </div>
                             </CardContent>
                         </Card>

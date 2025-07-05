@@ -1,19 +1,14 @@
-'use client'
-import { useEffect } from 'react'
+export default async function ScheduledPostChecker() {
+    const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL;
+    if (!backend_uri) throw new Error("Missing backend URI");
 
-function ScheduledPostChecker() {
-    const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
-    if (!backend_uri) throw new Error("Missing api endpoint")
     try {
-        useEffect(() => {
-            fetch(`${backend_uri}/api/updateScheduledPost`);
+        await fetch(`${backend_uri}/api/updateScheduledPost`, {
+            cache: 'no-store',
         });
-    } catch (error) {
-        console.error(error)
+    } catch (err) {
+        console.error("Failed to update scheduled posts:", err);
     }
 
     return null;
-
 }
-
-export default ScheduledPostChecker

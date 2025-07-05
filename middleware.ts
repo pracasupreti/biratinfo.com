@@ -18,7 +18,7 @@ const isPublicRoute = createRouteMatcher([
     '/',
     ...categoryMatchers,
     '/author(.*)',
-    '/privacy-policy',
+    '/privacy',
     '/terms',
     '/advertise',
     '/sign-in',

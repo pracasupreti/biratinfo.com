@@ -1,14 +1,27 @@
-export interface Block {
-    content: string
-    link?: string // Optional link for each block
+export interface ImageData {
+    url: string
+    public_id: string
 }
+
+export interface CTA {
+    name: string
+    url: string
+}
+
+export interface AudioData {
+    url: string
+    public_id: string
+    duration?: number
+}
+
+
 export default interface Post {
     _id: string;
     userId: { $oid: string };
     status: 'draft' | 'pending' | 'scheduled' | 'approved' | 'rejected';
-    englishTitle: string;
-    nepaliTitle: string;
-    blocks: Block[];
+    title: string,
+    isNepali: boolean,
+    content: string;
     excerpt: string;
     featuredIn: string[];
     postInNetwork: string[];
@@ -20,13 +33,15 @@ export default interface Post {
     authors: string[];
     language: string;
     readingTime: string;
-    heroBanner: string | null;
-    ogBanner: string | null;
+    heroBanner: ImageData | null;
+    ogBanner: ImageData | null;
     heroImageCredit: string;
     ogImageCredit: string;
     sponsoredAds: string;
     access: string;
-    audioFile: string | null;
+    audio?: AudioData | null;
+    audioCredit?: string;
+    ctas?: CTA[];
     canonicalUrl: string;
     createdAt: string | Date | null;
     updatedAt: string | Date | null;
@@ -44,12 +59,13 @@ export interface Author {
 
 export interface IPost {
     _id: string;
-    nepaliTitle: string;
+    title: string;
     excerpt: string;
     category: string;
     categoryId: string;
+    featuredIn: [string]
     authors: Author[];
-    heroBanner?: string;
+    heroBanner?: ImageData | null;
     tags?: string[];
     creadtedAt?: string;
     updatedAt?: string;
@@ -66,11 +82,10 @@ export interface SinglePost {
     _id: string;
     userId: { $oid: string };
     status: 'draft' | 'pending' | 'scheduled' | 'approved' | 'rejected';
-    englishTitle: string;
-    nepaliTitle: string;
-    blocks: Block[];
+    title: string,
+    isNepali: boolean,
+    content: string;
     excerpt: string;
-    authors: Author[]
     featuredIn: string[];
     postInNetwork: string[];
     category: string;
@@ -78,19 +93,23 @@ export interface SinglePost {
     tags: string[];
     date: string | Date;
     time: string;
+    authors: string[];
     language: string;
     readingTime: string;
-    heroBanner: string | null;
-    ogBanner: string | null;
+    heroBanner: ImageData | null;
+    ogBanner: ImageData | null;
     heroImageCredit: string;
     ogImageCredit: string;
     sponsoredAds: string;
     access: string;
-    audioFile: string | null;
+    audio?: AudioData | null;
+    audioCredit?: string
+    ctas?: CTA[];
     canonicalUrl: string;
     createdAt: string | Date | null;
     updatedAt: string | Date | null;
 }
+
 
 export const categoryOptions = [
     { value: 'news', en: 'News', np: 'समाचार' },
@@ -118,7 +137,6 @@ export const categoryOptions = [
     { value: 'interview', en: 'Interview', np: 'अन्तर्वार्ता' },
     { value: 'food', en: 'Food', np: 'खानपान' },
     { value: 'employment', en: 'Employment', np: 'रोजगारी' },
-    { value: 'opinion', en: 'Opinion', np: 'विचार' },
     { value: 'literature', en: 'Literature', np: 'साहित्य' },
     { value: 'complain', en: 'Complain', np: 'गुनासो' },
 ];

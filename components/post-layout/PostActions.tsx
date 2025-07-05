@@ -18,6 +18,31 @@ export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting 
     const { id } = useParams()
     const { getToken } = useAuth();
 
+    // Helper function to safely create and validate date
+    const createPostDate = (dateStr: string | null, timeStr: string | null): Date | null => {
+        if (!dateStr || !timeStr) {
+            console.warn('Date or time is missing:', { date: dateStr, time: timeStr });
+            return null;
+        }
+
+        try {
+            // Ensure proper format and create ISO string
+            const isoString = `${dateStr}T${timeStr}:00`;
+            const postDate = new Date(isoString);
+
+            // Validate the created date
+            if (isNaN(postDate.getTime())) {
+                console.error('Invalid date created from:', { dateStr, timeStr, isoString });
+                return null;
+            }
+
+            return postDate;
+        } catch (error) {
+            console.error('Error creating post date:', error, { dateStr, timeStr });
+            return null;
+        }
+    };
+
     const handleSubmit = async (isDraft: boolean) => {
         if (!validate()) {
             toast.error('Please fix all errors before submitting')
@@ -25,60 +50,84 @@ export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting 
         }
 
         const determineStatus = () => {
-            if (isDraft) return 'draft';
+            // If explicitly saving as draft, always return draft
+            if (isDraft) {
+                return 'draft';
+            }
 
             const currentDate = new Date();
-            const postDate = state.date && state.time
-                ? new Date(`${state.date}T${state.time}`)
-                : currentDate;
+            const postDate = createPostDate(state.date, state.time);
+
+            // If no valid post date, default based on user role
+            if (!postDate) {
+                const defaultStatus = isWriting ? 'approved' : 'pending';
+                console.log(`Status: ${defaultStatus} (no valid post date)`);
+                return defaultStatus;
+            }
+
+            // Compare dates (postDate > currentDate means future scheduling)
+            const isScheduled = postDate.getTime() > currentDate.getTime();
 
             if (isWriting) {
-                return postDate > currentDate ? 'scheduled' : 'approved';
+                const status = isScheduled ? 'scheduled' : 'approved';
+                return status;
+            } else {
+                const status = isScheduled ? 'scheduled' : 'pending';
+                return status;
             }
-            return postDate > currentDate ? 'scheduled' : 'pending';
         };
 
         const getSuccessMessage = (status: string) => {
-            switch (status) {
-                case 'draft':
-                    return isEditing
-                        ? 'Your post has been edited and saved as draft successfully'
-                        : 'Your post has been saved as draft successfully';
-                case 'scheduled':
-                    return 'Your post has been scheduled for publication';
-                default:
-                    return isWriting
-                        ? 'Your post has been successfully verified'
-                        : isEditing
-                            ? 'Your post has been edited and forwarded to editor successfully'
-                            : 'Your post has been forwarded to editor successfully';
-            }
+            const messages = {
+                draft: isEditing
+                    ? 'Your post has been edited and saved as draft successfully'
+                    : 'Your post has been saved as draft successfully',
+                scheduled: 'Your post has been scheduled for publication',
+                approved: 'Your post has been successfully approved and published',
+                pending: isEditing
+                    ? 'Your post has been edited and forwarded to editor successfully'
+                    : 'Your post has been forwarded to editor successfully'
+            };
+
+            return messages[status as keyof typeof messages] || 'Post submitted successfully';
         };
 
+        // Prepare submission data with proper field mapping
         const submissionData = {
-            englishTitle: state.englishTitle,
-            nepaliTitle: state.nepaliTitle,
-            blocks: state.blocks,
+            title: state.title,
+            content: state.content,
             excerpt: state.excerpt,
-            featuredIn: state.featuredIn,
-            postInNetwork: state.postInNetwork,
-            category: state.category,
-            tags: state.tags,
-            date: state.date,
-            time: state.time,
-            authors: state.authors,
-            language: state.language,
-            readingTime: state.readingTime,
+            isNepali: state.isNepali || false, // Add isNepali field based on new schema
+            featuredIn: state.featuredIn || [],
+            postInNetwork: state.postInNetwork || [],
+
+            // Media fields
             heroBanner: state.heroBanner,
             ogBanner: state.ogBanner,
-            heroImageCredit: state.heroImageCredit,
-            ogImageCredit: state.ogImageCredit,
-            sponsoredAds: state.sponsoredAds,
+            heroImageCredit: state.heroImageCredit || undefined,
+            ogImageCredit: state.ogImageCredit || undefined,
+            sponsoredAds: state.sponsoredAds || undefined,
+            audio: state.audio, // Changed from audioFile to audio
+            audioCredit: state.audioCredit || '',
+
+            // CTA field
+            ctas: state.ctas || [],
+
+            // Other fields
+            category: state.category,
+            tags: state.tags || [],
+            date: state.date,
+            time: state.time,
+            authors: state.authors || [],
+            language: state.language,
+            readingTime: state.readingTime,
             access: state.access,
-            audioFile: state.audioFile,
             canonicalUrl: state.canonicalUrl,
+
+            // Status
             status: determineStatus(),
         };
+
 
         try {
             const token = await getToken();
@@ -106,15 +155,22 @@ export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting 
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || `Failed to ${isEditing ? 'update' : 'create'} post`);
+                const errorData = await response.json().catch(() => ({}));
+                const errorMessage = errorData.message ||
+                    `Failed to ${isEditing ? 'update' : 'create'} post (${response.status})`;
+
+                throw new Error(errorMessage);
             }
+
 
             toast.success(getSuccessMessage(submissionData.status));
             resetStore();
 
         } catch (error: any) {
-            toast.error(error?.message || `Failed to ${isEditing ? 'update' : 'create'} post. Please try again.`);
+            console.error('Submission error:', error);
+            const errorMessage = error?.message ||
+                `Failed to ${isEditing ? 'update' : 'create'} post. Please try again.`;
+            toast.error(errorMessage);
         }
     };
 
@@ -140,7 +196,7 @@ export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting 
                 {isSubmitting ? (
                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
                 ) : (
-                    'Publish Post'
+                    isWriting ? 'Approve & Publish' : 'Submit for Review'
                 )}
             </Button>
         </div>

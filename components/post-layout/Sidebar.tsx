@@ -1,37 +1,35 @@
 'use client'
-
+import { useState } from 'react'
+import { usePostStore } from '@/store/PostStore'
+import { Card, CardContent } from '../ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-
 import { PostActions } from './PostActions'
-import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react'
-import { Loader2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { EditorPostAction } from '../editor/EditorPostAction'
-import { usePostStore } from '@/store/PostStore'
-import { Card, CardContent } from '../ui/card'
-import Image from 'next/image'
 import { AuthorSelect } from './AuthorSelect'
 import { MultiSelect } from '../MultiSelectComponent'
-import { resizeAndCompressImage } from '../CompressFile'
-import { categoryOptions, Language, tagOptions } from '@/types/Post'
+import { categoryOptions, Language } from '@/types/Post'
+import { uploadImage, deleteImage } from '@/lib/cloudinary'
+import { Loader2, CalendarIcon } from 'lucide-react'
+import Image from 'next/image'
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { format } from "date-fns"
+import { cn } from "@/lib/utils"
+import { TimePicker } from '../ui/time-picker'
+import toast from 'react-hot-toast'
 
 interface PostSidebarProps {
-    isEditing?: boolean,
-    isEditor?: boolean,
+    isEditing?: boolean
+    isEditor?: boolean
     isWriting?: boolean
 }
 
-
-
-
-
 export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps) {
-    const router = useRouter();
     const {
+        isNepali,
         category,
         tags = [],
         date,
@@ -41,172 +39,185 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
         readingTime,
         heroBanner,
         ogBanner,
+        sponsoredAds,
         heroImageCredit,
         ogImageCredit,
-        sponsoredAds,
         access,
         canonicalUrl,
         errors,
-        setField
+        setField,
+        setHeroBanner,
+        setOgBanner,
+        setSponsoredAds,
     } = usePostStore()
 
-    const [isHeroUploading, setIsHeroUploading] = useState<boolean>(false);
-    const [isOgUploading, setIsOgUploading] = useState<boolean>(false);
-    const [isSponsoredAdsUploading, setIsSponsoredAdsUploading] = useState<boolean>(false);
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const [sidebarLanguage, setSidebarLanguage] = useState<'en' | 'np'>('en');
+    const [isHeroUploading, setIsHeroUploading] = useState(false)
+    const [isOgUploading, setIsOgUploading] = useState(false)
+    const [isSponsoredAdsUploading, setIsSponsoredAdsUploading] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+        date ? new Date(date) : undefined
+    )
 
-    const uploadToCloudinary = async (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds', file: File): Promise<string> => {
+    const handleImageUpload = async (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds', file: File) => {
+        const setIsUploading = field === 'heroBanner' ? setIsHeroUploading :
+            field === 'ogBanner' ? setIsOgUploading : setIsSponsoredAdsUploading
+        const setImage = field === 'heroBanner' ? setHeroBanner :
+            field === 'ogBanner' ? setOgBanner : setSponsoredAds
+        const toastMessage = field === 'heroBanner' ? 'Hero banner' :
+            field === 'ogBanner' ? 'OG banner' : 'Sponsored ads image'
+
+        setIsUploading(true)
+        const toastId = toast.loading(`Uploading ${toastMessage}...`)
+
         try {
-            if (field === 'heroBanner') setIsHeroUploading(true);
-            else if (field === 'ogBanner') setIsOgUploading(true);
-            else setIsSponsoredAdsUploading(true);
-
-            // Set target dimensions
-            const { width, height } =
-                field === 'sponsoredAds'
-                    ? { width: 1000, height: 1400 }
-                    : { width: 1400, height: 800 };
-
-            // Resize and compress using canvas
-            const compressedFile = await resizeAndCompressImage(file, width, height, 0.8);
-
-            const formData = new FormData();
-            formData.append('file', compressedFile);
-            formData.append('folder', 'biratinfo/posts');
-            formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
-            formData.append('cloud_name', process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!);
-            formData.append('public_id', `posts/${uuidv4()}`);
-
-
-            if (field === 'heroBanner') {
-                setIsHeroUploading(true);
-            } else if (field === 'ogBanner') {
-                setIsOgUploading(true)
-            } else {
-                setIsSponsoredAdsUploading(true)
-            }
-
-            const response = await fetch(
-                `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-                {
-                    method: 'POST',
-                    body: formData
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error('Upload failed');
-            }
-
-            const data = await response.json();
-            return data.secure_url;
-
+            const { url, public_id } = await uploadImage(file)
+            setImage({ url, public_id })
+            toast.success(`${toastMessage} uploaded successfully!`, { id: toastId })
         } catch (error) {
-            console.error('Upload error:', error);
-            throw error;
+            console.error(`Failed to upload ${field}:`, error)
+            toast.error(`Failed to upload ${toastMessage}`, { id: toastId })
+            setImage(null)
         } finally {
-            if (field === 'heroBanner') {
-                setIsHeroUploading(false);
-            } else if (field === 'ogBanner') {
-                setIsOgUploading(false)
-            } else {
-                setIsSponsoredAdsUploading(false)
-            }
+            setIsUploading(false)
         }
-    };
+    }
 
-    const handleFileUpload = (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds') => async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0];
+    const handleRemoveImage = async (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds') => {
+        const image = field === 'heroBanner' ? heroBanner :
+            field === 'ogBanner' ? ogBanner : sponsoredAds
+        const setImage = field === 'heroBanner' ? setHeroBanner :
+            field === 'ogBanner' ? setOgBanner : setSponsoredAds
+        const toastMessage = field === 'heroBanner' ? 'Hero banner' :
+            field === 'ogBanner' ? 'OG banner' : 'Sponsored ads image'
 
-            try {
-                const imageUrl = await uploadToCloudinary(field, file);
-                setField(field, imageUrl);
-            } catch (error) {
-                console.error(error)
-                setField(field, null);
-            }
+        if (!image?.public_id) {
+            setImage(null)
+            return
         }
-    };
+
+        const toastId = toast.loading(`Deleting ${toastMessage}...`)
+        try {
+            await deleteImage(image.public_id)
+            setImage(null)
+            toast.success(`${toastMessage} deleted successfully!`, { id: toastId })
+        } catch (error) {
+            console.error(`Failed to delete ${field}:`, error)
+            toast.error(`Failed to delete ${toastMessage}`, { id: toastId })
+        }
+    }
 
     const handleActionClick = async (action: () => Promise<void>) => {
-        setIsSubmitting(true);
+        setIsSubmitting(true)
         try {
-            await action();
+            await action()
         } finally {
-            setIsSubmitting(false);
+            setIsSubmitting(false)
         }
-    };
+    }
+
+    const handleDateSelect = (date: Date | undefined) => {
+        setSelectedDate(date)
+        setField('date', date ? format(date, 'yyyy-MM-dd') : '')
+    }
+
+    const handleTimeChange = (time: string) => {
+        setField('time', time)
+    }
 
     return (
         <Card className="shadow-sm rounded-md border border-gray-200 text-sm">
             <CardContent className="p-3 space-y-3">
                 <div className='flex justify-between items-center gap'>
-                    <h2 className="text-lg font-semibold text-gray-800 mb-1">Post Settings</h2>
-                    <Button onClick={() => setSidebarLanguage(prev => prev === 'en' ? 'np' : 'en')} variant={'outline'} className='cursor-pointer'>
-                        {sidebarLanguage === 'en' ? 'Switch to Nepali' : 'Switch to English'}
-                    </Button>
+                    <h2 className="text-lg font-semibold text-gray-800 mb-1">
+                        {isNepali ? 'पोष्ट सेटिङहरू' : 'Post Settings'}
+                    </h2>
                 </div>
 
                 <div className="grid grid-cols-1 gap-3">
                     {/* Category */}
                     <div className="space-y-1">
-                        <Label htmlFor="category" className='text-sm font-medium text-gray-800'>Category *</Label>
+                        <Label htmlFor="category" className='text-sm font-medium text-gray-800'>
+                            {isNepali ? 'वर्ग *' : 'Category *'}
+                        </Label>
                         <Select value={category} onValueChange={(value) => setField('category', value)}>
                             <SelectTrigger className="w-full bg-gray-100 h-8">
-                                <SelectValue placeholder={sidebarLanguage === 'np' ? 'वर्ग छान्नुहोस्' : 'Select category'} />
+                                <SelectValue placeholder={isNepali ? 'वर्ग छान्नुहोस्' : 'Select category'} />
                             </SelectTrigger>
                             <SelectContent>
                                 {categoryOptions.map(opt => (
                                     <SelectItem key={opt.value} value={opt.value}>
-                                        {sidebarLanguage === 'np' ? `${opt.np} (${opt.en})` : `${opt.en} (${opt.np})`}
+                                        {isNepali ? opt.np : opt.en}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
-
                         {errors.category && <p className="text-red-500 text-xs mt-0.5">{errors.category}</p>}
                     </div>
 
                     {/* Tags */}
                     <div className="space-y-1">
-                        <Label className='text-sm font-medium text-gray-800'>Tags (max 5)</Label>
+                        <Label className='text-sm font-medium text-gray-800'>
+                            {isNepali ? 'ट्यागहरू (अधिकतम ५)' : 'Tags (max 5)'}
+                        </Label>
                         <MultiSelect
-                            options={tagOptions.map(opt => ({
-                                value: opt.value,
-                                label: sidebarLanguage === 'np' ? `${opt.np} (${opt.en})` : `${opt.en} (${opt.np})`
-                            }))}
                             value={tags}
                             onChange={(newTags) => setField('tags', newTags)}
-                            placeholder={sidebarLanguage === 'np' ? 'ट्याग थप्नुहोस्' : 'Add tags'}
+                            placeholder={isNepali ? 'ट्याग थप्नुहोस्' : 'Add tags'}
                             maxSelections={5}
+                            isNepali={isNepali}
                         />
-
                         {errors.tags && <p className="text-red-500 text-xs mt-0.5">{errors.tags}</p>}
                     </div>
 
                     {/* Date and Time */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="flex flex-col gap-3">
+                        {/* Date Picker */}
                         <div className="space-y-1">
-                            <Label htmlFor="date" className='text-sm font-medium text-gray-800'>Date *</Label>
-                            <Input
-                                id="date"
-                                type="date"
-                                value={date}
-                                onChange={(e) => setField('date', e.target.value)}
-                                className="w-full bg-gray-100 h-8"
-                            />
+                            <Label className='text-sm font-medium text-gray-800'>
+                                {isNepali ? 'मिति *' : 'Date *'}
+                            </Label>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        variant={"outline"}
+                                        className={cn(
+                                            "w-full justify-start text-left font-normal h-9 bg-gray-100 px-3",
+                                            !selectedDate && "text-muted-foreground",
+                                            "overflow-hidden"
+                                        )}
+                                    >
+                                        <CalendarIcon className="mr-2 h-4 w-4 flex-shrink-0" />
+                                        <span className="truncate text-sm">
+                                            {selectedDate ? (
+                                                format(selectedDate, "MMM d, yyyy")
+                                            ) : (
+                                                <span>{isNepali ? 'मिति छान्नुहोस्' : 'Select date'}</span>
+                                            )}
+                                        </span>
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0">
+                                    <Calendar
+                                        mode="single"
+                                        selected={selectedDate}
+                                        onSelect={handleDateSelect}
+                                        initialFocus
+                                    />
+                                </PopoverContent>
+                            </Popover>
                             {errors.date && <p className="text-red-500 text-xs mt-0.5">{errors.date}</p>}
                         </div>
+
+                        {/* Time Picker Section */}
                         <div className="space-y-1">
-                            <Label htmlFor="time" className='text-sm font-medium text-gray-800'>Time *</Label>
-                            <Input
-                                id="time"
-                                type="time"
+                            <Label className='text-sm font-medium text-gray-800'>
+                                {isNepali ? 'समय *' : 'Time *'}
+                            </Label>
+                            <TimePicker
                                 value={time}
-                                onChange={(e) => setField('time', e.target.value)}
-                                className="w-full bg-gray-100 h-8"
+                                onChange={handleTimeChange}
+                                disabled={isSubmitting}
                             />
                             {errors.time && <p className="text-red-500 text-xs mt-0.5">{errors.time}</p>}
                         </div>
@@ -227,20 +238,22 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
 
                     {/* Language */}
                     <div className="space-y-1">
-                        <Label htmlFor="language" className='text-sm font-medium text-gray-800'>Language</Label>
+                        <Label htmlFor="language" className='text-sm font-medium text-gray-800'>
+                            {isNepali ? 'भाषा' : 'Language'}
+                        </Label>
                         <Select
                             value={language}
                             onValueChange={(value) => setField('language', value)}
                         >
                             <SelectTrigger className="w-full bg-gray-100 h-8">
-                                <SelectValue placeholder="Select language" />
+                                <SelectValue placeholder={isNepali ? 'भाषा छान्नुहोस्' : 'Select language'} />
                             </SelectTrigger>
                             <SelectContent>
                                 {Language.map((item, index) =>
-                                    <SelectItem key={index} value={item.value}>{item.language}</SelectItem>
+                                    <SelectItem key={index} value={item.value}>
+                                        {item.language}
+                                    </SelectItem>
                                 )}
-
-
                             </SelectContent>
                         </Select>
                     </div>
@@ -248,17 +261,21 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                     {/* Reading Time */}
                     {isEditor && (
                         <div className="space-y-1">
-                            <Label htmlFor="readingTime" className='text-sm font-medium text-gray-800'>Reading Time</Label>
+                            <Label htmlFor="readingTime" className='text-sm font-medium text-gray-800'>
+                                {isNepali ? 'पढ्ने समय' : 'Reading Time'}
+                            </Label>
                             <Select
                                 value={readingTime}
                                 onValueChange={(value) => setField('readingTime', value)}
                             >
                                 <SelectTrigger className="w-full bg-gray-100 h-8">
-                                    <SelectValue placeholder="Select reading time" />
+                                    <SelectValue placeholder={isNepali ? 'समय छान्नुहोस्' : 'Select reading time'} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {[3, 4, 5, 6, 7, 8, 9, 10].map(min => (
-                                        <SelectItem key={min} value={`${min} min`}>{min} min</SelectItem>
+                                        <SelectItem key={min} value={`${min} min`}>
+                                            {isNepali ? `${min} मिनेट` : `${min} min`}
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
@@ -266,96 +283,100 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                     )}
 
                     {/* Hero Banner */}
-                    <div className='space-y-1'>
-                        <FileUploadSection
-                            label="Hero Banner"
-                            field="heroBanner"
-                            value={heroBanner}
-                            isUploading={isHeroUploading}
-                            handleFileUpload={handleFileUpload}
-                            router={router}
-                            isEditor={isEditor}
-                            isOtherUploading={isOgUploading || isSponsoredAdsUploading || isSubmitting}
-                        />
-                        {errors.heroBanner && <p className="text-red-500 text-xs mt-0.5">{errors.heroBanner}</p>}
-                    </div>
+                    <ImageUploadSection
+                        label={isNepali ? 'हिरो ब्यानर' : 'Hero Banner'}
+                        field="heroBanner"
+                        image={heroBanner}
+                        isUploading={isHeroUploading}
+                        onUpload={handleImageUpload}
+                        onRemove={handleRemoveImage}
+                        isOtherUploading={isOgUploading || isSponsoredAdsUploading || isSubmitting}
+                        error={errors.heroBanner}
+                    />
 
                     {/* Hero Image Credit */}
                     <div className="space-y-1">
-                        <Label htmlFor="imageCredit" className='text-sm font-medium text-gray-800'>Hero Image Credit</Label>
+                        <Label htmlFor="heroImageCredit" className='text-sm font-medium text-gray-800'>
+                            {isNepali ? 'हिरो छवि क्रेडिट' : 'Hero Image Credit'}
+                        </Label>
                         <Input
                             id="heroImageCredit"
                             value={heroImageCredit}
                             onChange={(e) => setField('heroImageCredit', e.target.value)}
-                            placeholder="Image credit"
+                            placeholder={isNepali ? 'छवि क्रेडिट' : 'Image credit'}
                             className="w-full bg-gray-100 h-8"
                         />
                         {errors.heroImageCredit && <p className="text-red-500 text-xs mt-0.5">{errors.heroImageCredit}</p>}
                     </div>
 
                     {/* OG Banner */}
-                    <div className='space-y-1'>
-                        <FileUploadSection
-                            label="OG Banner"
-                            field="ogBanner"
-                            value={ogBanner}
-                            isUploading={isOgUploading}
-                            handleFileUpload={handleFileUpload}
-                            router={router}
-                            isEditor={isEditor}
-                            isOtherUploading={isHeroUploading || isSponsoredAdsUploading || isSubmitting}
-                        />
-                        {errors.ogBanner && <p className="text-red-500 text-xs mt-0.5">{errors.ogBanner}</p>}
-                    </div>
+                    <ImageUploadSection
+                        label={isNepali ? 'OG ब्यानर' : 'OG Banner'}
+                        field="ogBanner"
+                        image={ogBanner}
+                        isUploading={isOgUploading}
+                        onUpload={handleImageUpload}
+                        onRemove={handleRemoveImage}
+                        isOtherUploading={isHeroUploading || isSponsoredAdsUploading || isSubmitting}
+                        error={errors.ogBanner}
+                    />
 
-
-
-                    {/* Og Image Credit */}
+                    {/* OG Image Credit */}
                     <div className="space-y-1">
-                        <Label htmlFor="imageCredit" className='text-sm font-medium text-gray-800'>Og Image Credit</Label>
+                        <Label htmlFor="ogImageCredit" className='text-sm font-medium text-gray-800'>
+                            {isNepali ? 'OG छवि क्रेडिट' : 'OG Image Credit'}
+                        </Label>
                         <Input
                             id="ogImageCredit"
                             value={ogImageCredit}
                             onChange={(e) => setField('ogImageCredit', e.target.value)}
-                            placeholder="Image credit"
+                            placeholder={isNepali ? 'छवि क्रेडिट' : 'Image credit'}
                             className="w-full bg-gray-100 h-8"
                         />
                         {errors.ogImageCredit && <p className="text-red-500 text-xs mt-0.5">{errors.ogImageCredit}</p>}
                     </div>
 
                     {/* Sponsored Ads */}
-                    <FileUploadSection
-                        label="Sponsored Ads"
+                    <ImageUploadSection
+                        label={isNepali ? 'प्रायोजित विज्ञापन' : 'Sponsored Ads'}
                         field="sponsoredAds"
-                        value={sponsoredAds}
+                        image={sponsoredAds}
                         isUploading={isSponsoredAdsUploading}
-                        handleFileUpload={handleFileUpload}
-                        router={router}
-                        isEditor={isEditor}
+                        onUpload={handleImageUpload}
+                        onRemove={handleRemoveImage}
                         isOtherUploading={isHeroUploading || isOgUploading || isSubmitting}
+                        error={errors.sponsoredAds}
                     />
 
 
                     {/* Access */}
                     <div className="space-y-1">
-                        <Label htmlFor="access" className='text-sm font-medium text-gray-800'>Access</Label>
+                        <Label htmlFor="access" className='text-sm font-medium text-gray-800'>
+                            {isNepali ? 'पहुँच' : 'Access'}
+                        </Label>
                         <Select
                             value={access}
                             onValueChange={(value) => setField('access', value)}
                         >
                             <SelectTrigger className="w-full bg-gray-100 h-8">
-                                <SelectValue placeholder="Select access level" />
+                                <SelectValue placeholder={isNepali ? 'पहुँच स्तर छान्नुहोस्' : 'Select access level'} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="public">Public</SelectItem>
-                                <SelectItem value="private">Private</SelectItem>
+                                <SelectItem value="public">
+                                    {isNepali ? 'सार्वजनिक' : 'Public'}
+                                </SelectItem>
+                                <SelectItem value="private">
+                                    {isNepali ? 'निजी' : 'Private'}
+                                </SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
 
                     {/* Canonical URL */}
                     <div className="space-y-1">
-                        <Label htmlFor="canonicalUrl" className='text-sm font-medium text-gray-800'>Canonical URL</Label>
+                        <Label htmlFor="canonicalUrl" className='text-sm font-medium text-gray-800'>
+                            {isNepali ? 'क्यानोनिकल URL' : 'Canonical URL'}
+                        </Label>
                         <Input
                             id="canonicalUrl"
                             value={canonicalUrl}
@@ -382,41 +403,60 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                 )}
             </CardContent>
         </Card>
-    );
+    )
 }
 
-interface FileUploadSectionProps {
-    label: string;
-    field: 'heroBanner' | 'ogBanner' | 'sponsoredAds';
-    value: string | null;
-    isUploading: boolean;
-    handleFileUpload: (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds') => (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
-    router: ReturnType<typeof useRouter>;
-    isEditor?: boolean;
-    isOtherUploading: boolean;
+interface ImageUploadSectionProps {
+    label: string
+    field: 'heroBanner' | 'ogBanner' | 'sponsoredAds'
+    image?: { url: string, public_id: string }
+    isUploading: boolean
+    onUpload: (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds', file: File) => Promise<void>
+    onRemove: (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds') => void
+    isOtherUploading: boolean
+    error?: string
 }
 
-const FileUploadSection = ({
+const ImageUploadSection = ({
     label,
     field,
-    value,
+    image,
     isUploading,
-    handleFileUpload,
-    isOtherUploading
-}: FileUploadSectionProps) => {
+    onUpload,
+    onRemove,
+    isOtherUploading,
+    error
+}: ImageUploadSectionProps) => {
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            await onUpload(field, e.target.files[0])
+        }
+    }
+
     return (
         <div className="space-y-1">
             <Label htmlFor={field} className='text-sm font-medium text-gray-700'>{label}</Label>
-            {value ? (
-                <Image
-                    src={value}
-                    alt={`${label} preview`}
-                    className="w-full h-auto rounded-sm shadow-xs"
-                    width={800}
-                    height={600}
-                    style={{ objectFit: 'contain' }}
-                    quality={100}
-                />
+            {image?.url ? (
+                <div className="relative">
+                    <Image
+                        src={image.url}
+                        alt={`${label} preview`}
+                        className="w-full h-auto rounded-sm shadow-xs"
+                        width={800}
+                        height={600}
+                        style={{ objectFit: 'contain' }}
+                        quality={100}
+                    />
+                    <Button
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-2 right-2 cursor-pointer"
+                        onClick={() => onRemove(field)}
+                        disabled={isUploading || isOtherUploading}
+                    >
+                        {isUploading ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Remove'}
+                    </Button>
+                </div>
             ) : (
                 <div className="border border-dashed border-gray-300 rounded-sm p-2 flex items-center justify-center text-gray-500 text-xs">
                     No image uploaded
@@ -426,17 +466,20 @@ const FileUploadSection = ({
                 id={field}
                 type="file"
                 accept="image/*"
-                onChange={handleFileUpload(field)}
+                onChange={handleFileChange}
                 className="hidden"
             />
-            <Button
-                type="button"
-                onClick={() => document.getElementById(field)?.click()}
-                className="w-full h-8 text-sm"
-                disabled={isUploading || isOtherUploading}
-            >
-                {isUploading ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : 'Upload'}
-            </Button>
+            {!image?.url && (
+                <Button
+                    type="button"
+                    onClick={() => document.getElementById(field)?.click()}
+                    className="w-full h-8 text-sm"
+                    disabled={isUploading || isOtherUploading}
+                >
+                    {isUploading ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : 'Upload'}
+                </Button>
+            )}
+            {error && <p className="text-red-500 text-xs mt-0.5">{error}</p>}
         </div>
     )
 }

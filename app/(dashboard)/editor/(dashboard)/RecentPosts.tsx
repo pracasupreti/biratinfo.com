@@ -1,10 +1,10 @@
-'use client'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import Post from '@/types/Post'
 import Link from 'next/link'
-import AuthorDisplay from '@/components/AuthorDisplay'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import AuthorDisplay from '@/components/AuthorDisplay'
+
 
 interface RecentPostsProps {
     posts?: Post[]
@@ -84,10 +84,10 @@ export default function RecentPosts({ posts, loading = false }: RecentPostsProps
                         {/* Post Title */}
                         <div className="col-span-12 md:col-span-4">
                             <Link
-                                href={`/posts/${post._id}`}
+                                href={`/${post.category}/${post.categoryId}`}
                                 className="font-medium text-gray-900 hover:underline line-clamp-1"
                             >
-                                {post.englishTitle || post.nepaliTitle}
+                                {post.title}
                             </Link>
                             <p className="text-sm text-gray-600 line-clamp-1 mt-1">
                                 {post.excerpt || 'No excerpt available'}

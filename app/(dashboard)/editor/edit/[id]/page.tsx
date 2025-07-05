@@ -62,7 +62,7 @@ export default function EditPostPage() {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto py-4">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-2xl font-bold">Edit Post</h1>
                 <Button variant="default" onClick={() => router.push('/editor')}>

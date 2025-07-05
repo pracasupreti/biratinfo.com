@@ -1,17 +1,43 @@
 import { create } from 'zustand'
 
-interface Block {
-    content: string
-    link?: string
+interface ImageData {
+    url: string
+    public_id: string
+}
+
+interface CTA {
+    name: string
+    url: string
+}
+
+interface AudioData {
+    url: string
+    public_id: string
+    duration?: number
 }
 
 export interface PostState {
-    englishTitle: string
-    nepaliTitle: string
-    blocks: Block[]
+    // Core Fields
+    title: string
     excerpt: string
+    isNepali: boolean
+    content: string
     featuredIn: string[]
     postInNetwork: string[]
+
+    // Media Fields
+    heroBanner?: ImageData
+    ogBanner?: ImageData
+    sponsoredAds?: ImageData
+    heroImageCredit: string
+    ogImageCredit: string
+    audio?: AudioData
+    audioCredit: string
+
+    // Call to Action
+    ctas?: CTA[]
+
+    // Other Fields
     category: string
     tags: string[]
     date: string
@@ -19,40 +45,38 @@ export interface PostState {
     authors: string[]
     language: string
     readingTime?: string
-    heroBanner: string
-    ogBanner: string
-    heroImageCredit: string
-    ogImageCredit: string
-    sponsoredAds: string
     access: string
-    audioFile: File | null
     canonicalUrl: string
     errors: Record<string, string>
 
     // Actions
-    setField: (field: keyof Omit<PostState, 'errors' | 'setError' | 'clearError' | 'validate' | 'resetStore' | 'initialize'>, value: any) => void
-    setError: (field: string, message: string) => void
-    clearError: (field: string) => void
-    validate: () => boolean
-    resetStore: () => void
-    initialize: (postData: Partial<PostState>) => void
-    updateBlock: (index: number, content: string, link?: string) => void
+    setField: (field: keyof Omit<PostState, 'errors'>, value: any) => void
+    setTitle: (title: string, isNepali: boolean) => void
+    setExcerpt: (excerpt: string, isNepali: boolean) => void
+    setContent: (content: string) => void
+    setHeroBanner: (image: ImageData | null) => void
+    setOgBanner: (image: ImageData | null) => void
+    setSponsoredAds: (image: ImageData | null) => void
+    setAudio: (audio: AudioData | null) => void
+    addCTA: (cta: CTA) => void
+    removeCTA: (index: number) => void
+    updateCTA: (index: number, cta: Partial<CTA>) => void
     addToFeaturedIn: (site: string) => void
     removeFromFeaturedIn: (site: string) => void
     addToPostInNetwork: (site: string) => void
     removeFromPostInNetwork: (site: string) => void
-    addAuthor: (author: string) => void
-    removeAuthor: (index: number) => void
-    addTag: (tag: string) => void
-    removeTag: (index: number) => void
+    validate: () => boolean
+    resetStore: () => void
+    initialize: (postData: Partial<PostState>) => void
+    toggleLanguage: () => void
 }
 
 export const usePostStore = create<PostState>((set, get) => ({
     // Initial State
-    englishTitle: '',
-    nepaliTitle: '',
-    blocks: Array(4).fill({ content: '', link: undefined }), // Initialize with empty blocks
+    title: '',
     excerpt: '',
+    isNepali: false,
+    content: '',
     featuredIn: [],
     postInNetwork: [],
     category: '',
@@ -62,215 +86,156 @@ export const usePostStore = create<PostState>((set, get) => ({
     authors: [],
     language: 'english',
     readingTime: '',
-    heroBanner: '',
-    ogBanner: '',
+    heroBanner: undefined,
+    ogBanner: undefined,
+    sponsoredAds: undefined,
     heroImageCredit: '',
     ogImageCredit: '',
-    sponsoredAds: '',
+    audio: undefined,
+    audioCredit: '',
+    ctas: [],
     access: 'public',
-    audioFile: null,
     canonicalUrl: '',
     errors: {},
 
-    // Set any field dynamically
+    // Actions
     setField: (field, value) => {
         set({ [field]: value })
         if (get().errors[field]) {
-            set(state => ({
-                errors: { ...state.errors, [field]: '' }
-            }))
+            set(state => ({ errors: { ...state.errors, [field]: '' } }))
         }
     },
 
-    // Update a specific block with content and optional link
-    updateBlock: (index, content, link) => {
-        set(state => {
-            const newBlocks = [...state.blocks]
-            newBlocks[index] = { content, link }
-            return { blocks: newBlocks }
-        })
-    },
+    setTitle: (title, isNepali) => set({ title, isNepali }),
+    setExcerpt: (excerpt, isNepali) => set({ excerpt, isNepali }),
+    setContent: (content) => set({ content }),
 
-    // Add author (max 2)
-    addAuthor: (author) => {
-        set(state => {
-            if (state.authors.length >= 2) return state
-            return { authors: [...state.authors, author] }
-        })
-    },
+    // Media handling
+    setHeroBanner: (image) => set({ heroBanner: image || undefined }),
+    setOgBanner: (image) => set({ ogBanner: image || undefined }),
+    setSponsoredAds: (image) => set({ sponsoredAds: image || undefined }),
+    setAudio: (audio) => set({ audio: audio || undefined }),
 
-    // Remove author by index
-    removeAuthor: (index) => {
-        set(state => {
-            const newAuthors = [...state.authors]
-            newAuthors.splice(index, 1)
-            return { authors: newAuthors }
-        })
-    },
+    // CTA handling
+    addCTA: (cta) => set(state => ({
+        ctas: [...(state.ctas || []), cta]
+    })),
+    removeCTA: (index) => set(state => ({
+        ctas: (state.ctas || []).filter((_, i) => i !== index)
+    })),
+    updateCTA: (index, cta) => set(state => ({
+        ctas: (state.ctas || []).map((item, i) =>
+            i === index ? { ...item, ...cta } : item
+        )
+    })),
 
-    // Add tag (max 5)
-    addTag: (tag) => {
-        set(state => {
-            if (state.tags.length >= 5) return state
-            return { tags: [...state.tags, tag] }
-        })
-    },
+    // Network sites
+    addToFeaturedIn: (site) => set(state => ({
+        featuredIn: [...new Set([...state.featuredIn, site])],
+        postInNetwork: [...new Set([...state.postInNetwork, site])]
+    })),
 
-    // Remove tag by index
-    removeTag: (index) => {
-        set(state => {
-            const newTags = [...state.tags]
-            newTags.splice(index, 1)
-            return { tags: newTags }
-        })
-    },
+    removeFromFeaturedIn: (site) => set(state => ({
+        featuredIn: state.featuredIn.filter(s => s !== site),
+        postInNetwork: state.postInNetwork.filter(s => s !== site)
+    })),
 
-    // Add site to featuredIn and postInNetwork (if not already present)
-    addToFeaturedIn: (site: string) => {
-        set(state => {
-            const featuredIn = new Set(state.featuredIn || []);
-            const postInNetwork = new Set(state.postInNetwork || []);
+    addToPostInNetwork: (site) => set(state => ({
+        postInNetwork: [...new Set([...state.postInNetwork, site])]
+    })),
 
-            featuredIn.add(site);        // always add to featuredIn
-            postInNetwork.add(site);     // sync with postInNetwork
+    removeFromPostInNetwork: (site) => set(state => ({
+        postInNetwork: state.postInNetwork.filter(s => s !== site)
+    })),
 
-            return {
-                featuredIn: Array.from(featuredIn),
-                postInNetwork: Array.from(postInNetwork)
-            };
-        });
-    },
+    // Language toggle
+    toggleLanguage: () => set(state => ({
+        isNepali: !state.isNepali,
+        language: state.isNepali ? 'english' : 'nepali'
+    })),
 
-    // Remove site from featuredIn (but not from postInNetwork)
-    removeFromFeaturedIn: (site: string) => {
-        set(state => ({
-            featuredIn: (state.featuredIn || []).filter(s => s !== site),
-            postInNetwork: (state.postInNetwork || []).filter(s => s !== site)
-        }));
-    },
-
-    // Add site to postInNetwork only
-    addToPostInNetwork: (site: string) => {
-        set(state => {
-            const postInNetwork = new Set(state.postInNetwork || []);
-            postInNetwork.add(site);
-            return { postInNetwork: Array.from(postInNetwork) };
-        });
-    },
-
-    // Remove site from postInNetwork only
-    removeFromPostInNetwork: (site: string) => {
-        set(state => ({
-            postInNetwork: (state.postInNetwork || []).filter(s => s !== site)
-        }));
-    },
-
-    // Set an error manually
-    setError: (field, message) => {
-        set(state => ({
-            errors: { ...state.errors, [field]: message }
-        }))
-    },
-
-    // Clear error manually
-    clearError: (field) => {
-        set(state => ({
-            errors: { ...state.errors, [field]: '' }
-        }))
-    },
-
-    // Validate fields before submission
+    // Validation
     validate: () => {
         const state = get()
         const newErrors: Record<string, string> = {}
 
-        // Required field validation
-        if (!state.englishTitle.trim()) newErrors.englishTitle = 'English title is required.'
-        if (!state.nepaliTitle.trim()) newErrors.nepaliTitle = 'Nepali title is required.'
-        if (!state.excerpt.trim()) newErrors.excerpt = 'Excerpt is required.'
-        if (!state.category.trim()) newErrors.category = 'Category is required.'
-        if (!state.date.trim()) newErrors.date = 'Date is required.'
-        if (!state.time.trim()) newErrors.time = 'Time is required.'
-        if (state.authors.length === 0) newErrors.authors = 'At least one author is required.'
-        if (!state.heroImageCredit.trim()) newErrors.heroImageCredit = 'Hero Image credit is required.'
-        if (!state.ogImageCredit.trim()) newErrors.ogImageCredit = 'Og Image credit is required.'
-        if (!state.heroBanner) newErrors.heroBanner = 'Hero banner image is required.'
-        if (!state.ogBanner) newErrors.ogBanner = 'OG banner image is required.'
+        if (!state.title.trim()) newErrors.title = 'Title is required'
+        if (!state.excerpt.trim()) newErrors.excerpt = 'Excerpt is required'
+        if (state.excerpt.length > 250) newErrors.excerpt = 'Excerpt must be 150 characters or less'
+        if (!state.content.trim()) newErrors.content = 'Content is required'
+        if (!state.category.trim()) newErrors.category = 'Category is required'
+        if (!state.heroBanner) newErrors.heroBanner = 'Hero banner is required'
+        if (!state.ogBanner) newErrors.ogBanner = 'OG banner is required. You can add same image as Hero banner',
 
-        // Validate blocks have content
-        state.blocks.forEach((block, index) => {
-            if (!block.content.trim()) {
-                newErrors[`blocks[${index}]`] = 'Block content cannot be empty'
-            }
-        })
+            // Validate CTAs
+            (state.ctas || []).forEach((cta, index) => {
+                if (cta?.name?.trim() || cta?.url?.trim()) {
+                    if (!cta.name?.trim()) newErrors[`cta-${index}-name`] = 'Name required when URL exists';
+                    if (!cta.url?.trim()) newErrors[`cta-${index}-url`] = 'URL required when name exists';
+                    else if (!/^https?:\/\//i.test(cta.url)) {
+                        newErrors[`cta-${index}-url`] = 'URL must start with http:// or https://';
+                    }
+                }
 
-        // Validate authors limit
-        if (state.authors.length > 2) {
-            newErrors.authors = 'Maximum 2 authors allowed'
-        }
+            }),
 
-        // Validate tags limit
-        if (state.tags.length > 5) {
-            newErrors.tags = 'Maximum 5 tags allowed'
-        }
-
-        set({ errors: newErrors })
+            set({ errors: newErrors })
         return Object.keys(newErrors).length === 0
     },
 
-    // Reset store to initial state
-    resetStore: () => {
-        set({
-            englishTitle: '',
-            nepaliTitle: '',
-            blocks: Array(4).fill({ content: '', link: undefined }),
-            excerpt: '',
-            featuredIn: [],
-            postInNetwork: [],
-            category: '',
-            tags: [],
-            date: '',
-            time: '',
-            authors: [],
-            language: 'english',
-            readingTime: '',
-            heroBanner: '',
-            ogBanner: '',
-            heroImageCredit: '',
-            ogImageCredit: '',
-            sponsoredAds: '',
-            access: 'public',
-            audioFile: null,
-            canonicalUrl: '',
-            errors: {},
-        })
-    },
+    // Reset
+    resetStore: () => set({
+        title: '',
+        excerpt: '',
+        isNepali: false,
+        content: '',
+        featuredIn: [],
+        postInNetwork: [],
+        category: '',
+        tags: [],
+        date: '',
+        time: '',
+        authors: [],
+        language: 'english',
+        readingTime: '',
+        heroBanner: undefined,
+        ogBanner: undefined,
+        sponsoredAds: undefined,
+        heroImageCredit: '',
+        ogImageCredit: '',
+        audio: undefined,
+        audioCredit: '',
+        ctas: [],
+        access: 'public',
+        canonicalUrl: '',
+        errors: {}
+    }),
 
-    // Initialize store with existing post data for editing
-    initialize: (postData) => {
-        set({
-            englishTitle: postData.englishTitle || '',
-            nepaliTitle: postData.nepaliTitle || '',
-            blocks: postData.blocks || Array(4).fill({ content: '', link: undefined }),
-            excerpt: postData.excerpt || '',
-            featuredIn: postData.featuredIn || [],
-            postInNetwork: postData.postInNetwork || [],
-            category: postData.category || '',
-            tags: postData.tags || [],
-            date: postData.date || '',
-            time: postData.time || '',
-            authors: postData.authors || [],
-            language: postData.language || 'english',
-            readingTime: postData.readingTime || '',
-            heroBanner: postData.heroBanner || '',
-            ogBanner: postData.ogBanner || '',
-            heroImageCredit: postData.heroImageCredit || '',
-            ogImageCredit: postData.ogImageCredit || '',
-            sponsoredAds: postData.sponsoredAds || '',
-            access: postData.access || 'public',
-            audioFile: postData.audioFile || null,
-            canonicalUrl: postData.canonicalUrl || '',
-            errors: {}
-        })
-    }
+    // Initialize with existing data
+    initialize: (postData) => set({
+        title: postData.title || '',
+        excerpt: postData.excerpt || '',
+        isNepali: postData.isNepali || false,
+        content: postData.content || '',
+        featuredIn: postData.featuredIn || [],
+        postInNetwork: postData.postInNetwork || [],
+        category: postData.category || '',
+        tags: postData.tags || [],
+        date: postData.date || '',
+        time: postData.time || '',
+        authors: postData.authors || [],
+        language: postData.language || 'english',
+        readingTime: postData.readingTime || '',
+        heroBanner: postData.heroBanner,
+        ogBanner: postData.ogBanner,
+        sponsoredAds: postData.sponsoredAds,
+        heroImageCredit: postData.heroImageCredit || '',
+        ogImageCredit: postData.ogImageCredit || '',
+        audio: postData.audio,
+        audioCredit: postData.audioCredit || '',
+        ctas: postData.ctas || [],
+        access: postData.access || 'public',
+        canonicalUrl: postData.canonicalUrl || '',
+        errors: {}
+    })
 }))

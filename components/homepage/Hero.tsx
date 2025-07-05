@@ -13,14 +13,19 @@ interface Author {
     clerkId: string
 }
 
+interface ImageData {
+    url: string
+    public_id: string
+}
+
 interface HeroPost {
-    nepaliTitle: string
+    title: string
     excerpt: string
     category: string
     categoryId: string
     authors: Author[]
     readingTime: string
-    heroBanner?: string,
+    heroBanner?: ImageData,
     createdAt?: string,
     updatedAt?: string
 }
@@ -45,13 +50,13 @@ function Hero({ data }: HeroProps) {
         <section
             className="w-full min-h-[calc(100vh-111px)] bg-cover bg-no-repeat bg-center flex items-end justify-center"
             style={{
-                backgroundImage: `url('${data?.heroBanner || 'placeholder-image'}')`,
+                backgroundImage: `url('${data?.heroBanner?.url || 'placeholder-image'}')`,
             }}
         >
             <div className="bg-white w-[95%] sm:w-[90%] max-w-6xl mx-auto md:px-12 md:mx-12 lg:mx-32 rounded-t-lg sm:rounded-t-xl md:rounded-t-2xl py-3 sm:py-3 md:py-4 xl:py-5 text-text-color text-center font-jost flex flex-col items-center gap-2 md:gap-3">
 
                 <Link href={`/${data!.category}/${data!.categoryId}`} className="text-base sm:text-lg md:text-xl lg:text-3xl font-semibold leading-tight cursor-pointer hover:underline">
-                    {data!.nepaliTitle}
+                    {data!.title}
                 </Link>
 
                 <p className="text-sm md:text-sm lg:text-base leading-relaxed max-w-4xl line-clamp-2">

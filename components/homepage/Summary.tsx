@@ -30,10 +30,11 @@ function Summary({ posts }: SummaryProps) {
                     <div className="flex-1 flex flex-col gap-4 md:min-h-[400px] md:justify-between">
                         <div className="w-full aspect-[3/2] relative rounded-xl overflow-hidden">
                             <Image
-                                src={featuredPost.heroBanner || '/images/placeholder.jpg'}
-                                alt={featuredPost.nepaliTitle}
+                                src={featuredPost.heroBanner?.url || '/images/placeholder.jpg'}
+                                alt={featuredPost.title}
                                 fill
                                 className="object-cover"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px"
                             />
                         </div>
                         <div className="flex flex-col gap-3">
@@ -44,7 +45,7 @@ function Summary({ posts }: SummaryProps) {
                                 href={`/${featuredPost.category}/${featuredPost.categoryId}`}
                                 className="text-text-color font-ibm_plex_serif font-bold text-xl lg:text-2xl hover:underline"
                             >
-                                {featuredPost.nepaliTitle}
+                                {featuredPost.title}
                             </Link>
                             <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm lg:text-base line-clamp-4">
                                 {featuredPost.excerpt}
@@ -59,10 +60,11 @@ function Summary({ posts }: SummaryProps) {
                         <div key={post._id} className="flex flex-col gap-3 group h-full">
                             <div className="relative w-full aspect-[3/2] rounded-lg overflow-hidden md:group-hover:translate-y-[-8px] md:transition md:duration-300">
                                 <Image
-                                    src={post.heroBanner || '/images/placeholder.jpg'}
-                                    alt={post.nepaliTitle}
+                                    src={post.heroBanner?.url || '/images/placeholder.jpg'}
+                                    alt={post.title}
                                     fill
                                     className="object-cover"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px"
                                 />
                             </div>
                             <div className='flex flex-col gap-1'>
@@ -73,7 +75,7 @@ function Summary({ posts }: SummaryProps) {
                                     href={`/${post.category}/${post.categoryId}`}
                                     className="text-text-color font-ibm_plex_serif font-semibold text-md hover:underline line-clamp-2"
                                 >
-                                    {post.nepaliTitle}
+                                    {post.title}
                                 </Link>
                             </div>
                         </div>

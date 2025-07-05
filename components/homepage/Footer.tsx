@@ -118,7 +118,7 @@ function Footer() {
                         </div>
                         <div className='flex flex-wrap justify-center gap-3 md:gap-4 text-[#444444]'>
                             <Link href="/terms" className='hover:text-gray-700 transition-colors font-roboto'>Terms & Conditions</Link>
-                            <Link href="/privacy-policy" className='hover:text-gray-700 transition-colors font-roboto'>Privacy Policy</Link>
+                            <Link href="/privacy" className='hover:text-gray-700 transition-colors font-roboto'>Privacy Policy</Link>
                             <Link href="/advertise" className='hover:text-gray-700 transition-colors font-roboto'>Advertise</Link>
                         </div>
                     </div>

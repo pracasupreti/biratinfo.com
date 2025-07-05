@@ -34,21 +34,18 @@ export default function DraftPosts({ drafts, loading = false }: DraftPostsProps)
         return dateB - dateA
     })
 
-    const countWords = (blocks: { content: string }[] | undefined): number => {
-        if (!blocks || !Array.isArray(blocks)) return 0;
+    const countWords = (content: string | undefined): number => {
+        if (!content) return 0;
 
-        return blocks.reduce((total, block) => {
-            if (!block?.content) return total;
+        // Remove HTML tags
+        const textWithoutTags = content.replace(/<[^>]*>/g, '');
 
-            let plainText = block.content.replace(/<[^>]+>/g, '');
+        // Trim, split by whitespace, and filter empty entries
+        const words = textWithoutTags.trim().split(/\s+/).filter(word => word.length > 0);
 
-            plainText = plainText.replace(/&[^;\s]+;/g, ' ');
-
-            const words = plainText.replace(/\u00A0/g, ' ').trim().split(/\s+/);
-
-            return total + words.filter(word => word.length > 0).length;
-        }, 0);
+        return words.length;
     };
+
 
     const handleEdit = (postId: string) => {
         router.push(`/editor/edit/${postId}`)
@@ -75,7 +72,7 @@ export default function DraftPosts({ drafts, loading = false }: DraftPostsProps)
                         <div key={draft._id} className="flex items-start justify-between p-3 rounded-lg hover:bg-gray-50 border bg-white shadow-sm hover:shadow-md transition-shadow">
                             <div className="flex-1 min-w-0 pr-2">
                                 <h3 className="text-sm font-medium line-clamp-2">
-                                    {draft.englishTitle || draft.nepaliTitle}
+                                    {draft.title}
                                 </h3>
                                 <div className="flex items-center mt-1 text-xs text-gray-500 space-x-3">
                                     <span className="flex items-center">
@@ -84,7 +81,7 @@ export default function DraftPosts({ drafts, loading = false }: DraftPostsProps)
                                     </span>
                                     <span className="flex items-center">
                                         <FileText className="h-3 w-3 mr-1" />
-                                        {countWords(draft.blocks)} words
+                                        {countWords(draft.content)} words
                                     </span>
                                 </div>
                             </div>

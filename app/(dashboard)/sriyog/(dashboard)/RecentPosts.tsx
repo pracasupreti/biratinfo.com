@@ -1,5 +1,3 @@
-'use client'
-
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import Post from '@/types/Post'
@@ -88,7 +86,7 @@ export default function RecentPosts({
                                 href={`/posts/${post._id}`}
                                 className="font-medium text-gray-900 hover:underline line-clamp-1"
                             >
-                                {post.englishTitle || post.nepaliTitle}
+                                {post.title}
                             </Link>
                             <p className="text-sm text-muted-foreground line-clamp-1">
                                 {post.excerpt || 'No excerpt available'}

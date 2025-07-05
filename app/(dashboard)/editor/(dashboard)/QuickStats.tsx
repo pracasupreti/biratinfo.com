@@ -1,4 +1,3 @@
-'use client'
 import { Clock, AlertCircle, X, Check, CheckIcon } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import Post from '@/types/Post'
