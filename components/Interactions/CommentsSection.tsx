@@ -171,7 +171,7 @@ export default function CommentsSection({
     return (
         <section className="max-w-4xl mx-auto px-4 mt-12">
             <h3 className="text-2xl font-bold mb-6 text-gray-800">
-                Comments ({comments.length}/10)
+                कम्मेंट्स ({comments.length}/10)
             </h3>
 
             {limitReached && (
@@ -185,7 +185,7 @@ export default function CommentsSection({
                 <Textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Write your comment..."
+                    placeholder="कम्मेन्ट गर्नुहोस..."
                     rows={3}
                     maxLength={500}
                     className="mb-3 text-gray-700 focus:ring-2 focus:ring-blue-500"
@@ -199,7 +199,7 @@ export default function CommentsSection({
                         disabled={!newComment.trim() || !isSignedIn}
                         className='cursor-pointer'
                     >
-                        Cancel
+                        रद्द गर्नुहोस
                     </Button>
                     <Button
                         type="submit"
@@ -207,7 +207,7 @@ export default function CommentsSection({
                         disabled={isLoading || !newComment.trim() || !isSignedIn || limitReached}
                         className="bg-blue-600 hover:bg-blue-700 cursor-pointer"
                     >
-                        {isLoading ? 'Posting...' : 'Post Comment'}
+                        {isLoading ? 'पोस्ट हुदै छ...' : 'पोस्ट गर्नुहोस'}
                     </Button>
                 </div>
             </div>
