@@ -113,9 +113,9 @@ export default function ClapButton({
                     {claps}
                 </span>
             </Button>
-            <span className="text-sm text-gray-600">
+            {/* <span className="text-sm text-gray-600">
                 {hasClapped ? 'धन्यवाद!' : 'मन पर्यो?'}
-            </span>
+            </span> */}
         </div>
     );
 }
