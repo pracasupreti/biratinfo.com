@@ -18,9 +18,12 @@ export default function EditPostPage() {
     useEffect(() => {
         const loadPost = async () => {
             try {
+                const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+
+                if (!backend_uri) throw new Error("Missing api endpoint")
                 async function fetchPostsById(id: string) {
                     const token = await getToken();
-                    const response = await fetch(`http://localhost:3001/api/posts/id/${id}`, {
+                    const response = await fetch(`${backend_uri}/api/posts/id/${id}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
