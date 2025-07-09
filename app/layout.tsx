@@ -7,38 +7,6 @@ import { Analytics } from '@vercel/analytics/next';
 import ScheduledPostChecker from "@/components/ScheduledPostChecker";
 import Script from "next/script";
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
-
-// const alata = Alata({
-//   weight: '400',
-//   variable: "--font-alata",
-//   subsets: ["latin"],
-// });
-
-// const jost = Jost({
-//   variable: "--font-jost",
-//   subsets: ["latin"],
-// });
-
-// const orienta = Orienta({
-//   weight: "400",
-//   variable: "--font-orienta",
-//   subsets: ["latin"],
-// });
-
-// const ibm_plex_serif = IBM_Plex_Serif({
-//   weight: ["700", "500"],
-//   variable: "--font-ibm_plex_serif",
-//   subsets: ["latin"],
-// });
 
 const roboto = Roboto({
   variable: "--font-roboto",
