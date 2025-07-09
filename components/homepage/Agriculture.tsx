@@ -41,15 +41,15 @@ function Agriculture({ posts }: SummaryProps) {
                         <div className="flex-1 flex flex-col gap-5 h-full justify-between">
                             <div>
                                 <div className={`w-full aspect-[3/2] bg-cover bg-center bg-no-repeat rounded-xl`} style={{ backgroundImage: `url(${featuredPost.heroBanner?.url})` }} />
-                                <Link href={`/${featuredPost.category}/${featuredPost.categoryId}`} className="font-ibm_plex_serif font-bold text-[16px] md:text-[18px] lg:text-[20px] cursor-pointer text-text-color mt-4 hover:underline line-clamp-1">
+                                <Link href={`/${featuredPost.category}/${featuredPost.categoryId}`} className="font-ibm_plex_serif font-bold text-xl lg:text-2xl cursor-pointer text-text-color mt-4 hover:underline line-clamp-1">
                                     {featuredPost.title}
                                 </Link>
-                                <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm sm:text-base lg:text-[16px] mt-2 line-clamp-3">
+                                <p className="text-[#808080] font-ibm_plex_serif font-medium text-base lg:text-[16px] mt-2 line-clamp-3">
                                     {featuredPost.excerpt}
                                 </p>
                             </div>
                             <div className="text-[#808080] font-roboto text-md flex items-center gap-2">
-                                <Link href={`/author/${featuredPost.authors[0]?.clerkId}`} className='font-bold'>{getAuthorName(featuredPost.authors)}</Link>
+                                <Link href={`/author/${featuredPost.authors[0]?.username}`} className='font-bold'>{getAuthorName(featuredPost.authors)}</Link>
                                 <span>·</span>
                                 {featuredPost.updatedAt && (
                                     <span><NepaliDateTime updatedAt={featuredPost.updatedAt!} /></span>
@@ -71,14 +71,14 @@ function Agriculture({ posts }: SummaryProps) {
                                     />
                                 </div>
                                 <div className="flex flex-col gap-1 sm:w-[60%]">
-                                    <Link href={`/${post.category}/${post.categoryId}`} className="font-ibm_plex_serif font-semibold text-[16px] md:text-[18px] cursor-pointer text-text-color hover:underline line-clamp-1">
+                                    <Link href={`/${post.category}/${post.categoryId}`} className="font-ibm_plex_serif font-bold text-xl lg:text-lg cursor-pointer text-text-color hover:underline line-clamp-1">
                                         {post.title}
                                     </Link>
-                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-[16px] line-clamp-2">
+                                    <p className="text-[#808080] font-ibm_plex_serif font-medium text-base line-clamp-2">
                                         {post.excerpt}
                                     </p>
                                     <div className="text-[#808080] font-roboto text-md flex items-center gap-2">
-                                        <Link href={`/author/${featuredPost.authors[0]?.clerkId}`} className='font-bold'>{getAuthorName(featuredPost.authors)}</Link>
+                                        <Link href={`/author/${featuredPost.authors[0]?.username}`} className='font-bold'>{getAuthorName(featuredPost.authors)}</Link>
                                         <span>·</span>
                                         {featuredPost.updatedAt && (
                                             <span><NepaliDateTime updatedAt={featuredPost.updatedAt!} /></span>

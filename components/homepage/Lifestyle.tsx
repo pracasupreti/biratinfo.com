@@ -44,11 +44,11 @@ const Lifestyle = ({ posts }: SummaryProps) => {
                                 />
                             </div>
 
-                            <Link href={`/${post.category}/${post.categoryId}`} className='font-ibm_plex_serif font-bold text-[16px] md:text-[18px] leading-snug text-text-color line-clamp-2 hover:underline cursor-pointer'>
+                            <Link href={`/${post.category}/${post.categoryId}`} className='font-ibm_plex_serif font-bold text-xl lg:text-lg leading-snug text-text-color line-clamp-2 hover:underline cursor-pointer'>
                                 {post.title}
                             </Link>
 
-                            <p className='text-[#808080] font-ibm_plex_serif font-medium text-[14px] line-clamp-2'>
+                            <p className='text-[#808080] font-ibm_plex_serif font-medium text-base line-clamp-2'>
                                 {post.excerpt}
                             </p>
                             <div className="flex items-center gap-3">
@@ -58,7 +58,7 @@ const Lifestyle = ({ posts }: SummaryProps) => {
                                         <AvatarFallback>{post?.authors[0]?.firstName.slice(0, 2).toUpperCase()}</AvatarFallback>
                                     </Avatar>
                                 </div>
-                                <Link href={`/author/${post?.authors[0]?.clerkId}`} className="font-inter font-bold text-md text-[#808080]">
+                                <Link href={`/author/${post?.authors[0]?.username}`} className="font-inter font-bold text-md text-[#808080]">
                                     {getAuthorName(post.authors)}
                                 </Link>
                             </div>

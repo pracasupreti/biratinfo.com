@@ -24,6 +24,7 @@ export interface PostState {
     content: string
     featuredIn: string[]
     postInNetwork: string[]
+    status: 'draft' | 'pending' | 'scheduled' | 'approved' | 'rejected'
 
     // Media Fields
     heroBanner?: ImageData
@@ -32,7 +33,8 @@ export interface PostState {
     heroImageCredit: string
     ogImageCredit: string
     audio?: AudioData
-    audioCredit: string
+    audioCredit?: string
+    sponsorLink?: string
 
     // Call to Action
     ctas?: CTA[]
@@ -58,6 +60,8 @@ export interface PostState {
     setOgBanner: (image: ImageData | null) => void
     setSponsoredAds: (image: ImageData | null) => void
     setAudio: (audio: AudioData | null) => void
+    setSponsorLink: (link: string) => void
+    setStatus: (status: 'draft' | 'pending' | 'scheduled' | 'approved' | 'rejected') => void
     addCTA: (cta: CTA) => void
     removeCTA: (index: number) => void
     updateCTA: (index: number, cta: Partial<CTA>) => void
@@ -65,7 +69,7 @@ export interface PostState {
     removeFromFeaturedIn: (site: string) => void
     addToPostInNetwork: (site: string) => void
     removeFromPostInNetwork: (site: string) => void
-    validate: () => boolean
+    validate: (status?: 'draft' | 'pending' | 'scheduled' | 'approved' | 'rejected') => boolean
     resetStore: () => void
     initialize: (postData: Partial<PostState>) => void
     toggleLanguage: () => void
@@ -79,6 +83,7 @@ export const usePostStore = create<PostState>((set, get) => ({
     content: '',
     featuredIn: [],
     postInNetwork: [],
+    status: 'draft',
     category: '',
     tags: [],
     date: '',
@@ -93,6 +98,7 @@ export const usePostStore = create<PostState>((set, get) => ({
     ogImageCredit: '',
     audio: undefined,
     audioCredit: '',
+    sponsorLink: '',
     ctas: [],
     access: 'public',
     canonicalUrl: '',
@@ -109,6 +115,8 @@ export const usePostStore = create<PostState>((set, get) => ({
     setTitle: (title, isNepali) => set({ title, isNepali }),
     setExcerpt: (excerpt, isNepali) => set({ excerpt, isNepali }),
     setContent: (content) => set({ content }),
+    setSponsorLink: (link) => set({ sponsorLink: link }),
+    setStatus: (status) => set({ status }),
 
     // Media handling
     setHeroBanner: (image) => set({ heroBanner: image || undefined }),
@@ -155,17 +163,24 @@ export const usePostStore = create<PostState>((set, get) => ({
     })),
 
     // Validation
-    validate: () => {
-        const state = get()
-        const newErrors: Record<string, string> = {}
+    validate: (status?: 'draft' | 'pending' | 'scheduled' | 'approved' | 'rejected') => {
+        const currentStatus = status || get().status;
+        const state = get();
+        const newErrors: Record<string, string> = {};
 
-        if (!state.title.trim()) newErrors.title = 'Title is required'
-        if (!state.excerpt.trim()) newErrors.excerpt = 'Excerpt is required'
-        if (state.excerpt.length > 250) newErrors.excerpt = 'Excerpt must be 150 characters or less'
-        if (!state.content.trim()) newErrors.content = 'Content is required'
-        if (!state.category.trim()) newErrors.category = 'Category is required'
-        if (!state.heroBanner) newErrors.heroBanner = 'Hero banner is required'
-        if (!state.ogBanner) newErrors.ogBanner = 'OG banner is required. You can add same image as Hero banner',
+        // Title is always required
+        if (!state.title.trim()) {
+            newErrors.title = 'Title is required';
+        }
+
+        // Additional validation for non-draft posts
+        if (currentStatus !== 'draft') {
+            if (!state.excerpt.trim()) newErrors.excerpt = 'Excerpt is required';
+            if (state.excerpt.length > 250) newErrors.excerpt = 'Excerpt must be 250 characters or less';
+            if (!state.content.trim()) newErrors.content = 'Content is required';
+            if (!state.category.trim()) newErrors.category = 'Category is required';
+            if (!state.heroBanner) newErrors.heroBanner = 'Hero banner is required';
+            if (!state.ogBanner) newErrors.ogBanner = 'OG banner is required. You can add same image as Hero banner';
 
             // Validate CTAs
             (state.ctas || []).forEach((cta, index) => {
@@ -176,11 +191,11 @@ export const usePostStore = create<PostState>((set, get) => ({
                         newErrors[`cta-${index}-url`] = 'URL must start with http:// or https://';
                     }
                 }
+            });
+        }
 
-            }),
-
-            set({ errors: newErrors })
-        return Object.keys(newErrors).length === 0
+        set({ errors: newErrors });
+        return Object.keys(newErrors).length === 0;
     },
 
     // Reset
@@ -191,6 +206,7 @@ export const usePostStore = create<PostState>((set, get) => ({
         content: '',
         featuredIn: [],
         postInNetwork: [],
+        status: 'draft',
         category: '',
         tags: [],
         date: '',
@@ -205,6 +221,7 @@ export const usePostStore = create<PostState>((set, get) => ({
         ogImageCredit: '',
         audio: undefined,
         audioCredit: '',
+        sponsorLink: '',
         ctas: [],
         access: 'public',
         canonicalUrl: '',
@@ -219,6 +236,7 @@ export const usePostStore = create<PostState>((set, get) => ({
         content: postData.content || '',
         featuredIn: postData.featuredIn || [],
         postInNetwork: postData.postInNetwork || [],
+        status: postData.status || 'draft',
         category: postData.category || '',
         tags: postData.tags || [],
         date: postData.date || '',
@@ -233,6 +251,7 @@ export const usePostStore = create<PostState>((set, get) => ({
         ogImageCredit: postData.ogImageCredit || '',
         audio: postData.audio,
         audioCredit: postData.audioCredit || '',
+        sponsorLink: postData.sponsorLink || '',
         ctas: postData.ctas || [],
         access: postData.access || 'public',
         canonicalUrl: postData.canonicalUrl || '',

@@ -14,16 +14,19 @@ import {
     PaginationLink,
     PaginationNext
 } from '@/components/ui/pagination'
-import { Search, Edit, Calendar, User, Tag } from 'lucide-react'
+import { Search, Edit, Calendar, User, Tag, Trash2 } from 'lucide-react'
 import { Card, CardContent } from '../ui/card'
 import { cn } from '@/lib/utils'
 import Post from '@/types/Post'
 import AuthorDisplay from '../AuthorDisplay'
-
+import Link from 'next/link'
+import { useAuth } from '@clerk/nextjs'
+import toast from 'react-hot-toast'
 
 interface PostTableProps {
     allPosts: Post[]
     title: string
+    isPublishedPost?: boolean
     description: string
     isEditable?: boolean
     postsPerPage?: number
@@ -34,12 +37,12 @@ export function PostTable({
     allPosts,
     title,
     description,
+    isPublishedPost = false,
     isEditable = false,
     postsPerPage = 10,
     isEditor = false
 }: PostTableProps) {
-
-
+    const { getToken } = useAuth()
     const searchParams = useSearchParams()
     const pageParam = searchParams.get('page')
     const searchParam = searchParams.get('search')
@@ -82,7 +85,6 @@ export function PostTable({
 
     // Optimized URL update function
     const updateUrlParams = useCallback((page: number, query: string) => {
-
         const params = new URLSearchParams()
         if (query) params.set('search', query)
         if (page > 1) params.set('page', page.toString())
@@ -162,6 +164,31 @@ export function PostTable({
         const editPath = isEditor ? `editor/edit/${postId}` : `manager/edit/${postId}`
         router.push(`/${editPath}`)
     }, [router, isEditor])
+
+    // Delete post handler
+    const handleDelete = async (postId: string) => {
+        const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+        if (!backend_uri) throw new Error("Missing api endpoint")
+
+        const toastId = toast.loading("Deleting post...")
+        try {
+            const token = await getToken()
+            const response = await fetch(`${backend_uri}/api/posts/id/${postId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (!response.ok) throw new Error('Failed to delete post')
+
+            toast.success('Post deleted successfully', { id: toastId })
+            router.refresh()
+        } catch (error) {
+            toast.error('Failed to delete post', { id: toastId })
+            console.error('Delete error:', error)
+        }
+    }
 
     // Pagination range calculation
     const paginationRange = useMemo(() => {
@@ -256,7 +283,7 @@ export function PostTable({
                     <div className="hidden lg:block">
                         {/* Desktop Header */}
                         <Card className="bg-muted/50">
-                            <CardContent className={`grid ${isEditable ? 'grid-cols-13' : 'grid-cols-12'} gap-4 items-center py-3 font-medium text-sm`}>
+                            <CardContent className={`grid ${isEditable ? 'grid-cols-14' : 'grid-cols-12'} gap-4 items-center py-3 font-medium text-sm`}>
                                 <div className="col-span-1">ID</div>
                                 <div className="col-span-3">Title</div>
                                 <div className="col-span-2 text-center">Authors</div>
@@ -264,7 +291,12 @@ export function PostTable({
                                 <div className="col-span-2 text-center">Tags</div>
                                 <div className="col-span-1 text-center">Updated</div>
                                 <div className="col-span-1 text-center">Status</div>
-                                {isEditable && <div className="col-span-1 text-center">Action</div>}
+                                {isEditable && (
+                                    <>
+                                        <div className="col-span-1 text-center">Edit</div>
+                                        <div className="col-span-1 text-center">Delete</div>
+                                    </>
+                                )}
                             </CardContent>
                         </Card>
                     </div>
@@ -273,15 +305,24 @@ export function PostTable({
                     {paginatedPosts.map(post => (
                         <Card key={post._id} className="hover:shadow-md transition-all duration-200 hover:border-primary/20">
                             {/* Desktop Layout */}
-                            <CardContent className={`hidden lg:grid ${isEditable ? 'grid-cols-13' : 'grid-cols-12'} gap-4 px-4 py-3 items-center`}>
+                            <CardContent className={`hidden lg:grid ${isEditable ? 'grid-cols-14' : 'grid-cols-12'} gap-4 px-4 py-3 items-center`}>
                                 <div className="col-span-1 font-mono text-sm text-muted-foreground">
                                     {getSequentialId(post)}
                                 </div>
 
                                 <div className="col-span-3 space-y-1">
-                                    <h3 className="line-clamp-1 font-medium">
-                                        {post.title}
-                                    </h3>
+                                    {isPublishedPost ? (
+                                        <Link
+                                            href={`/${post.category}/${post.categoryId}`}
+                                            className="block hover:underline"
+                                        >
+                                            <h3 className="font-medium truncate text-lg" title={post.title}>{post.title}</h3>
+                                        </Link>
+                                    ) : (
+                                        <>
+                                            <h3 className="font-medium truncate" title={post.title}>{post.title}</h3>
+                                        </>
+                                    )}
                                     <p className="text-xs text-muted-foreground line-clamp-2" title={post.excerpt}>
                                         {post.excerpt}
                                     </p>
@@ -353,16 +394,30 @@ export function PostTable({
                                 </div>
 
                                 {isEditable && (
-                                    <div className="col-span-1 flex justify-center">
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={() => handleEditPost(post._id)}
-                                            className="h-8 w-8"
-                                        >
-                                            <Edit className="h-4 w-4" />
-                                        </Button>
-                                    </div>
+                                    <>
+                                        <div className="col-span-1 flex justify-center">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={() => handleEditPost(post._id)}
+                                                className="h-8 w-8 cursor-pointer"
+                                            >
+                                                <Edit className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                        <div className="col-span-1 flex justify-center">
+                                            {post.status === 'draft' && (
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={() => handleDelete(post._id)}
+                                                    className="h-8 w-8 text-red-500 hover:text-red-700 cursor-pointer"
+                                                >
+                                                    <Trash2 className="h-4 w-4" />
+                                                </Button>
+                                            )}
+                                        </div>
+                                    </>
                                 )}
                             </CardContent>
 
@@ -393,15 +448,28 @@ export function PostTable({
                                             {post.status}
                                         </Badge>
                                         {isEditable && (
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                className='cursor-pointer'
-                                                onClick={() => handleEditPost(post._id)}
-                                            >
-                                                <Edit className="h-4 w-4 mr-1" />
-                                                Edit
-                                            </Button>
+                                            <div className="flex gap-2">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className='cursor-pointer'
+                                                    onClick={() => handleEditPost(post._id)}
+                                                >
+                                                    <Edit className="h-4 w-4 mr-1" />
+                                                    Edit
+                                                </Button>
+                                                {post.status === 'draft' && (
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        className='cursor-pointer text-red-500 hover:text-red-700'
+                                                        onClick={() => handleDelete(post._id)}
+                                                    >
+                                                        <Trash2 className="h-4 w-4 mr-1" />
+                                                        Delete
+                                                    </Button>
+                                                )}
+                                            </div>
                                         )}
                                     </div>
                                 </div>

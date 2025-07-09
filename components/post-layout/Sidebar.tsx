@@ -11,8 +11,8 @@ import { EditorPostAction } from '../editor/EditorPostAction'
 import { AuthorSelect } from './AuthorSelect'
 import { MultiSelect } from '../MultiSelectComponent'
 import { categoryOptions, Language } from '@/types/Post'
-import { uploadImage, deleteImage } from '@/lib/cloudinary'
-import { Loader2, CalendarIcon } from 'lucide-react'
+import { uploadImage, deleteImage, uploadAudio, deleteAudio } from '@/lib/cloudinary'
+import { Loader2, CalendarIcon, Trash2, Upload } from 'lucide-react'
 import Image from 'next/image'
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -20,6 +20,7 @@ import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { TimePicker } from '../ui/time-picker'
 import toast from 'react-hot-toast'
+import { Progress } from '../ui/progress'
 
 interface PostSidebarProps {
     isEditing?: boolean
@@ -37,15 +38,19 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
         authors = [],
         language,
         readingTime,
+        audio,
+        audioCredit,
         heroBanner,
         ogBanner,
         sponsoredAds,
+        sponsorLink,
         heroImageCredit,
         ogImageCredit,
         access,
         canonicalUrl,
         errors,
         setField,
+        setAudio,
         setHeroBanner,
         setOgBanner,
         setSponsoredAds,
@@ -54,6 +59,8 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
     const [isHeroUploading, setIsHeroUploading] = useState(false)
     const [isOgUploading, setIsOgUploading] = useState(false)
     const [isSponsoredAdsUploading, setIsSponsoredAdsUploading] = useState(false)
+    const [isUploading, setIsUploading] = useState(false)
+    const [uploadProgress, setUploadProgress] = useState(0)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(
         date ? new Date(date) : undefined
@@ -123,6 +130,50 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
 
     const handleTimeChange = (time: string) => {
         setField('time', time)
+    }
+
+    const handleAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        if (!file.type.startsWith('audio/')) {
+            toast.error('Please upload an audio file')
+            return
+        }
+
+        setIsUploading(true)
+        setUploadProgress(0)
+        const uploadToast = toast.loading('Uploading audio...')
+
+        try {
+            const { url, public_id, duration } = await uploadAudio(file)
+            setAudio({ url, public_id, duration })
+            toast.success('Audio uploaded successfully!', { id: uploadToast })
+        } catch (error) {
+            toast.error('Audio upload failed', { id: uploadToast })
+            console.error('Audio upload failed:', error)
+        } finally {
+            setIsUploading(false)
+            setUploadProgress(0)
+        }
+    }
+
+    const handleRemoveAudio = async () => {
+        if (!audio?.public_id) {
+            setAudio(null)
+            return
+        }
+
+        const deleteToast = toast.loading('Deleting audio...')
+        try {
+            await deleteAudio(audio.public_id)
+            setAudio(null)
+            toast.success('Audio deleted successfully!', { id: deleteToast })
+        } catch (error) {
+            toast.error('Failed to delete audio', { id: deleteToast })
+            console.error('Audio deletion failed:', error)
+            // Don't clear audio state if deletion failed
+        }
     }
 
     return (
@@ -282,6 +333,76 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                         </div>
                     )}
 
+                    {/* Audio Upload Section */}
+                    <div className="space-y-2">
+                        <Label>{isNepali ? 'अडियो' : 'Audio'}</Label>
+                        {audio ? (
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-2 p-2 border rounded-lg">
+                                    <div className="flex-1 min-w-0">
+                                        <audio controls className="w-full max-w-full">
+                                            <source src={audio.url} type="audio/mpeg" />
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                                    <Button
+                                        variant="destructive"
+                                        size="sm"
+                                        onClick={handleRemoveAudio}
+                                        className="shrink-0 cursor-pointer"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="audio-credit">
+                                        {isNepali ? 'अडियो क्रेडिट' : 'Audio Credit'}
+                                    </Label>
+                                    <Input
+                                        id="audio-credit"
+                                        value={audioCredit || ''}
+                                        onChange={(e) => setField('audioCredit', e.target.value)}
+                                        placeholder={isNepali ? 'अडियो क्रेडिट' : 'Enter audio credit'}
+                                        className="w-full"
+                                    />
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-center w-full">
+                                <Label
+                                    htmlFor="audio-upload"
+                                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50"
+                                >
+                                    <div className="flex flex-col items-center justify-center pt-5 pb-6 px-2 text-center">
+                                        <Upload className="w-8 h-8 mb-3 text-gray-400" />
+                                        <p className="mb-2 text-sm text-gray-500">
+                                            <span className="font-semibold">
+                                                {isNepali ? 'अडियो अपलोड गर्नुहोस्' : 'Click to upload audio'}
+                                            </span>
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                            {isNepali ? 'MP3, WAV, AAC' : 'MP3, WAV, AAC'}
+                                        </p>
+                                    </div>
+                                    <input
+                                        id="audio-upload"
+                                        type="file"
+                                        accept="audio/*"
+                                        className="hidden"
+                                        onChange={handleAudioUpload}
+                                        disabled={isUploading}
+                                    />
+                                </Label>
+                            </div>
+                        )}
+                        {isUploading && (
+                            <Progress value={uploadProgress} className="h-2 w-full" />
+                        )}
+                        {errors.audio && (
+                            <p className="text-red-500 text-xs">{errors.audio}</p>
+                        )}
+                    </div>
+
                     {/* Hero Banner */}
                     <ImageUploadSection
                         label={isNepali ? 'हिरो ब्यानर' : 'Hero Banner'}
@@ -347,6 +468,20 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                         isOtherUploading={isHeroUploading || isOgUploading || isSubmitting}
                         error={errors.sponsoredAds}
                     />
+
+                    {/* Sponsored Link */}
+                    <div className="space-y-1">
+                        <Label htmlFor="sponsorLink" className='text-sm font-medium text-gray-800'>
+                            {isNepali ? 'प्रायोजक लिङ्क' : 'Sponsor Link'}
+                        </Label>
+                        <Input
+                            id="sponsorLink"
+                            value={sponsorLink || ''}
+                            onChange={(e) => setField('sponsorLink', e.target.value)}
+                            placeholder={isNepali ? 'प्रायोजक लिङ्क' : 'Enter sponsor link'}
+                            className="w-full bg-gray-100 h-8"
+                        />
+                    </div>
 
 
                     {/* Access */}

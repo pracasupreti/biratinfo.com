@@ -57,6 +57,7 @@ export default function BannerSection({ mobile = false }: { mobile?: boolean }) 
         fetchBanner();
     }, [pathname]); // Re-run when pathname changes
 
+
     if (mobile) {
         return (
             <div className="relative w-full aspect-[10/1] bg-gray-50">

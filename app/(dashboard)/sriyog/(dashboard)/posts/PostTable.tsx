@@ -21,9 +21,11 @@ import { useAuth } from '@clerk/nextjs'
 import AuthorDisplay from '@/components/AuthorDisplay'
 import { Card, CardContent } from '@/components/ui/card'
 import toast from 'react-hot-toast'
+import Link from 'next/link'
 
 interface PostTableProps {
     allPosts: Post[]
+    isPublishedPost?: boolean
     title: string
     description: string
     postsPerPage?: number
@@ -31,6 +33,7 @@ interface PostTableProps {
 
 export function PostTable({
     allPosts,
+    isPublishedPost = false,
     title,
     description,
     postsPerPage = 10
@@ -202,8 +205,19 @@ export function PostTable({
 
                                 {/* Title */}
                                 <div className="col-span-4 overflow-hidden">
-                                    <h3 className="font-medium truncate" title={post.title}>{post.title}</h3>
-                                    <p className="text-muted-foreground text-xs truncate" title={post.excerpt}>{post.excerpt}</p>
+                                    {isPublishedPost ? (
+                                        <Link
+                                            href={`/${post.category}/${post.categoryId}`}
+                                            className="block hover:underline"
+                                        >
+                                            <h3 className="font-medium truncate text-lg" title={post.title}>{post.title}</h3>
+                                        </Link>
+                                    ) : (
+                                        <>
+                                            <h3 className="font-medium truncate" title={post.title}>{post.title}</h3>
+                                        </>
+                                    )}
+                                    <p className="text-muted-foreground text-sm truncate" title={post.excerpt}>{post.excerpt}</p>
                                 </div>
 
                                 {/* Authors */}

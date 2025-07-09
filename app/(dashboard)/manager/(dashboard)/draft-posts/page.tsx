@@ -45,7 +45,7 @@ export default async function DraftPosts() {
                 title="Draft Posts"
                 description="Manage all draft articles"
                 isEditable={true}
-                isEditor={true}
+                isEditor={false}
             />
         )
     } catch (error) {

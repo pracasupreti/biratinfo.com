@@ -8,13 +8,13 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { usePostStore } from '@/store/PostStore'
 import { RichTextEditor } from './TextEditor'
 import { NetworkSitesSection } from '../NetworkSitesSelection'
-import { deleteImage, uploadImage, uploadAudio, deleteAudio } from '@/lib/cloudinary'
+import { deleteImage, uploadImage } from '@/lib/cloudinary'
 import { Textarea } from '@/components/ui/textarea'
 import toast from 'react-hot-toast'
 import { Button } from '@/components/ui/button'
-import { Plus, Trash2, Upload } from 'lucide-react'
-import { Progress } from '@/components/ui/progress'
+import { Plus, Trash2 } from 'lucide-react'
 import Link from 'next/link'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
 export function PostForm() {
     const {
@@ -25,8 +25,6 @@ export function PostForm() {
         featuredIn,
         postInNetwork,
         ctas,
-        audio,
-        audioCredit,
         errors,
         setTitle,
         setExcerpt,
@@ -38,15 +36,11 @@ export function PostForm() {
         addCTA,
         removeCTA,
         updateCTA,
-        setAudio,
-        setField
     } = usePostStore()
 
     const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit')
     const [titleLength, setTitleLength] = useState(title.length)
     const [excerptLength, setExcerptLength] = useState(excerpt.length)
-    const [isUploading, setIsUploading] = useState(false)
-    const [uploadProgress, setUploadProgress] = useState(0)
 
     const handleImageUpload = async (file: File) => {
         const uploadToast = toast.loading('Uploading image...')
@@ -74,49 +68,6 @@ export function PostForm() {
         }
     }
 
-    const handleAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-
-        if (!file.type.startsWith('audio/')) {
-            toast.error('Please upload an audio file')
-            return
-        }
-
-        setIsUploading(true)
-        setUploadProgress(0)
-        const uploadToast = toast.loading('Uploading audio...')
-
-        try {
-            const { url, public_id, duration } = await uploadAudio(file)
-            setAudio({ url, public_id, duration })
-            toast.success('Audio uploaded successfully!', { id: uploadToast })
-        } catch (error) {
-            toast.error('Audio upload failed', { id: uploadToast })
-            console.error('Audio upload failed:', error)
-        } finally {
-            setIsUploading(false)
-            setUploadProgress(0)
-        }
-    }
-
-    const handleRemoveAudio = async () => {
-        if (!audio?.public_id) {
-            setAudio(null)
-            return
-        }
-
-        const deleteToast = toast.loading('Deleting audio...')
-        try {
-            await deleteAudio(audio.public_id)
-            setAudio(null)
-            toast.success('Audio deleted successfully!', { id: deleteToast })
-        } catch (error) {
-            toast.error('Failed to delete audio', { id: deleteToast })
-            console.error('Audio deletion failed:', error)
-            // Don't clear audio state if deletion failed
-        }
-    }
     return (
         <Card className="mb-3 shadow-sm rounded-lg border">
             <CardHeader className="border-b p-4">
@@ -216,75 +167,6 @@ export function PostForm() {
                             )}
                         </div>
 
-                        {/* Audio Upload Section */}
-
-                        <div className="space-y-2">
-                            <Label>{isNepali ? 'अडियो' : 'Audio'}</Label>
-                            {audio ? (
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between p-3 border rounded-lg">
-                                        <div className="flex items-center space-x-2">
-                                            <audio controls className="h-10">
-                                                <source src={audio.url} type="audio/mpeg" />
-                                                Your browser does not support the audio element.
-                                            </audio>
-                                        </div>
-                                        <Button
-                                            variant="destructive"
-                                            size="sm"
-                                            onClick={handleRemoveAudio}
-                                        >
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <Label htmlFor="audio-credit">
-                                            {isNepali ? 'अडियो क्रेडिट' : 'Audio Credit'}
-                                        </Label>
-                                        <Input
-                                            id="audio-credit"
-                                            value={audioCredit || ''}
-                                            onChange={(e) => setField('audioCredit', e.target.value)}
-                                            placeholder={isNepali ? 'अडियो क्रेडिट' : 'Enter audio credit'}
-                                        />
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="flex items-center justify-center w-full">
-                                    <Label
-                                        htmlFor="audio-upload"
-                                        className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50"
-                                    >
-                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                            <Upload className="w-8 h-8 mb-3 text-gray-400" />
-                                            <p className="mb-2 text-sm text-gray-500">
-                                                <span className="font-semibold">
-                                                    {isNepali ? 'अडियो अपलोड गर्नुहोस्' : 'Click to upload audio'}
-                                                </span>
-                                            </p>
-                                            <p className="text-xs text-gray-500">
-                                                {isNepali ? 'MP3, WAV, AAC' : 'MP3, WAV, AAC'}
-                                            </p>
-                                        </div>
-                                        <input
-                                            id="audio-upload"
-                                            type="file"
-                                            accept="audio/*"
-                                            className="hidden"
-                                            onChange={handleAudioUpload}
-                                            disabled={isUploading}
-                                        />
-                                    </Label>
-                                </div>
-                            )}
-                            {isUploading && (
-                                <Progress value={uploadProgress} className="h-2" />
-                            )}
-                            {errors.audio && (
-                                <p className="text-red-500 text-xs">{errors.audio}</p>
-                            )}
-                        </div>
-
                         {/* Call to Action Section */}
                         <div className="space-y-2">
                             <div className="flex justify-between items-center">
@@ -306,28 +188,46 @@ export function PostForm() {
                             ) : (
                                 <div className="space-y-3">
                                     {ctas?.map((cta, index) => (
-                                        <div key={index} className="flex space-x-2">
-                                            <div className="flex-1 space-y-1">
-                                                <Input
-                                                    placeholder={isNepali ? 'नाम' : 'Name'}
+                                        <div key={index} className="flex gap-2 items-start">
+                                            <div className="flex-1 space-y-1 min-w-0">
+                                                <Select
                                                     value={cta.name}
-                                                    onChange={(e) =>
-                                                        updateCTA(index, { name: e.target.value })
-                                                    }
-                                                />
+                                                    onValueChange={(value) => updateCTA(index, { name: value })}
+                                                >
+                                                    <SelectTrigger className="w-full">
+                                                        <SelectValue placeholder={isNepali ? 'नाम छान्नुहोस्' : 'Select name'} />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectGroup>
+                                                            <SelectItem value="Call Now">{isNepali ? 'अहिले कल गर्नुहोस्' : 'Call Now'}</SelectItem>
+                                                            <SelectItem value="Contact Us">{isNepali ? 'हामीलाई सम्पर्क गर्नुहोस्' : 'Contact Us'}</SelectItem>
+                                                            <SelectItem value="Book an Appointment">{isNepali ? 'अपोइन्टमेन्ट बुक गर्नुहोस्' : 'Book an Appointment'}</SelectItem>
+                                                            <SelectItem value="Hire Now">{isNepali ? 'अहिले भर्ना गर्नुहोस्' : 'Hire Now'}</SelectItem>
+                                                            <SelectItem value="Free Inquiry">{isNepali ? 'नि:शुल्क जानकारी' : 'Free Inquiry'}</SelectItem>
+                                                            <SelectItem value="Book a Meeting">{isNepali ? 'मिटिङ बुक गर्नुहोस्' : 'Book a Meeting'}</SelectItem>
+                                                            <SelectItem value="Browse More">{isNepali ? 'थप हेर्नुहोस्' : 'Browse More'}</SelectItem>
+                                                            <SelectItem value="Download Now">{isNepali ? 'अहिले डाउनलोड गर्नुहोस्' : 'Download Now'}</SelectItem>
+                                                            <SelectItem value="WhatsApp">{isNepali ? 'WhatsApp' : 'WhatsApp'}</SelectItem>
+                                                            <SelectItem value="Messenger">{isNepali ? 'Messenger' : 'Messenger'}</SelectItem>
+                                                            <SelectItem value="Telegram">{isNepali ? 'Telegram' : 'Telegram'}</SelectItem>
+                                                        </SelectGroup>
+                                                    </SelectContent>
+                                                </Select>
                                                 {errors[`cta-${index}-name`] && (
                                                     <p className="text-red-500 text-xs">
                                                         {errors[`cta-${index}-name`]}
                                                     </p>
                                                 )}
                                             </div>
-                                            <div className="flex-1 space-y-1">
+
+                                            <div className="flex-1 space-y-1 min-w-0">
                                                 <Input
                                                     placeholder={isNepali ? 'URL (https://)' : 'URL (https://)'}
                                                     value={cta.url}
                                                     onChange={(e) =>
                                                         updateCTA(index, { url: e.target.value })
                                                     }
+                                                    className="w-full"
                                                 />
                                                 {errors[`cta-${index}-url`] && (
                                                     <p className="text-red-500 text-xs">
@@ -335,11 +235,12 @@ export function PostForm() {
                                                     </p>
                                                 )}
                                             </div>
+
                                             <Button
                                                 variant="destructive"
                                                 size="sm"
                                                 onClick={() => removeCTA(index)}
-                                                className="self-end"
+                                                className="self-stretch"
                                             >
                                                 <Trash2 className="h-4 w-4" />
                                             </Button>
@@ -369,14 +270,7 @@ export function PostForm() {
                                 {excerpt}
                             </p>
                         )}
-                        {audio && (
-                            <div className="my-6">
-                                <audio controls className="w-full">
-                                    <source src={audio.url} type="audio/mpeg" />
-                                    Your browser does not support the audio element.
-                                </audio>
-                            </div>
-                        )}
+
                         {ctas?.length! > 0 && (
                             <div className="my-6 space-y-2">
                                 {ctas?.map((cta, index) => (

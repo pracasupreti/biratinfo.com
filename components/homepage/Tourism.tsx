@@ -26,9 +26,9 @@ function Tourism({ posts }: SummaryProps) {
         return `${firstAuthor.firstName} ${firstAuthor.lastName}`.trim()
     }
 
-    const getAuthorId = (authors?: Author[] | string[]): string | undefined => {
+    const getAuthorUsername = (authors?: Author[] | string[]): string | undefined => {
         if (!authors || authors.length === 0 || typeof authors[0] === 'string') return undefined;
-        return (authors[0] as Author).clerkId;
+        return (authors[0] as Author).username;
     };
 
     return (
@@ -60,12 +60,12 @@ function Tourism({ posts }: SummaryProps) {
                                 <Link href={`/${featuredPost.category}/${featuredPost.categoryId}`} className="font-ibm_plex_serif font-bold text-xl lg:text-2xl cursor-pointer text-text-color mt-3 hover:underline line-clamp-1">
                                     {featuredPost.title}
                                 </Link>
-                                <p className="text-[#808080] font-ibm_plex_serif font-medium text-xs sm:text-sm lg:text-base mt-1.5 line-clamp-3">
+                                <p className="text-[#808080] font-ibm_plex_serif font-medium text-base mt-1.5 line-clamp-3">
                                     {featuredPost.excerpt}
                                 </p>
                             </div>
                             <div className="text-[#808080] font-roboto text-md flex items-center gap-2">
-                                <Link href={`/author/${getAuthorId(featuredPost.authors)}`} className='font-bold'>{getAuthorName(featuredPost.authors)}</Link>
+                                <Link href={`/author/${getAuthorUsername(featuredPost.authors)}`} className='font-bold'>{getAuthorName(featuredPost.authors)}</Link>
                                 <span>·</span>
                                 {featuredPost.updatedAt && (
                                     <span><NepaliDateTime updatedAt={featuredPost.updatedAt!} /></span>
@@ -89,14 +89,14 @@ function Tourism({ posts }: SummaryProps) {
                                 </div>
 
                                 <div className="flex flex-col gap-0.5 sm:w-[60%]">
-                                    <Link href={`/${gridPosts[0].category}/${gridPosts[0].categoryId}`} className="font-ibm_plex_serif font-semibold text-lg cursor-pointer text-text-color hover:underline line-clamp-2">
+                                    <Link href={`/${gridPosts[0].category}/${gridPosts[0].categoryId}`} className="font-ibm_plex_serif font-bold text-xl lg:text-lg cursor-pointer text-text-color hover:underline line-clamp-2">
                                         {post.title}
                                     </Link>
                                     <p className="text-[#808080] font-ibm_plex_serif font-medium text-base line-clamp-2">
                                         {post.excerpt}
                                     </p>
                                     <div className="text-[#808080] font-roboto text-md flex items-center gap-2 mt-1.5">
-                                        <Link href={`/author/${getAuthorId(featuredPost.authors)}`} className='font-bold'>{getAuthorName(post.authors)}</Link>
+                                        <Link href={`/author/${getAuthorUsername(featuredPost.authors)}`} className='font-bold'>{getAuthorName(post.authors)}</Link>
                                         <span>·</span>
                                         {post.updatedAt && (
                                             <span><NepaliDateTime updatedAt={post.updatedAt} /></span>

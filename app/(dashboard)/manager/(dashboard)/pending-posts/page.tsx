@@ -44,8 +44,8 @@ export default async function PendingPosts() {
                 allPosts={pendingPosts}
                 title="Pending Posts"
                 description="Posts awaiting review and approval"
-                isEditable={true}
-                isEditor={true}
+                isEditable={false}
+                isEditor={false}
             />
         )
     } catch (error) {

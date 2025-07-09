@@ -1,4 +1,3 @@
-'use client'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { NETWORK_SITES, FEATURED_SITES } from '@/lib/constants'
@@ -42,7 +41,7 @@ export const NetworkSitesSection = ({
                                 }}
                             />
                             <Label htmlFor={`featured-${site.en}`} className="text-sm">
-                                {isNepali ? site.np : site.en}
+                                {site.en}
                             </Label>
                         </div>
                     ))}
@@ -69,7 +68,7 @@ export const NetworkSitesSection = ({
                                 }}
                             />
                             <Label htmlFor={`network-${site.en}`} className="text-sm">
-                                {isNepali ? site.np : site.en}
+                                {site.en}
                             </Label>
                         </div>
                     ))}

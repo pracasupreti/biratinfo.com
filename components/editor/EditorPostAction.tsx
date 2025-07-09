@@ -32,30 +32,34 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
     const [open, setOpen] = useState(false)
     const [dialogType, setDialogType] = useState<'approve' | 'reject' | null>(null)
 
+    const determineStatus = (isApproved: boolean): 'approved' | 'scheduled' | 'rejected' => {
+        if (!isApproved) {
+            return 'rejected';
+        }
+
+        const currentDate = new Date();
+        const postDate = state.date && state.time
+            ? new Date(`${state.date}T${state.time}`)
+            : currentDate;
+
+        return postDate > currentDate ? 'scheduled' : 'approved';
+    };
+
     const handleSubmit = async (isApproved: boolean) => {
-        if (!validate()) {
-            toast.error('Please fix all errors before submitting')
-            return
+
+        const status = determineStatus(isApproved);
+
+        if (!validate(status)) {
+            toast.error('Please fix all errors before submitting');
+            return;
         }
 
         try {
-            const determineStatus = () => {
-                if (isApproved) {
-                    const currentDate = new Date();
-                    const postDate = state.date && state.time
-                        ? new Date(`${state.date}T${state.time}`)
-                        : currentDate;
-                    return postDate > currentDate ? 'scheduled' : 'approved';
-                }
-
-                return 'rejected'
-            };
-
             const submissionData = {
                 title: state.title,
                 content: state.content,
                 excerpt: state.excerpt,
-                isNepali: state.isNepali || false, // Add isNepali field based on new schema
+                isNepali: state.isNepali || false,
                 featuredIn: state.featuredIn || [],
                 postInNetwork: state.postInNetwork || [],
 
@@ -65,7 +69,8 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
                 heroImageCredit: state.heroImageCredit || undefined,
                 ogImageCredit: state.ogImageCredit || undefined,
                 sponsoredAds: state.sponsoredAds || undefined,
-                audio: state.audio, // Changed from audioFile to audio
+                sponsorLink: state.sponsorLink || '',
+                audio: state.audio,
                 audioCredit: state.audioCredit || '',
 
                 // CTA field
@@ -83,7 +88,7 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
                 canonicalUrl: state.canonicalUrl,
 
                 // Status
-                status: determineStatus(),
+                status: status,
             };
 
             if (!id) throw new Error('Post ID is required to update the post')
@@ -109,8 +114,6 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
                 const errorData = await response.json()
                 throw new Error(errorData.message || 'Failed to update post')
             }
-
-            const status = determineStatus()
 
             toast.success(
                 status === 'approved'

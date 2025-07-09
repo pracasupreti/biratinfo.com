@@ -41,6 +41,7 @@ export default interface Post {
     access: string;
     audio?: AudioData | null;
     audioCredit?: string;
+    sponsorLink?: string
     ctas?: CTA[];
     canonicalUrl: string;
     createdAt: string | Date | null;
@@ -55,6 +56,15 @@ export interface Author {
     firstName: string;
     lastName: string;
     avatar: string;
+    username?: string
+    bio?: string;
+    socialLinks?: {
+        facebook?: string
+        instagram?: string
+        twitter?: string
+        youtube?: string
+        tiktok?: string
+    }
 }
 
 export interface IPost {
@@ -93,7 +103,7 @@ export interface SinglePost {
     tags: string[];
     date: string | Date;
     time: string;
-    authors: string[];
+    authors: Author[];
     language: string;
     readingTime: string;
     heroBanner: ImageData | null;
@@ -104,6 +114,7 @@ export interface SinglePost {
     access: string;
     audio?: AudioData | null;
     audioCredit?: string
+    sponsorLink?: string
     ctas?: CTA[];
     canonicalUrl: string;
     createdAt: string | Date | null;

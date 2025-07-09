@@ -1,3 +1,5 @@
+'use client'
+
 import {
     Sheet,
     SheetContent,
@@ -6,22 +8,22 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { MenuIcon, ChevronDown } from "lucide-react"
+import { MenuIcon } from "lucide-react"
 import Link from "next/link"
-import { useState } from "react"
+import { ReactNode } from "react"
+import { usePathname } from "next/navigation"
 
 interface NavItem {
-    name: string | React.ReactNode
+    name: string | ReactNode
     path: string
 }
 
 interface MobileNavProps {
     navItems: NavItem[]
-    othersDropdown: NavItem[]
 }
 
-function MobileNav({ navItems, othersDropdown }: MobileNavProps) {
-    const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+function MobileNav({ navItems }: MobileNavProps) {
+    const pathname = usePathname()
 
     return (
         <Sheet>
@@ -30,60 +32,44 @@ function MobileNav({ navItems, othersDropdown }: MobileNavProps) {
             </SheetTrigger>
             <SheetContent
                 side="left"
-                className="bg-[#055D59] w-[80%]"
+                className="bg-[#055D59] w-[80%] p-0"
             >
                 <SheetHeader>
-                    <SheetTitle></SheetTitle>
+                    <SheetTitle className="text-white"></SheetTitle>
                     <SheetDescription className="sr-only">
                         Main navigation menu for the website
                     </SheetDescription>
-                    <div className="h-full overflow-y-auto pb-6">
-                        <div className="flex flex-col gap-1 pt-2">
-                            {navItems.map((item, index) => {
-                                if (item.name === 'अन्य') {
-                                    return (
-                                        <div key={index} className="flex flex-col">
-                                            <button
-                                                onClick={() => setOpenDropdown(openDropdown === 'others' ? null : 'others')}
-                                                className="flex items-center justify-between text-white font-inter font-[400] text-lg py-2 px-1"
-                                            >
-                                                <span>{item.name}</span>
-                                                <ChevronDown
-                                                    className={`transition-transform ${openDropdown === 'others' ? 'rotate-180' : ''}`}
-                                                    size={20}
-                                                />
-                                            </button>
+                </SheetHeader>
 
-                                            {openDropdown === 'others' && (
-                                                <div className="flex flex-col pl-4 border-l border-white/20 ml-2">
-                                                    {othersDropdown.map((dropItem, dropIndex) => (
-                                                        <Link
-                                                            key={dropIndex}
-                                                            href={dropItem.path}
-                                                            className="text-white/80 font-inter font-[400] text-base py-1.5 px-1 hover:text-white"
-                                                        >
-                                                            {dropItem.name}
-                                                        </Link>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    )
-                                }
+                <div className="h-full flex flex-col">
+                    <div className="flex-1 overflow-y-auto">
+                        <nav className="space-y-1 px-4 py-2">
+                            {navItems.map((item, index) => {
+                                const isActive = pathname === item.path
 
                                 return (
                                     <Link
                                         key={index}
                                         href={item.path}
-                                        className="text-white font-inter font-[400] text-lg py-2 px-1 hover:bg-white/10 rounded"
+                                        className={`block font-inter font-[400] text-lg py-3 px-2 rounded transition-colors duration-200
+                      ${isActive
+                                                ? "bg-white/20 text-white"
+                                                : "text-white hover:bg-white/10"
+                                            }`}
                                     >
-                                        {item.name}
+                                        <div className="flex items-center">
+                                            {typeof item.name === 'string' ? (
+                                                <span>{item.name}</span>
+                                            ) : (
+                                                item.name
+                                            )}
+                                        </div>
                                     </Link>
                                 )
                             })}
-                        </div>
+                        </nav>
                     </div>
-                </SheetHeader>
+                </div>
             </SheetContent>
         </Sheet>
     )

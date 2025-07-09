@@ -33,6 +33,25 @@ export const othersDropdownConfig = [
   { name: 'पर्यटन', path: '/tourism' },
   { name: 'स्वास्थ्य', path: '/health' },
   { name: 'शिक्षा', path: '/education' },
+  { name: 'अन्तराष्ट्रिय', path: '/international' }
+];
+
+export const mobileNav = [
+  { name: "होमपेज", path: "/" },
+  { name: "राजनीति", path: "/politics" },
+  { name: "प्रबिधि", path: "/technology" },
+  { name: "साहित्य", path: "/literature" },
+  { name: "अर्थ", path: "/economy" },
+  { name: "सम्पादकीय", path: "/editorial" },
+  { name: "बिचार", path: "/opinion" },
+  { name: "प्रदेश", path: "/state" },
+  { name: "खेलकुद", path: "/sports" },
+  { name: "रोजगार", path: "/employment" },
+  { name: "मनोरंजन", path: "/entertainment" },
+  { name: "सुरक्षा", path: "/security" },
+  { name: 'पर्यटन', path: '/tourism' },
+  { name: 'स्वास्थ्य', path: '/health' },
+  { name: 'शिक्षा', path: '/education' },
   { name: 'अन्तराष्ट्रिय', path: '/international' },
-  { name: 'पोस्ट न्युज', path: '/sign-in' }
+  { name: "समाचार लेख्नुहोस", path: '/sign-up' }
 ];

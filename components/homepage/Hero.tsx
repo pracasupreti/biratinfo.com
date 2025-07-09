@@ -11,6 +11,7 @@ interface Author {
     lastName: string
     avatar?: string
     clerkId: string
+    username?: string
 }
 
 interface ImageData {
@@ -43,7 +44,7 @@ export const getNepaliCategory = (englishCategory: string) => {
 
 function Hero({ data }: HeroProps) {
     const author = data?.authors?.[0]
-    const authorId = author?.clerkId
+    const username = author?.username
     const authorName = author ? `${author.firstName} ${author.lastName}` : 'अज्ञात लेखक'
     const authorAvatar = author?.avatar || ''
     return (
@@ -55,16 +56,16 @@ function Hero({ data }: HeroProps) {
         >
             <div className="bg-white w-[95%] sm:w-[90%] max-w-6xl mx-auto md:px-12 md:mx-12 lg:mx-32 rounded-t-lg sm:rounded-t-xl md:rounded-t-2xl py-3 sm:py-3 md:py-4 xl:py-5 text-text-color text-center font-jost flex flex-col items-center gap-2 md:gap-3">
 
-                <Link href={`/${data!.category}/${data!.categoryId}`} className="text-base sm:text-lg md:text-xl lg:text-3xl font-semibold leading-tight cursor-pointer hover:underline">
+                <Link href={`/${data!.category}/${data!.categoryId}`} className="text-xl lg:text-3xl font-bold leading-tight cursor-pointer hover:underline">
                     {data!.title}
                 </Link>
 
-                <p className="text-sm md:text-sm lg:text-base leading-relaxed max-w-4xl line-clamp-2">
+                <p className=":text-base leading-relaxed max-w-4xl line-clamp-2 px-2">
                     {data?.excerpt}
                 </p>
 
                 <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 md:gap-4 xl:gap-8 text-xs sm:text-xs md:text-sm font-normal">
-                    <Link href={`/author/${authorId}`} className="flex items-center gap-1">
+                    <Link href={`/author/${username}`} className="flex items-center gap-1">
                         <Avatar className="h-5 w-5 sm:h-6 sm:w-6">
                             <AvatarImage src={authorAvatar} alt={authorName} />
                             <AvatarFallback>{authorName.slice(0, 2).toUpperCase()}</AvatarFallback>

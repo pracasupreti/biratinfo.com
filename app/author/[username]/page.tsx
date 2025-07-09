@@ -41,6 +41,7 @@ interface AuthorData {
     id: string
     firstName: string | null
     lastName: string | null
+    username?: string | null
     imageUrl: string
     joinedDate: Date
     bio: string
@@ -55,7 +56,7 @@ const API_CONFIG = {
     apiKey: process.env.NEXT_PUBLIC_API_SPECIAL_KEY,
 }
 
-export default async function AuthorPage({ params }: { params: Promise<{ authorId: string }> }) {
+export default async function AuthorPage({ params }: { params: Promise<{ username: string }> }) {
     const { backend_uri, apiKey } = API_CONFIG
 
     if (!backend_uri || !apiKey) {
@@ -68,11 +69,11 @@ export default async function AuthorPage({ params }: { params: Promise<{ authorI
 
     const headers = { 'x-special-key': apiKey }
     const options: RequestInit = { headers, cache: 'no-store' }
-    const { authorId } = await params
+    const { username } = await params
 
     try {
         const authorRes = await fetch(
-            `${backend_uri}/api/users/details/${authorId}`,
+            `${backend_uri}/api/users/details/${username}`,
             options
         )
 
@@ -140,19 +141,21 @@ export default async function AuthorPage({ params }: { params: Promise<{ authorI
                                     {/* Social Links */}
                                     <div className="flex gap-4">
                                         {[
-                                            { icon: <FaFacebookF />, color: 'bg-blue-600', link: author.socialLinks.facebook ? author.socialLinks.facebook : '#', },
-                                            { icon: <FaTwitter />, color: 'bg-sky-500', link: author.socialLinks.twitter ? author.socialLinks.twitter : '#' },
-                                            { icon: <FaInstagram />, color: 'bg-pink-500', link: author.socialLinks.instagram ? author.socialLinks.instagram : '#' },
-                                            { icon: <FaYoutube />, color: 'bg-red-600', link: author.socialLinks.youtube ? author.socialLinks.youtube : '#' },
-                                            { icon: <FaTiktok />, color: 'bg-black', link: author.socialLinks.tiktok ? author.socialLinks.tiktok : '#' }
+                                            { icon: <FaFacebookF />, color: 'bg-blue-600', link: author.socialLinks.facebook },
+                                            { icon: <FaTwitter />, color: 'bg-sky-500', link: author.socialLinks.twitter },
+                                            { icon: <FaInstagram />, color: 'bg-pink-500', link: author.socialLinks.instagram },
+                                            { icon: <FaYoutube />, color: 'bg-red-600', link: author.socialLinks.youtube },
+                                            { icon: <FaTiktok />, color: 'bg-black', link: author.socialLinks.tiktok }
                                         ].map((social, i) => (
-                                            <Link
-                                                key={i}
-                                                href={social.link}
-                                                className={`p-3 rounded-full text-white ${social.color} hover:opacity-90 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5`}
-                                            >
-                                                {social.icon}
-                                            </Link>
+                                            social.link && (
+                                                <Link
+                                                    key={i}
+                                                    href={social.link}
+                                                    className={`p-3 rounded-full text-white ${social.color} hover:opacity-90 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5`}
+                                                >
+                                                    {social.icon}
+                                                </Link>
+                                            )
                                         ))}
                                     </div>
 
@@ -271,7 +274,7 @@ export default async function AuthorPage({ params }: { params: Promise<{ authorI
                                                 </span>
                                             </div>
                                             <div className="p-6">
-                                                <Link href={`/category/${post.category}/${post.categoryId}`} className="text-xl font-bold mb-3 text-[#2f5d62] transition-colors line-clamp-2 hover:underline cursor-pointer">
+                                                <Link href={`/${post.category}/${post.categoryId}`} className="text-xl font-bold mb-3 text-[#2f5d62] transition-colors line-clamp-1 hover:underline cursor-pointer">
                                                     {post.title}
                                                 </Link>
                                                 <p className="text-gray-600 mb-4 line-clamp-3">

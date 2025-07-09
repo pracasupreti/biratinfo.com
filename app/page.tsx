@@ -6,22 +6,8 @@ import Header from '@/components/homepage/Header'
 import Hero from '@/components/homepage/Hero'
 import Body from '@/components/homepage/Body'
 import Footer from '@/components/homepage/Footer'
-import { PostsResponse } from '@/types/Post'
+import { IPost } from '@/types/Post'
 import { notFound } from 'next/navigation'
-
-// Define categories
-const CATEGORIES = [
-  'tourism',
-  'technology',
-  'economy',
-  'agriculture',
-  'lifestyle',
-  'sports',
-  'health',
-  'education',
-  'entertainment',
-  'culture'
-]
 
 
 export default async function Page() {
@@ -48,13 +34,11 @@ export default async function Page() {
 
 
     // Fetch category data 
-    const categoryRequests = CATEGORIES.map(async (category) => {
-      const res = await fetch(`${backend_uri}/api/posts/category-summary/${category}`, options)
-      if (!res.ok) throw new Error(`Failed to fetch category: ${category}`)
-      return await res.json()
-    })
+    const res = await fetch(`${backend_uri}/api/posts/homepage`, options)
+    if (!res.ok) throw new Error(`Failed to fetch homepage news`)
 
-    const categoryBlocks: PostsResponse[] = await Promise.all(categoryRequests)
+    const response = await res.json()
+    const categoryBlocks: IPost[] = response?.post || []
 
     return (
       <div>

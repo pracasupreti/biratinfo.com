@@ -1,4 +1,4 @@
-// components/HeaderClient.tsx (Client Component)
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import { ChevronDown, Plus } from 'lucide-react';
 import Link from 'next/link'
@@ -34,15 +34,6 @@ export default function HeaderClient({
                             <p>समाचार लेख्नुहोस</p>
                         </TooltipContent>
                     </Tooltip>,
-                    path: token ? '/manager' : '/sign-in'
-                };
-                return updated;
-            });
-
-            setDropdownItems(prev => {
-                const updated = [...prev];
-                updated[4] = {
-                    ...updated[4],
                     path: token ? '/manager' : '/sign-in'
                 };
                 return updated;

@@ -43,39 +43,39 @@ export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting 
         }
     };
 
+    const determineStatus = (isDraft: boolean): 'draft' | 'pending' | 'scheduled' | 'approved' | 'rejected' => {
+        if (isDraft) {
+            return 'draft';
+        }
+
+        const currentDate = new Date();
+        const postDate = createPostDate(state.date, state.time);
+
+        if (!postDate) {
+            const defaultStatus = isWriting ? 'approved' : 'pending';
+            return defaultStatus;
+        }
+
+        const isScheduled = postDate.getTime() > currentDate.getTime();
+
+        if (isWriting) {
+            const status = isScheduled ? 'scheduled' : 'approved';
+            return status;
+        } else {
+            const status = isScheduled ? 'scheduled' : 'pending';
+            return status;
+        }
+    };
+
     const handleSubmit = async (isDraft: boolean) => {
-        if (!validate()) {
-            toast.error('Please fix all errors before submitting')
+        const status = determineStatus(isDraft);
+
+        if (!validate(status)) {
+            toast.error('Please fix all errors before submitting');
             return;
         }
 
-        const determineStatus = () => {
-            // If explicitly saving as draft, always return draft
-            if (isDraft) {
-                return 'draft';
-            }
 
-            const currentDate = new Date();
-            const postDate = createPostDate(state.date, state.time);
-
-            // If no valid post date, default based on user role
-            if (!postDate) {
-                const defaultStatus = isWriting ? 'approved' : 'pending';
-                console.log(`Status: ${defaultStatus} (no valid post date)`);
-                return defaultStatus;
-            }
-
-            // Compare dates (postDate > currentDate means future scheduling)
-            const isScheduled = postDate.getTime() > currentDate.getTime();
-
-            if (isWriting) {
-                const status = isScheduled ? 'scheduled' : 'approved';
-                return status;
-            } else {
-                const status = isScheduled ? 'scheduled' : 'pending';
-                return status;
-            }
-        };
 
         const getSuccessMessage = (status: string) => {
             const messages = {
@@ -92,12 +92,11 @@ export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting 
             return messages[status as keyof typeof messages] || 'Post submitted successfully';
         };
 
-        // Prepare submission data with proper field mapping
         const submissionData = {
             title: state.title,
             content: state.content,
             excerpt: state.excerpt,
-            isNepali: state.isNepali || false, // Add isNepali field based on new schema
+            isNepali: state.isNepali || false,
             featuredIn: state.featuredIn || [],
             postInNetwork: state.postInNetwork || [],
 
@@ -107,7 +106,8 @@ export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting 
             heroImageCredit: state.heroImageCredit || undefined,
             ogImageCredit: state.ogImageCredit || undefined,
             sponsoredAds: state.sponsoredAds || undefined,
-            audio: state.audio, // Changed from audioFile to audio
+            sponsorLink: state.sponsorLink || '',
+            audio: state.audio,
             audioCredit: state.audioCredit || '',
 
             // CTA field
@@ -125,7 +125,7 @@ export function PostActions({ isEditing, isWriting, onActionClick, isSubmitting 
             canonicalUrl: state.canonicalUrl,
 
             // Status
-            status: determineStatus(),
+            status: status,
         };
 
 

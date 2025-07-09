@@ -42,6 +42,7 @@ export default async function PublishedPosts() {
         return (
             <PostTable
                 allPosts={approvedPosts}
+                isPublishedPost={true}
                 title="Published Posts"
                 description="Manage all published articles"
                 isEditable={false}

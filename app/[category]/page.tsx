@@ -90,13 +90,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                                             >
                                                 {post.title}
                                             </Link>
-                                            <p className="text-[#808080] font-ibm_plex_serif font-medium text-xs sm:text-sm lg:text-base mt-1.5 line-clamp-3">
+                                            <p className="text-[#808080] font-ibm_plex_serif font-medium text-base mt-1.5 line-clamp-3">
                                                 {post.excerpt}
                                             </p>
                                         </div>
 
                                         <div className="text-[#808080] font-roboto text-md flex items-center gap-2">
-                                            <Link href={`/author/${post.authors[0]?.clerkId}`} className='font-bold'>{getAuthorName(post.authors)}</Link>
+                                            <Link href={`/author/${post.authors[0]?.username}`} className='font-bold'>{getAuthorName(post.authors)}</Link>
                                             <span>·</span>
                                             {post.updatedAt && (
                                                 <span><NepaliDateTime updatedAt={post.updatedAt} /></span>

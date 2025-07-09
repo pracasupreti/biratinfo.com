@@ -9,22 +9,19 @@ import BannerSection from './BannerSection';
 import MobileNav from '../MobileNav';
 
 export default function MobileHeader({
-    navConfig,
-    othersDropdownConfig
+    mobileNav,
 }: {
-    navConfig: typeof import('./NavConfig').navConfig;
-    othersDropdownConfig: typeof import('./NavConfig').othersDropdownConfig;
+    mobileNav: typeof import('./NavConfig').mobileNav;
 }) {
     const { getToken } = useAuth();
-    const [mobileNavItems, setMobileNavItems] = useState(navConfig);
-    const [mobileDropdownItems, setMobileDropdownItems] = useState(othersDropdownConfig);
+    const [mobileNavItems, setMobileNavItems] = useState(mobileNav);
 
     useEffect(() => {
         const updateAuthPaths = async () => {
             const token = await getToken();
             setMobileNavItems(prev => {
                 const updated = [...prev];
-                updated[13] = {
+                updated[17] = {
                     ...updated[13],
                     name: token ? 'लेख्नुहोस' : 'समाचार लेख्नुहोस',
                     path: token ? '/manager' : '/sign-up'
@@ -32,14 +29,6 @@ export default function MobileHeader({
                 return updated;
             });
 
-            setMobileDropdownItems(prev => {
-                const updated = [...prev];
-                updated[4] = {
-                    ...updated[4],
-                    path: token ? '/manager' : '/sign-in'
-                };
-                return updated;
-            });
         };
 
         updateAuthPaths();
@@ -72,7 +61,6 @@ export default function MobileHeader({
                 <div className='h-4 flex items-center'>
                     <MobileNav
                         navItems={mobileNavItems}
-                        othersDropdown={mobileDropdownItems}
                     />
                 </div>
             </div>

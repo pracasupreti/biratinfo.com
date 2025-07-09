@@ -1,4 +1,5 @@
 // components/AudioPlayer.tsx
+'use client'
 import { Volume2Icon } from 'lucide-react';
 import ReactAudioPlayer from 'react-audio-player';
 

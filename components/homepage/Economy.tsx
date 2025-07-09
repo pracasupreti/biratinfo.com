@@ -27,9 +27,9 @@ function Economy({ posts }: SummaryProps) {
         return `${firstAuthor.firstName} ${firstAuthor.lastName}`.trim()
     }
 
-    const getAuthorId = (authors?: Author[] | string[]): string | undefined => {
+    const getAuthorUsername = (authors?: Author[] | string[]): string | undefined => {
         if (!authors || authors.length === 0 || typeof authors[0] === 'string') return undefined;
-        return (authors[0] as Author).clerkId;
+        return (authors[0] as Author).username;
     };
 
     // Determine which posts to display
@@ -60,14 +60,14 @@ function Economy({ posts }: SummaryProps) {
                                 </div>
 
                                 <div className="flex flex-col gap-2 lg:w-[60%]">
-                                    <Link href={`/${post.category}/${post.categoryId}`} className="text-text-color font-ibm_plex_serif font-bold text-[16px] md:text-[18px] leading-snug cursor-pointer line-clamp-2 hover:underline">
+                                    <Link href={`/${post.category}/${post.categoryId}`} className="text-text-color font-ibm_plex_serif font-bold text-xl lg:text-lg leading-snug cursor-pointer line-clamp-2 hover:underline">
                                         {post.title}
                                     </Link>
                                     <p className="text-[#808080] font-ibm_plex_serif font-medium text-base line-clamp-2">
                                         {post.excerpt}
                                     </p>
-                                    <div className="text-[#808080] font-roboto text-md flex items-center gap-2 mt-1.5">
-                                        <Link href={`/author/${getAuthorId(post.authors)}`} className='font-bold'>{getAuthorName(post.authors)}</Link>
+                                    <div className="text-[#808080] font-roboto text-base flex items-center gap-2 mt-1.5">
+                                        <Link href={`/author/${getAuthorUsername(post.authors)}`} className='font-bold'>{getAuthorName(post.authors)}</Link>
                                         <span>·</span>
                                         {post.updatedAt && (
                                             <span><NepaliDateTime updatedAt={post.updatedAt} /></span>

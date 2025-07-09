@@ -45,7 +45,7 @@ function Technology({ posts }: SummaryProps) {
                                 />
                             </div>
 
-                            <Link href={`/${post.category}/${post.categoryId}`} className="font-ibm_plex_serif font-bold text-[18px] cursor-pointer text-text-color line-clamp-1 hover:underline">
+                            <Link href={`/${post.category}/${post.categoryId}`} className="font-ibm_plex_serif font-bold text-xl lg:text-lg cursor-pointer text-text-color line-clamp-1 hover:underline">
                                 {post.title}
                             </Link>
                             <p className="font-ibm_plex_serif font-[500] text-base text-[#808080] line-clamp-2">
@@ -59,7 +59,7 @@ function Technology({ posts }: SummaryProps) {
                                         <AvatarFallback>{post?.authors[0]?.firstName.slice(0, 2).toUpperCase()}</AvatarFallback>
                                     </Avatar>
                                 </div>
-                                <Link href={`/author/${post?.authors[0]?.clerkId}`} className="font-inter font-bold text-md text-[#808080]">
+                                <Link href={`/author/${post?.authors[0]?.username}`} className="font-inter font-bold text-md text-[#808080]">
                                     {getAuthorName(post.authors)}
                                 </Link>
                             </div>

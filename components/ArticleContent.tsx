@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import parse, { DOMNode, domToReact, Element, HTMLReactParserOptions } from 'html-react-parser';
 import Image from 'next/image';
@@ -15,12 +13,21 @@ const cleanContent = (html: string): string =>
         .replace(/<span[^>]*>×<\/span>/gi, '')
         .replace(/×/g, '');
 
-export default function ArticleContent({ post }: { post: SinglePost }) {
+export default function ArticleContent({ post, defaultSponsoredAd }: {
+    post: SinglePost,
+    defaultSponsoredAd?: { url: string; link: string } | null
+}) {
     const cleaned = cleanContent(post.content || '').trim();
     if (!cleaned) return null;
 
+    // Determine which ad to show
     const sponsorAds = post.sponsoredAds as ImageData | string | null;
-    const adUrl = typeof sponsorAds === 'string' ? sponsorAds : sponsorAds?.url;
+    const adUrl = typeof sponsorAds === 'string' ? sponsorAds.trim() : sponsorAds?.url?.trim();
+    const showAd = (adUrl && adUrl.length > 0) || (defaultSponsoredAd?.url && defaultSponsoredAd.url.length > 0);
+    const finalAdUrl = adUrl && adUrl.length > 0 ? adUrl : defaultSponsoredAd?.url;
+    const finalAdLink = (adUrl && adUrl.length > 0)
+        ? (post.sponsorLink || '#')
+        : (defaultSponsoredAd?.link || '#');
 
     const opts: HTMLReactParserOptions = {
         replace: (node: DOMNode) => {
@@ -34,19 +41,13 @@ export default function ArticleContent({ post }: { post: SinglePost }) {
                         return <h1 className="text-3xl font-bold my-6 text-text-color">{inner}</h1>;
                     case 'h2':
                         return <h2 className="text-2xl font-bold my-4">{inner}</h2>;
-
-                    // --- START: MODIFIED SECTION ---
                     case 'p': {
-                        // Check if the parent of this <p> tag is a list item (<li>)
                         const parent = node.parent as Element;
                         if (parent && parent.type === 'tag' && parent.name === 'li') {
                             return <>{inner}</>;
                         }
-                        // Otherwise, render a normal paragraph
                         return <p className="text-gray-800 leading-relaxed mb-4">{inner}</p>;
                     }
-                    // --- END: MODIFIED SECTION ---
-
                     case 'ul':
                         return <ul className="list-disc list-inside mb-6 text-gray-800 space-y-2">{inner}</ul>;
                     case 'ol':
@@ -78,26 +79,29 @@ export default function ArticleContent({ post }: { post: SinglePost }) {
     };
 
     const parsed = parse(cleaned, opts) as React.ReactNode[];
-    const mid = adUrl ? Math.floor(parsed.length / 2) : -1;
+    const mid = showAd ? Math.floor(parsed.length / 2) : -1;
 
     const contentWithAd: React.ReactNode[] = [];
     parsed.forEach((node, idx) => {
-        if (idx === mid && adUrl) {
+        if (idx === mid && showAd && finalAdUrl) {
             contentWithAd.push(
                 <div
                     key="ad"
-                    className="float-right ml-6 mb-6 w-full max-w-[300px] md:max-w-[400px]"
+                    className="mx-auto sm:ml-6 sm:float-right mb-6 w-full max-w-[300px] md:max-w-[400px]"
                 >
-                    <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden w-full h-auto aspect-[2/3]">
-                        <div className="relative w-full h-full">
-                            <Image
-                                src={adUrl}
-                                alt="Sponsored Advertisement"
-                                layout="fill"
-                                className="object-cover rounded-b-lg"
-                                unoptimized
-                            />
-                        </div>
+                    <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden w-full h-auto aspect-[1/1.5]">
+                        <Link href={finalAdLink} target="_blank" rel="noopener noreferrer">
+                            <div className="relative w-full h-full">
+                                <Image
+                                    src={finalAdUrl}
+                                    alt="Sponsored Advertisement"
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 768px) 300px, 400px"
+                                    unoptimized
+                                />
+                            </div>
+                        </Link>
                     </div>
                 </div>
             );
@@ -107,7 +111,6 @@ export default function ArticleContent({ post }: { post: SinglePost }) {
 
     return (
         <div className="max-w-4xl mx-auto px-4">
-            {/* Audio */}
             {post.audio && (
                 <div className="mb-8 bg-gray-50 rounded-lg p-6 clear-both">
                     <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
@@ -118,13 +121,11 @@ export default function ArticleContent({ post }: { post: SinglePost }) {
                 </div>
             )}
 
-            {/* Article with floated ad */}
             <div className="prose prose-lg text-gray-800 leading-relaxed">
                 {contentWithAd}
             </div>
             <div className="clear-both" />
 
-            {/* CTAs */}
             {post.ctas && post.ctas.length > 0 && (
                 <div className="mt-8">
                     <h3 className="text-xl font-semibold mb-4">यस समाचार सम्बन्धी अधिक जानकारी</h3>

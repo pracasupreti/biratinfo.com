@@ -249,7 +249,8 @@ export const RichTextEditor = ({ value, onChange, onImageUpload, onImageDelete }
                     </div>
                 </DialogContent>
             </Dialog>
-            <EditorContent editor={editor} className="overflow-auto border-t" style={{ minHeight: '300px', maxHeight: '600px' }} />
+            <EditorContent editor={editor} className="overflow-auto border-t" style={{ minHeight: '300px', maxHeight: '3400px' }} />
+            {/* minimize maxHeight to make scrollable */}
         </div>
     )
 }

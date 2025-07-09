@@ -47,7 +47,7 @@ function Summary({ posts }: SummaryProps) {
                             >
                                 {featuredPost.title}
                             </Link>
-                            <p className="text-[#808080] font-ibm_plex_serif font-medium text-sm lg:text-base line-clamp-4">
+                            <p className="text-[#808080] font-ibm_plex_serif font-medium text-base line-clamp-4">
                                 {featuredPost.excerpt}
                             </p>
                         </div>
@@ -73,7 +73,7 @@ function Summary({ posts }: SummaryProps) {
                                 </Link>
                                 <Link
                                     href={`/${post.category}/${post.categoryId}`}
-                                    className="text-text-color font-ibm_plex_serif font-semibold text-md hover:underline line-clamp-2"
+                                    className="text-text-color font-ibm_plex_serif font-semibold text-xl lg:text-lg hover:underline line-clamp-2"
                                 >
                                     {post.title}
                                 </Link>

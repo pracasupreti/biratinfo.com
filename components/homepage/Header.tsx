@@ -1,12 +1,9 @@
 // components/Header.tsx (Server Component)
 import BannerSection from './BannerSection';
 import HeaderClient from './HeaderClient';
-
 import Logo from './Logo';
 import MobileHeader from './MobileHeader';
-import { navConfig, othersDropdownConfig } from './NavConfig';
-
-
+import { navConfig, othersDropdownConfig, mobileNav } from './NavConfig';
 
 export default function Header() {
     return (
@@ -26,7 +23,7 @@ export default function Header() {
             </div>
 
             {/* Mobile Header */}
-            <MobileHeader navConfig={navConfig} othersDropdownConfig={othersDropdownConfig} />
+            <MobileHeader mobileNav={mobileNav} />
         </header>
     );
 }

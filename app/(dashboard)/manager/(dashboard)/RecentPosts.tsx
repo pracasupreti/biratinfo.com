@@ -83,7 +83,7 @@ export default function RecentPosts({ posts, loading = false }: RecentPostsProps
                         {/* Post Title */}
                         <div className="col-span-12 md:col-span-4">
                             <Link
-                                href={`/posts/${post._id}`}
+                                href={`/${post.category}/${post.categoryId}`}
                                 className="font-medium text-gray-900 hover:underline line-clamp-1"
                             >
                                 {post.title}

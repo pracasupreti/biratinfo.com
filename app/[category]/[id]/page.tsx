@@ -16,6 +16,7 @@ import React from 'react';
 import NotFound from '@/app/not-found';
 import { getNepaliCategory } from '@/components/homepage/Hero';
 import ArticleContent from '@/components/ArticleContent';
+import AuthorSection from '@/components/AuthorSection';
 
 interface PostPageParams {
     category: string;
@@ -39,9 +40,9 @@ const getAuthorAvatar = (authors?: Author[] | string[]): string | undefined => {
     return (authors[0] as Author).avatar;
 };
 
-const getAuthorId = (authors?: Author[] | string[]): string | undefined => {
+const getAuthorUsername = (authors?: Author[] | string[]): string | undefined => {
     if (!authors || authors.length === 0 || typeof authors[0] === 'string') return undefined;
-    return (authors[0] as Author).clerkId;
+    return (authors[0] as Author).username;
 };
 
 export async function generateMetadata({ params }: { params: Promise<PostPageParams> }) {
@@ -106,7 +107,7 @@ const PostHero = ({ post }: { post: SinglePost }) => {
                                     {getAuthorInitial(post.authors)}
                                 </AvatarFallback>
                             </Avatar>
-                            <Link href={`/author/${getAuthorId(post.authors)}`}>{getAuthorName(post.authors)}</Link>
+                            <Link href={`/author/${getAuthorUsername(post.authors)}`}>{getAuthorName(post.authors)}</Link>
                         </div>
                         <span className="flex items-center gap-1.5">
                             <Clock2Icon className="w-4 h-4" />
@@ -142,16 +143,25 @@ export default async function PostPage({ params }: { params: Promise<PostPagePar
         // Fetch main post
         const postRes = await fetch(`${backend_uri}/api/posts/full/${category}/${id}`, {
             headers: { 'x-special-key': apiKey },
-            cache: 'no-store'
         });
         if (!postRes.ok) return NotFound();
         const fetchedPost: SinglePost = (await postRes.json())?.post;
         if (!fetchedPost) return NotFound();
 
+        const fetchedCategory = fetchedPost.category
+
+
+        //Fetch default sponsoredAds
+        const response = await fetch(`${backend_uri}/api/sponsor-banners/active-banner?category=${fetchedCategory}`, {
+            headers: { 'x-special-key': apiKey },
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch banner');
+        const defaultSponsoredAd = await response.json();
+
         // Fetch interaction data
         const interactionRes = await fetch(`${backend_uri}/api/posts/${fetchedPost._id}/interaction`, {
             headers: { 'x-special-key': apiKey },
-            cache: 'no-store'
         });
         const interactionData = interactionRes.ok
             ? await interactionRes.json()
@@ -160,7 +170,6 @@ export default async function PostPage({ params }: { params: Promise<PostPagePar
         // Fetch related posts
         const relatedRes = await fetch(`${backend_uri}/api/posts/category-summary/${fetchedPost.category}`, {
             headers: { 'x-special-key': apiKey },
-            cache: 'no-store'
         });
         const relatedResult = await relatedRes.json();
         const relatedPosts: IPost[] = Array.isArray(relatedResult?.post)
@@ -173,7 +182,7 @@ export default async function PostPage({ params }: { params: Promise<PostPagePar
                 <PostHero post={fetchedPost} />
                 <main className="flex-1 pb-8 bg-white">
                     <div className="mt-8">
-                        <ArticleContent post={fetchedPost} />
+                        <ArticleContent post={fetchedPost} defaultSponsoredAd={defaultSponsoredAd} />
                     </div>
                     <div className="max-w-4xl mx-auto px-4 mt-8">
                         <ClapButton
@@ -182,6 +191,9 @@ export default async function PostPage({ params }: { params: Promise<PostPagePar
                             initialHasClapped={interactionData.hasClapped}
                         />
                     </div>
+                    {getAuthorUsername(fetchedPost.authors) && (
+                        <AuthorSection author={fetchedPost.authors?.[0] as Author} />
+                    )}
                     <SocialShareClientWrapper />
                     <CommentsSection
                         postId={fetchedPost._id}
@@ -196,11 +208,11 @@ export default async function PostPage({ params }: { params: Promise<PostPagePar
                             <h4 className="text-3xl font-bold mb-8 text-center text-text-color">
                                 सम्बन्धित खबरहरू
                             </h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div className="flex flex-wrap justify-center gap-6">
                                 {relatedPosts.map((post) => (
                                     <article
                                         key={post._id}
-                                        className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col hover:shadow-xl transition-shadow duration-300"
+                                        className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] max-w-xs bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col hover:shadow-xl transition-shadow duration-300"
                                     >
                                         <div className="relative h-48">
                                             {post.heroBanner ? (
