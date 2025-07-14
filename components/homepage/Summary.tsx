@@ -73,7 +73,7 @@ function Summary({ posts }: SummaryProps) {
                                 </Link>
                                 <Link
                                     href={`/${post.category}/${post.categoryId}`}
-                                    className="text-text-color font-ibm_plex_serif font-semibold text-xl lg:text-lg hover:underline line-clamp-2"
+                                    className="text-text-color font-ibm_plex_serif font-bold text-xl lg:text-lg hover:underline line-clamp-2"
                                 >
                                     {post.title}
                                 </Link>

@@ -320,7 +320,7 @@ export default async function AuthorPage({ params }: { params: Promise<{ usernam
                                                     </span>
                                                 </div>
                                                 <div className="p-6">
-                                                    <Link href={`/category/${post.category}/${post.categoryId}`} className="text-xl font-bold mb-3 text-[#2f5d62] transition-colors line-clamp-2 hover:underline">
+                                                    <Link href={`/${post.category}/${post.categoryId}`} className="text-xl font-bold mb-3 text-[#2f5d62] transition-colors line-clamp-2 hover:underline">
                                                         {post.title}
                                                     </Link>
                                                     <p className="text-gray-600 mb-4 line-clamp-3">

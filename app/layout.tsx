@@ -21,7 +21,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "BIRATINFO | Digital Archive of Information",
   description: "Digital Archive of Information",
-  metadataBase: new URL('https://87f6-2400-1a00-4b8e-ea74-1357-53d-4860-2836.ngrok-free.app'),
+  metadataBase: new URL('https://biratinfo.com'),
 };
 
 

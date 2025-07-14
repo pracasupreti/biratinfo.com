@@ -46,14 +46,14 @@ export default function ArticleContent({ post, defaultSponsoredAd }: {
                         if (parent && parent.type === 'tag' && parent.name === 'li') {
                             return <>{inner}</>;
                         }
-                        return <p className="text-gray-800 leading-relaxed mb-4">{inner}</p>;
+                        return <p className="text-gray-800 leading-relaxed mb-4 text-lg">{inner}</p>;
                     }
                     case 'ul':
-                        return <ul className="list-disc list-inside mb-6 text-gray-800 space-y-2">{inner}</ul>;
+                        return <ul className="list-disc list-inside mb-6 text-gray-800 space-y-2 text-lg">{inner}</ul>;
                     case 'ol':
-                        return <ol className="list-decimal list-inside mb-6 text-gray-800 space-y-2">{inner}</ol>;
+                        return <ol className="list-decimal list-inside mb-6 text-gray-800 space-y-2 text-lg">{inner}</ol>;
                     case 'li':
-                        return <li className="leading-relaxed">{inner}</li>;
+                        return <li className="leading-relaxed text-lg">{inner}</li>;
                     case 'img': {
                         const src = attribs.src || '';
                         const alt = attribs.alt || '';

@@ -284,6 +284,8 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                                 error={errors.authors}
                                 maxSelections={2}
                             />
+                            {errors.author && <p className="text-red-500 text-xs mt-0.5">{errors.author}</p>}
+
                         </div>
                     </div>
 

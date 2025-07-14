@@ -92,22 +92,22 @@ export default function ClapButton({
     };
 
     return (
-        <div className="flex items-center gap-3 mt-6">
+        <div className="flex items-center gap-3 mt-3">
             <Button
                 variant="outline"
                 size="sm"
                 onClick={handleClap}
                 disabled={!isSignedIn}
                 className={cn(
-                    "flex items-center gap-2 transition-all duration-300 cursor-pointer",
+                    "flex items-center gap-2 transition-all duration-300 cursor-pointer h-auto py-2",
                     hasClapped ? 'bg-yellow-50 border-yellow-200 hover:bg-yellow-50' : '',
                     isAnimating ? 'scale-110' : 'scale-100'
                 )}
             >
                 {hasClapped ? (
-                    <PiHandsClappingFill className="text-yellow-500 w-5 h-5" />
+                    <PiHandsClappingFill className="text-yellow-500 size-7" />
                 ) : (
-                    <PiHandsClappingThin className="text-gray-600 w-5 h-5 hover:text-yellow-500" />
+                    <PiHandsClappingThin className="text-gray-600 size-7 hover:text-yellow-500" />
                 )}
                 <span className={hasClapped ? 'text-yellow-600 font-medium' : 'text-gray-700'}>
                     {claps}

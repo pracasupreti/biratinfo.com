@@ -181,6 +181,9 @@ export const usePostStore = create<PostState>((set, get) => ({
             if (!state.category.trim()) newErrors.category = 'Category is required';
             if (!state.heroBanner) newErrors.heroBanner = 'Hero banner is required';
             if (!state.ogBanner) newErrors.ogBanner = 'OG banner is required. You can add same image as Hero banner';
+            if (state.authors.length === 0) {
+                newErrors.authors = 'At least one author is required';
+            }
 
             // Validate CTAs
             (state.ctas || []).forEach((cta, index) => {
