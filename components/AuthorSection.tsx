@@ -1,5 +1,4 @@
 // components/AuthorSection.tsx
-import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram, FaTiktok } from 'react-icons/fa'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
 import { Author } from '@/types/Post';
@@ -7,8 +6,6 @@ import { Author } from '@/types/Post';
 const AuthorSection = ({ author }: { author?: Author }) => {
     if (!author) return null;
 
-    const socialLinks = author.socialLinks || {};
-    const hasSocialLinks = Object.values(socialLinks).some(link => !!link);
 
     return (
         <div className="max-w-4xl mx-auto px-4 mt-12 mb-8">

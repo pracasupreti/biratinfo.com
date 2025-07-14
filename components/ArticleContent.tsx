@@ -87,9 +87,9 @@ export default function ArticleContent({ post, defaultSponsoredAd }: {
             contentWithAd.push(
                 <div
                     key="ad"
-                    className="mx-auto sm:ml-6 sm:float-right mb-6 w-full max-w-[300px] md:max-w-[400px]"
+                    className="mx-auto sm:ml-6 sm:float-right mb-6 w-full max-w-[400px] md:max-w-[400px]"
                 >
-                    <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden w-full h-auto aspect-[1/1.5]">
+                    <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden w-full h-auto aspect-[2/2.5]">
                         <Link href={finalAdLink} target="_blank" rel="noopener noreferrer">
                             <div className="relative w-full h-full">
                                 <Image

@@ -51,33 +51,36 @@ function Hero({ data }: HeroProps) {
     const heroBannerUrl = data?.heroBanner?.url
 
     return (
-        <div className="relative w-full h-[50vh] md:h-[85vh] overflow-hidden">
-            {heroBannerUrl ? (
-                <Image
-                    src={heroBannerUrl}
-                    alt={data?.title || 'Hero banner'}
-                    fill
-                    className="object-cover w-full h-full"
-                    priority
-                    sizes="(max-width: 768px) 100vw, 80vw"
-                />
-            ) : (
-                <div className="w-full h-full bg-gray-300" />
-            )}
+        <>
+            {/* Mobile Layout (stacked) */}
+            <div className="md:hidden w-full flex flex-col">
+                {heroBannerUrl ? (
+                    <div className="relative w-full h-64">
+                        <Image
+                            src={heroBannerUrl}
+                            alt={data?.title || 'Hero banner'}
+                            fill
+                            className="object-cover"
+                            priority
+                            sizes="100vw"
+                        />
+                    </div>
+                ) : (
+                    <div className="w-full h-64 bg-gray-300" />
+                )}
 
-            <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center ">
-                <div className="bg-white w-[95%] sm:w-[90%] max-w-6xl mx-auto md:px-12 md:mx-12 lg:mx-32 rounded-t-lg sm:rounded-t-xl md:rounded-t-2xl py-3 sm:py-3 md:py-4 xl:py-5 text-text-color text-center font-jost flex flex-col items-center gap-2 md:gap-3">
-                    <Link href={`/${data!.category}/${data!.categoryId}`} className="text-xl lg:text-3xl font-bold leading-tight cursor-pointer hover:underline">
+                <div className="bg-gray-50 w-full px-4 py-3 text-text-color font-jost flex flex-col items-start gap-2">
+                    <Link href={`/${data!.category}/${data!.categoryId}`} className="text-xl font-bold leading-tight cursor-pointer hover:underline text-start">
                         {data!.title}
                     </Link>
 
-                    <p className="text-base leading-relaxed max-w-4xl line-clamp-2 px-2">
+                    <p className="text-base leading-relaxed line-clamp-2 text-start">
                         {data?.excerpt}
                     </p>
 
-                    <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 md:gap-4 xl:gap-8 text-xs sm:text-xs md:text-sm font-normal">
-                        <Link href={`/author/${username}`} className="flex items-center gap-1">
-                            <Avatar className="h-5 w-5 sm:h-6 sm:w-6">
+                    <div className="flex flex-wrap justify-start items-start gap-3 text-xs font-normal w-full">
+                        <Link href={`/author/${username}`} className="flex items-start gap-1">
+                            <Avatar className="h-5 w-5">
                                 <AvatarImage src={authorAvatar} alt={authorName} />
                                 <AvatarFallback>{authorName.slice(0, 2).toUpperCase()}</AvatarFallback>
                             </Avatar>
@@ -85,12 +88,12 @@ function Hero({ data }: HeroProps) {
                         </Link>
 
                         <p className="flex items-center gap-1">
-                            <Clock2Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <Clock2Icon className="w-3 h-3" />
                             <NepaliTimeDisplay timeText={data!.readingTime!} />
                         </p>
 
                         <p className="flex items-center gap-1">
-                            <TagIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <TagIcon className="w-3 h-3" />
                             {getNepaliCategory(data!.category!)}
                         </p>
                     </div>
@@ -101,7 +104,60 @@ function Hero({ data }: HeroProps) {
                     </div>
                 </div>
             </div>
-        </div>
+
+            {/* Desktop Layout (original) */}
+            <div className="hidden md:block relative w-full h-[85vh] overflow-hidden">
+                {heroBannerUrl ? (
+                    <Image
+                        src={heroBannerUrl}
+                        alt={data?.title || 'Hero banner'}
+                        fill
+                        className="object-cover w-full h-full"
+                        priority
+                        sizes="80vw"
+                    />
+                ) : (
+                    <div className="w-full h-full bg-gray-300" />
+                )}
+
+                <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center">
+                    <div className="bg-white w-[90%] max-w-6xl mx-auto md:px-12 lg:mx-32 rounded-t-xl md:rounded-t-2xl py-3 md:py-4 xl:py-5 text-text-color text-center font-jost flex flex-col items-center gap-3">
+                        <Link href={`/${data!.category}/${data!.categoryId}`} className="text-3xl font-bold leading-tight cursor-pointer hover:underline">
+                            {data!.title}
+                        </Link>
+
+                        <p className="text-base leading-relaxed max-w-4xl line-clamp-2 px-2">
+                            {data?.excerpt}
+                        </p>
+
+                        <div className="flex flex-wrap justify-center items-center gap-4 text-sm font-normal">
+                            <Link href={`/author/${username}`} className="flex items-center gap-1">
+                                <Avatar className="h-6 w-6">
+                                    <AvatarImage src={authorAvatar} alt={authorName} />
+                                    <AvatarFallback>{authorName.slice(0, 2).toUpperCase()}</AvatarFallback>
+                                </Avatar>
+                                {authorName}
+                            </Link>
+
+                            <p className="flex items-center gap-1">
+                                <Clock2Icon className="w-4 h-4" />
+                                <NepaliTimeDisplay timeText={data!.readingTime!} />
+                            </p>
+
+                            <p className="flex items-center gap-1">
+                                <TagIcon className="w-4 h-4" />
+                                {getNepaliCategory(data!.category!)}
+                            </p>
+                        </div>
+
+                        <div className="flex justify-center items-center gap-1 text-[#808080] font-roboto text-sm">
+                            अपडेट गरिएको :
+                            <NepaliDateTime updatedAt={data!.updatedAt!} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
     )
 }
 
