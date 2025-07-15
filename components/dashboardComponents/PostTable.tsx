@@ -406,7 +406,7 @@ export function PostTable({
                                             </Button>
                                         </div>
                                         <div className="col-span-1 flex justify-center">
-                                            {post.status === 'draft' && (
+                                            {(post.status === 'draft' || isEditor) && (
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
