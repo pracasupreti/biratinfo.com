@@ -11,7 +11,8 @@ export const NETWORK_SITES = [
     { en: 'sunsaritimes.com', np: 'सुनसरीटाइम्स.कम' },
     { en: 'birtacity.com', np: 'बिर्तामोड.कम' },
     { en: 'karmashil.com', np: 'कर्मशील.कम' },
-    { en: 'gramthan.com', np: 'गर्म्थान.कम' }
+    { en: 'gramthan.com', np: 'गर्म्थान.कम' },
+    { en: 'birtainfo.com', np: 'बिर्ताइन्फो.कम' }
 ];
 
 export const FEATURED_SITES = [
@@ -27,5 +28,6 @@ export const FEATURED_SITES = [
     { en: 'sunsaritimes.com', np: 'सुनसरीटाइम्स.कम' },
     { en: 'birtacity.com', np: 'बिर्तामोड.कम' },
     { en: 'karmashil.com', np: 'कर्मशील.कम' },
-    { en: 'gramthan.com', np: 'गर्म्थान.कम' }
+    { en: 'gramthan.com', np: 'गर्म्थान.कम' },
+    { en: 'birtainfo.com', np: 'बिर्ताइन्फो.कम' }
 ];
