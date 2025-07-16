@@ -176,7 +176,7 @@ export const usePostStore = create<PostState>((set, get) => ({
         // Additional validation for non-draft posts
         if (currentStatus !== 'draft') {
             if (!state.excerpt.trim()) newErrors.excerpt = 'Excerpt is required';
-            if (state.excerpt.length > 250) newErrors.excerpt = 'Excerpt must be 250 characters or less';
+            if (state.excerpt.length > 500) newErrors.excerpt = 'Excerpt must be 500 characters or less';
             if (!state.content.trim()) newErrors.content = 'Content is required';
             if (!state.category.trim()) newErrors.category = 'Category is required';
             if (!state.heroBanner) newErrors.heroBanner = 'Hero banner is required';

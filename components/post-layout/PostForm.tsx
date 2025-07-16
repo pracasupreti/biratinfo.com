@@ -127,8 +127,8 @@ export function PostForm() {
                                 <Label htmlFor="excerpt">
                                     {isNepali ? 'संक्षिप्त विवरण' : 'Excerpt'} *
                                 </Label>
-                                <span className={`text-xs ${excerptLength > 250 ? 'text-red-500' : 'text-gray-500'}`}>
-                                    {excerptLength}/250
+                                <span className={`text-xs ${excerptLength > 500 ? 'text-red-500' : 'text-gray-500'}`}>
+                                    {excerptLength}/500
                                 </span>
                             </div>
                             <Textarea
@@ -136,7 +136,7 @@ export function PostForm() {
                                 value={excerpt}
                                 onChange={(e) => {
                                     const newValue = e.target.value
-                                    if (newValue.length <= 150) {
+                                    if (newValue.length <= 500) {
                                         setExcerpt(newValue, isNepali)
                                         setExcerptLength(newValue.length)
                                     }
