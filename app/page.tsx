@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-//SERVER_SIDE_RENDERING_PAGE
-
 import React from 'react'
 import Header from '@/components/homepage/Header'
 import Hero from '@/components/homepage/Hero'
