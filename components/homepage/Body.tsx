@@ -18,20 +18,19 @@ function Body({ data }: BodyProps) {
 
 
     // Filter posts by category
-    // Filter posts by category
     const summaryCategories = ['sports', 'health', 'education', 'entertainment', 'culture'];
 
     const summaryPosts = data.filter(post =>
         summaryCategories.includes(post.category?.toLowerCase())
-    );
+    ).slice(0, 5);
 
     const remaining = data.filter(post => !summaryPosts.includes(post));
 
-    const tourismPosts = remaining.filter(post => post.category?.toLowerCase() === 'tourism');
-    const economyPosts = remaining.filter(post => post.category?.toLowerCase() === 'economy');
-    const technologyPosts = remaining.filter(post => post.category?.toLowerCase() === 'technology');
-    const agriculturePosts = remaining.filter(post => post.category?.toLowerCase() === 'agriculture');
-    const lifestylePosts = remaining.filter(post => post.category?.toLowerCase() === 'lifestyle');
+    const tourismPosts = remaining.filter(post => post.category?.toLowerCase() === 'tourism').slice(0, 4);
+    const economyPosts = remaining.filter(post => post.category?.toLowerCase() === 'economy').slice(0, 4);
+    const technologyPosts = remaining.filter(post => post.category?.toLowerCase() === 'technology').slice(0, 3);
+    const agriculturePosts = remaining.filter(post => post.category?.toLowerCase() === 'agriculture').slice(0, 4);
+    const lifestylePosts = remaining.filter(post => post.category?.toLowerCase() === 'lifestyle').slice(0, 4);
 
     return (
         <div>
