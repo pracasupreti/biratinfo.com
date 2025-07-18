@@ -38,9 +38,9 @@ function Footer() {
                         <ul className='space-y-3 text-gray-600'>
                             {[
                                 'अध्यक्ष : सुधीर नेपाल',
-                                'सम्पादक : ललिता घिमिरे',
+                                'सम्पादक : नबीन भट्टराई',
                                 'प्रविधि : प्रकाश उप्रेती',
-                                'जनसम्पर्क अधिकृत : सुरज माझी'
+                                'जनसम्पर्क अधिकृत : सुभाष उप्रेती'
                             ].map((item, index) => (
                                 <li key={index} className='text-[16px] font-ibm_plex_serif'>{item}</li>
                             ))}
