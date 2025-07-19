@@ -161,7 +161,7 @@ export function PostTable({
     }, [])
 
     const handleEditPost = useCallback((postId: string) => {
-        const editPath = isEditor ? `editor/edit/${postId}` : `manager/edit/${postId}`
+        const editPath = isEditor ? `editor/edit/${postId}` : `writer/edit/${postId}`
         router.push(`/${editPath}`)
     }, [router, isEditor])
 

@@ -7,7 +7,7 @@ import { categoryOptions } from './types/Post';
 const protectedRoutes = [
     { path: '/sriyog', role: 'admin' },
     { path: '/editor', role: 'editor' },
-    { path: '/manager', role: 'manager' },
+    { path: '/writer', role: 'manager' },
 ];
 
 // Dynamically generate public category route matchers
@@ -55,7 +55,7 @@ export default clerkMiddleware(async (auth, req) => {
     const roleRedirects: Record<Roles, string> = {
         admin: '/sriyog',
         editor: '/editor',
-        manager: '/manager',
+        manager: '/writer',
     };
 
     // Handle users with no role or invalid role

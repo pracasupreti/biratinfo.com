@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
 export default function Sidebar() {
     const pathname = usePathname()
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-        posts: pathname.includes('/manager/post') || pathname.includes('/manager/posts'),
+        posts: pathname.includes('/writer/post') || pathname.includes('/writer/posts'),
         categories: false,
         banners: false,
         administration: false,
@@ -18,7 +18,7 @@ export default function Sidebar() {
     useEffect(() => {
         setExpandedSections(prev => ({
             ...prev,
-            posts: pathname.includes('/manager/post') || pathname.includes('/manager/posts'),
+            posts: pathname.includes('/writer/post') || pathname.includes('/writer/posts'),
         }))
     }, [pathname])
 
@@ -30,14 +30,14 @@ export default function Sidebar() {
     }
 
     const isActive = (href: string) => {
-        return pathname === href || (href !== '/manager' && pathname.startsWith(href))
+        return pathname === href || (href !== '/writer' && pathname.startsWith(href))
     }
 
     return (
         <div className="h-full bg-white border-r border-gray-200 flex flex-col animate-fade-in-right">
             {/* Header */}
             <div className="p-4 border-b border-gray-200">
-                <h2 className="text-xl font-bold text-gray-800">Manager Dashboard</h2>
+                <h2 className="text-xl font-bold text-gray-800">Writer Dashboard</h2>
             </div>
 
             {/* Navigation */}
@@ -45,10 +45,10 @@ export default function Sidebar() {
                 {/* Dashboard */}
                 <div className="mb-2">
                     <Link
-                        href={'/manager'}
-                        className={`w-full flex justify-between items-center p-2 rounded-md transition-colors duration-200 ${isActive('/manager')
-                                ? 'bg-gray-100 text-gray-900 font-semibold'
-                                : 'text-gray-700 hover:bg-gray-100'
+                        href={'/writer'}
+                        className={`w-full flex justify-between items-center p-2 rounded-md transition-colors duration-200 ${isActive('/writer')
+                            ? 'bg-gray-100 text-gray-900 font-semibold'
+                            : 'text-gray-700 hover:bg-gray-100'
                             }`}
                     >
                         <span>Dashboard</span>
@@ -70,55 +70,55 @@ export default function Sidebar() {
                     <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${expandedSections.posts ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'
                         }`}>
                         <Link
-                            href={'/manager/post'}
-                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/manager/post')
-                                    ? 'bg-gray-100 text-gray-900 font-semibold'
-                                    : 'text-gray-600 hover:bg-gray-100'
+                            href={'/writer/post'}
+                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/writer/post')
+                                ? 'bg-gray-100 text-gray-900 font-semibold'
+                                : 'text-gray-600 hover:bg-gray-100'
                                 }`}
                         >
                             Write a Post
                         </Link>
                         <Link
-                            href={'/manager/published-posts'}
-                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/manager/published-posts')
-                                    ? 'bg-gray-100 text-gray-900 font-semibold'
-                                    : 'text-gray-600 hover:bg-gray-100'
+                            href={'/writer/published-posts'}
+                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/writer/published-posts')
+                                ? 'bg-gray-100 text-gray-900 font-semibold'
+                                : 'text-gray-600 hover:bg-gray-100'
                                 }`}
                         >
                             Published Posts
                         </Link>
                         <Link
-                            href={'/manager/pending-posts'}
-                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/manager/pending-posts')
-                                    ? 'bg-gray-100 text-gray-900 font-semibold'
-                                    : 'text-gray-600 hover:bg-gray-100'
+                            href={'/writer/pending-posts'}
+                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/writer/pending-posts')
+                                ? 'bg-gray-100 text-gray-900 font-semibold'
+                                : 'text-gray-600 hover:bg-gray-100'
                                 }`}
                         >
                             Pending Approval
                         </Link>
                         <Link
-                            href={'/manager/scheduled-posts'}
-                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/manager/scheduled-posts')
-                                    ? 'bg-gray-100 text-gray-900 font-semibold'
-                                    : 'text-gray-600 hover:bg-gray-100'
+                            href={'/writer/scheduled-posts'}
+                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/writer/scheduled-posts')
+                                ? 'bg-gray-100 text-gray-900 font-semibold'
+                                : 'text-gray-600 hover:bg-gray-100'
                                 }`}
                         >
                             Scheduled Posts
                         </Link>
                         <Link
-                            href={'/manager/rejected-posts'}
-                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/manager/rejected-posts')
-                                    ? 'bg-gray-100 text-gray-900 font-semibold'
-                                    : 'text-gray-600 hover:bg-gray-100'
+                            href={'/writer/rejected-posts'}
+                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/writer/rejected-posts')
+                                ? 'bg-gray-100 text-gray-900 font-semibold'
+                                : 'text-gray-600 hover:bg-gray-100'
                                 }`}
                         >
                             Rejected Posts
                         </Link>
                         <Link
-                            href={'/manager/draft-posts'}
-                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/manager/draft-posts')
-                                    ? 'bg-gray-100 text-gray-900 font-semibold'
-                                    : 'text-gray-600 hover:bg-gray-100'
+                            href={'/writer/draft-posts'}
+                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/writer/draft-posts')
+                                ? 'bg-gray-100 text-gray-900 font-semibold'
+                                : 'text-gray-600 hover:bg-gray-100'
                                 }`}
                         >
                             Draft Posts
@@ -129,10 +129,10 @@ export default function Sidebar() {
                 {/* Account Section */}
                 <div className="mb-2">
                     <Link
-                        href={'/manager/manage-profile'}
-                        className={`w-full flex justify-between items-center p-2 rounded-md transition-colors duration-200 ${isActive('/manager/manage-profile')
-                                ? 'bg-gray-100 text-gray-900 font-semibold'
-                                : 'text-gray-700 hover:bg-gray-100'
+                        href={'/writer/manage-profile'}
+                        className={`w-full flex justify-between items-center p-2 rounded-md transition-colors duration-200 ${isActive('/writer/manage-profile')
+                            ? 'bg-gray-100 text-gray-900 font-semibold'
+                            : 'text-gray-700 hover:bg-gray-100'
                             }`}
                     >
                         <span>Manage Account</span>

@@ -16,7 +16,7 @@ function Page() {
         <div className="max-w-6xl mx-auto py-4">
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold">Create a Post</h1>
-                <Button variant="default" onClick={() => router.push('/manager')} className='text-sm cursor-pointer shadow-xl'>
+                <Button variant="default" onClick={() => router.push('/writer')} className='text-sm cursor-pointer shadow-xl'>
                     Back to Dashboard
                 </Button>
             </div>

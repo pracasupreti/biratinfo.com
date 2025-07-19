@@ -68,7 +68,7 @@ export default async function Dashboard() {
                         <CardHeader className="flex flex-row items-center justify-between">
                             <CardTitle>Recent Approved Posts</CardTitle>
                             <Button asChild>
-                                <Link href="/manager/post">
+                                <Link href="/writer/post">
                                     <PlusCircle className="mr-2 h-4 w-4" />
                                     Write Post
                                 </Link>

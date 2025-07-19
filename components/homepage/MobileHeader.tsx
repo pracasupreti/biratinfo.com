@@ -26,7 +26,7 @@ export default function MobileHeader({
                 updated[17] = {
                     ...updated[13],
                     name: token ? 'लेख्नुहोस' : 'समाचार लेख्नुहोस',
-                    path: token ? '/manager' : '/sign-up'
+                    path: token ? '/writer' : '/sign-up'
                 };
                 return updated;
             });
@@ -61,7 +61,7 @@ export default function MobileHeader({
 
                 <div className='h-4 flex items-center gap-2'>
                     {isLoggedIn && (
-                        <Link href="/manager" className="text-2xl font-semibold">+</Link>
+                        <Link href="/writer" className="text-2xl font-semibold">+</Link>
                     )}
                     <MobileNav
                         navItems={mobileNavItems}

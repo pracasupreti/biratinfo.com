@@ -16,7 +16,7 @@ export const checkRole = async (role: Roles) => {
     const roleRedirects: Record<Roles, string> = {
         admin: '/admin',
         editor: '/editor',
-        manager: '/manager',
+        manager: '/writer',
     };
 
     if (!userRole || !Object.keys(roleRedirects).includes(userRole)) {
