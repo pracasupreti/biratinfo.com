@@ -583,6 +583,7 @@ const ImageUploadSection = ({
                         height={600}
                         style={{ objectFit: 'contain' }}
                         quality={100}
+                        unoptimized
                     />
                     <Button
                         variant="destructive"

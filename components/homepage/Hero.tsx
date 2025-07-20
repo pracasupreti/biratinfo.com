@@ -63,6 +63,7 @@ function Hero({ data }: HeroProps) {
                             className="object-cover"
                             priority
                             sizes="100vw"
+                            unoptimized
                         />
                     </div>
                 ) : (
@@ -115,6 +116,7 @@ function Hero({ data }: HeroProps) {
                         className="object-cover w-full h-full"
                         priority
                         sizes="80vw"
+                        unoptimized
                     />
                 ) : (
                     <div className="w-full h-full bg-gray-300" />
