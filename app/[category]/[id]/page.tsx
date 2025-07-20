@@ -91,6 +91,7 @@ const PostHero = ({ post }: { post: SinglePost }) => {
                     className="object-cover w-full"
                     priority
                     sizes="(max-width: 768px) 100vw, 80vw"
+                    unoptimized
                 />
             ) : (
                 <div className="w-full h-full bg-gray-300" />
