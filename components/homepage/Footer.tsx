@@ -55,7 +55,7 @@ function Footer() {
                                 <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
                                     <NotebookPenIcon size={14} className='text-gray-600' />
                                 </div>
-                                <p className='text-[16px] text-center md:text-left font-ibm_plex_serif'>सूचना विभाग दर्ता नं. YYY-०८१/८२</p>
+                                <p className='text-[16px] text-center md:text-left font-ibm_plex_serif'>सूचना विभाग दर्ता नं. ५१२६-२०८२/८३</p>
                             </li>
                             <li className='flex items-center gap-3'>
                                 <div className='w-6 h-6 bg-[#d9d9d9] rounded-full flex items-center justify-center flex-shrink-0'>
