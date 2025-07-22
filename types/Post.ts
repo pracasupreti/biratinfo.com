@@ -150,6 +150,7 @@ export const categoryOptions = [
     { value: 'food', en: 'Food', np: 'खानपान' },
     { value: 'employment', en: 'Employment', np: 'रोजगारी' },
     { value: 'literature', en: 'Literature', np: 'साहित्य' },
+    { value: 'international', en: 'International', np: 'अन्तर्राष्ट्रिय' },
     { value: 'complain', en: 'Complain', np: 'गुनासो' },
 ];
 
