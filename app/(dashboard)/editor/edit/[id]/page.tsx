@@ -41,8 +41,6 @@ export default function EditPostPage() {
                 }
 
                 const response = await fetchPostsById(id as string)
-                const status = response?.success && response.serializedPost.status
-                status == 'approved' ? setIsReupdated(true) : setIsReupdated(false)
                 if (response?.success && response.serializedPost) {
                     initialize(response.serializedPost as Partial<PostState>)
                     setIsReupdated(response.serializedPost.status === 'approved')
