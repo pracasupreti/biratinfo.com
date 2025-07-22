@@ -130,6 +130,7 @@ export const categoryOptions = [
     { value: 'tourism', en: 'Tourism', np: 'पर्यटन' },
     { value: 'education', en: 'Education', np: 'शिक्षा' },
     { value: 'health', en: 'Health', np: 'स्वास्थ्य' },
+    { value: 'security', en: 'Security', np: 'सुरक्षा' },
     { value: 'technology', en: 'Technology', np: 'प्रविधि' },
     { value: 'economy', en: 'Economy', np: 'अर्थतन्त्र' },
     { value: 'agriculture', en: 'Agriculture', np: 'कृषि' },
