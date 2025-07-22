@@ -14,6 +14,7 @@ export default function EditPostPage() {
     const [loading, setLoading] = useState(true)
     const initialize = usePostStore(state => state.initialize)
     const { getToken } = useAuth();
+    const [isReupdated, setIsReupdated] = useState<boolean>(false)
 
     useEffect(() => {
         const loadPost = async () => {
@@ -40,8 +41,11 @@ export default function EditPostPage() {
                 }
 
                 const response = await fetchPostsById(id as string)
+                const status = response?.success && response.serializedPost.status
+                status == 'approved' ? setIsReupdated(true) : setIsReupdated(false)
                 if (response?.success && response.serializedPost) {
                     initialize(response.serializedPost as Partial<PostState>)
+                    setIsReupdated(response.serializedPost.status === 'approved')
                     setLoading(false)
                 } else {
                     toast.error('Failed to load post')
@@ -72,7 +76,7 @@ export default function EditPostPage() {
                     Back to Dashboard
                 </Button>
             </div>
-            <PostLayout isEditing={true} isEditor={true} />
+            <PostLayout isEditing={true} isEditor={true} isReupdated={isReupdated} />
         </div>
     )
 }

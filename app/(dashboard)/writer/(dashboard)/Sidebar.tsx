@@ -1,9 +1,11 @@
 'use client'
 import { SignOutButton } from '@clerk/nextjs'
-import { LogOut, ChevronDown } from 'lucide-react'
+import { LogOut, ChevronDown, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
 
 export default function Sidebar() {
     const pathname = usePathname()
@@ -13,6 +15,7 @@ export default function Sidebar() {
         banners: false,
         administration: false,
     })
+    const [isMobileOpen, setIsMobileOpen] = useState(false)
 
     // Auto-expand sections based on current path
     useEffect(() => {
@@ -30,13 +33,18 @@ export default function Sidebar() {
     }
 
     const isActive = (href: string) => {
-        return pathname === href || (href !== '/writer' && pathname.startsWith(href))
+        return pathname === href
     }
 
-    return (
+    // Close mobile sidebar when navigating
+    useEffect(() => {
+        setIsMobileOpen(false)
+    }, [pathname])
+
+    const sidebarContent = (
         <div className="h-full bg-white border-r border-gray-200 flex flex-col animate-fade-in-right">
             {/* Header */}
-            <div className="p-4 border-b border-gray-200">
+            <div className="p-4 border-b border-gray-200 hidden md:flex">
                 <h2 className="text-xl font-bold text-gray-800">Writer Dashboard</h2>
             </div>
 
@@ -150,5 +158,32 @@ export default function Sidebar() {
                 </SignOutButton>
             </div>
         </div>
+    )
+
+    return (
+        <>
+            {/* Mobile sidebar trigger */}
+            <div className="lg:hidden fixed top-4 right-4 z-50">
+                <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
+                    <SheetTrigger asChild>
+                        <Button variant="outline" size="icon">
+                            <Menu className="h-5 w-5" />
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="right" className="w-[280px] p-0">
+                        <SheetHeader className="p-4 border-b border-gray-200">
+                            <SheetTitle className="text-xl font-bold text-gray-800">Writer Dashboard</SheetTitle>
+                            <SheetDescription></SheetDescription>
+                        </SheetHeader>
+                        {sidebarContent}
+                    </SheetContent>
+                </Sheet>
+            </div>
+
+            {/* Desktop sidebar */}
+            <div className="hidden lg:block lg:w-64 flex-shrink-0">
+                {sidebarContent}
+            </div>
+        </>
     )
 }

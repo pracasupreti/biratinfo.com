@@ -223,7 +223,7 @@ export function PostTable({
                                 {/* Authors */}
                                 <div className="col-span-2 flex flex-col gap-1 items-center">
                                     {(post.authors || []).slice(0, 2).map((authorId, index) => (
-                                        <AuthorDisplay key={index} authorId={authorId} />
+                                        <AuthorDisplay key={index} author={authorId} />
                                     ))}
                                 </div>
 

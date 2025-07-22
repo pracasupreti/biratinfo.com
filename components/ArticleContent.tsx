@@ -13,6 +13,12 @@ const cleanContent = (html: string): string =>
         .replace(/<span[^>]*>×<\/span>/gi, '')
         .replace(/×/g, '');
 
+const extractYouTubeId = (url: string): string | null => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+};
+
 export default function ArticleContent({ post, defaultSponsoredAd }: {
     post: SinglePost,
     defaultSponsoredAd?: { url: string; link: string } | null
@@ -46,7 +52,7 @@ export default function ArticleContent({ post, defaultSponsoredAd }: {
                         if (parent && parent.type === 'tag' && parent.name === 'li') {
                             return <>{inner}</>;
                         }
-                        return <p className="text-gray-800 leading-relaxed mb-4 text-lg">{inner}</p>;
+                        return <div className="text-gray-800 leading-relaxed mb-4 text-lg">{inner}</div>;
                     }
                     case 'ul':
                         return <ul className="list-disc list-inside mb-6 text-gray-800 space-y-2 text-lg">{inner}</ul>;
@@ -71,6 +77,33 @@ export default function ArticleContent({ post, defaultSponsoredAd }: {
                                     unoptimized
                                 />
                             </div>
+                        );
+                    }
+                    case 'a': {
+                        const href = attribs.href || '';
+                        const youtubeId = extractYouTubeId(href);
+                        if (youtubeId) {
+                            return (
+                                <div className="my-6 w-full aspect-video">
+                                    <iframe
+                                        src={`https://www.youtube.com/embed/${youtubeId}`}
+                                        className="w-full h-full rounded-lg"
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    />
+                                </div>
+                            );
+                        }
+                        return (
+                            <Link
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-800 underline"
+                            >
+                                {inner}
+                            </Link>
                         );
                     }
                 }

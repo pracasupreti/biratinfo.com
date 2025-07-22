@@ -103,7 +103,7 @@ export default function RecentPosts({ posts, loading = false }: RecentPostsProps
                         {/* Author */}
                         <div className="col-span-12 md:col-span-3 flex items-center justify-center">
                             {post.authors?.[0] ? (
-                                <AuthorDisplay authorId={post.authors[0]} />
+                                <AuthorDisplay author={post.authors[0]} />
                             ) : (
                                 <div className="flex items-center space-x-2">
                                     <Avatar className="h-8 w-8">

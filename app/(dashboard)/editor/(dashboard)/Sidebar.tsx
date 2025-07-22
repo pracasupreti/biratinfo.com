@@ -1,9 +1,11 @@
 'use client'
 import { SignOutButton } from '@clerk/nextjs'
-import { LogOut, ChevronDown } from 'lucide-react'
+import { LogOut, ChevronDown, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
 
 export default function EditorSidebar() {
     const pathname = usePathname()
@@ -11,6 +13,7 @@ export default function EditorSidebar() {
         allposts: pathname.includes('/editor/all-posts'),
         myposts: pathname.includes('/editor/my-posts') || pathname.includes('/editor/post')
     })
+    const [isMobileOpen, setIsMobileOpen] = useState(false)
 
     // Auto-expand sections based on current path
     useEffect(() => {
@@ -28,14 +31,18 @@ export default function EditorSidebar() {
     }
 
     const isActive = (href: string) => {
-        return pathname === href ||
-            (href !== '/manager' && pathname.startsWith(href))
+        return pathname === href
     }
 
-    return (
+    // Close mobile sidebar when navigating
+    useEffect(() => {
+        setIsMobileOpen(false)
+    }, [pathname])
+
+    const sidebarContent = (
         <div className="h-full bg-white border-r border-gray-200 flex flex-col">
             {/* Header */}
-            <div className="p-4 border-b border-gray-200">
+            <div className="p-4 border-b border-gray-200 hidden md:flex">
                 <h2 className="text-xl font-bold text-gray-800">Editor Dashboard</h2>
             </div>
 
@@ -44,7 +51,7 @@ export default function EditorSidebar() {
                 {/* Dashboard */}
                 <div className="mb-2">
                     <Link
-                        href="/manager/dashboard"
+                        href="/editor"
                         className={`w-full flex items-center p-2 rounded-md font-medium ${isActive('/editor')
                             ? 'bg-gray-100 text-gray-900 font-semibold'
                             : 'text-gray-700 hover:bg-gray-100'
@@ -63,11 +70,14 @@ export default function EditorSidebar() {
                         <span>All Posts</span>
                         <ChevronDown
                             size={16}
-                            className={`transition-transform duration-200 ${expandedSections.allposts ? 'rotate-0' : '-rotate-90'}`}
+                            className={`transition-transform duration-200 ${expandedSections.allposts ? 'rotate-0' : '-rotate-90'
+                                }`}
                         />
                     </button>
-                    <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ${expandedSections.allposts ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'
-                        }`}>
+                    <div
+                        className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ${expandedSections.allposts ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'
+                            }`}
+                    >
                         <Link
                             href="/editor/all-posts/published-posts"
                             className={`block p-2 rounded-md text-sm ${isActive('/editor/all-posts/published-posts')
@@ -107,11 +117,14 @@ export default function EditorSidebar() {
                         <span>My Posts</span>
                         <ChevronDown
                             size={16}
-                            className={`transition-transform duration-200 ${expandedSections.myposts ? 'rotate-0' : '-rotate-90'}`}
+                            className={`transition-transform duration-200 ${expandedSections.myposts ? 'rotate-0' : '-rotate-90'
+                                }`}
                         />
                     </button>
-                    <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ${expandedSections.myposts ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'
-                        }`}>
+                    <div
+                        className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ${expandedSections.myposts ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'
+                            }`}
+                    >
                         <Link
                             href="/editor/post"
                             className={`block p-2 rounded-md text-sm ${isActive('/editor/post')
@@ -175,5 +188,32 @@ export default function EditorSidebar() {
                 </SignOutButton>
             </div>
         </div>
+    )
+
+    return (
+        <>
+            {/* Mobile sidebar trigger */}
+            <div className="lg:hidden fixed top-4 right-4 z-50">
+                <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
+                    <SheetTrigger asChild>
+                        <Button variant="outline" size="icon">
+                            <Menu className="h-5 w-5" />
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="right" className="w-[280px] p-0">
+                        <SheetHeader className="p-4 border-b border-gray-200">
+                            <SheetTitle className="text-xl font-bold text-gray-800">Editor Dashboard</SheetTitle>
+                            <SheetDescription></SheetDescription>
+                        </SheetHeader>
+                        {sidebarContent}
+                    </SheetContent>
+                </Sheet>
+            </div>
+
+            {/* Desktop sidebar */}
+            <div className="hidden lg:block lg:w-64 flex-shrink-0">
+                {sidebarContent}
+            </div>
+        </>
     )
 }

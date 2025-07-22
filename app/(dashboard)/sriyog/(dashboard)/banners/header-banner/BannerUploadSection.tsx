@@ -34,7 +34,6 @@ export function BannerUploadSection({ onUploadSuccess, categories }: BannerUploa
                         maxImageFileSize: 5000000,
                     }}
                     onSuccess={(result: any) => {
-                        console.log('Widget upload success:', result);
                         if (currentCategoryRef.current) {
                             onUploadSuccess(result, currentCategoryRef.current);
                         } else {
