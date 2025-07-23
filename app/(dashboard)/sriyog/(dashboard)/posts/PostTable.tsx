@@ -180,10 +180,6 @@ export function PostTable({
         return cn("capitalize w-full text-center", statusClasses[status as keyof typeof statusClasses])
     }, [])
 
-    const handleEditPost = useCallback((postId: string) => {
-        router.push(`/writer/edit/${postId}`)
-    }, [router])
-
     // Pagination range calculation
     const paginationRange = useMemo(() => {
         const delta = 2
