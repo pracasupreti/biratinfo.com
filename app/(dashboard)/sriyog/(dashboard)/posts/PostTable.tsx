@@ -13,7 +13,7 @@ import {
     PaginationLink,
     PaginationNext
 } from '@/components/ui/pagination'
-import { Search, Trash2, Edit, Calendar, User, Tag } from 'lucide-react'
+import { Search, Trash2, Calendar, User, Tag } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Post from '@/types/Post'
 import { useAuth } from '@clerk/nextjs'
@@ -417,15 +417,6 @@ export function PostTable({
                                         </Badge>
                                         {isEditable && (
                                             <div className="flex gap-2">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    className='cursor-pointer'
-                                                    onClick={() => handleEditPost(post._id)}
-                                                >
-                                                    <Edit className="h-4 w-4 mr-1" />
-                                                    Edit
-                                                </Button>
                                                 <Button
                                                     variant="ghost"
                                                     size="sm"

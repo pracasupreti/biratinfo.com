@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button'
 import { PostActions } from './PostActions'
 import { EditorPostAction } from '../editor/EditorPostAction'
-import { AuthorSelect, User } from './AuthorSelect'
+import { AuthorSelect } from './AuthorSelect'
 import { MultiSelect } from '../MultiSelectComponent'
 import { categoryOptions, Language } from '@/types/Post'
 import { uploadImage, deleteImage, uploadAudio, deleteAudio } from '@/lib/cloudinary'
