@@ -21,14 +21,16 @@ import { cn } from "@/lib/utils"
 import { TimePicker } from '../ui/time-picker'
 import toast from 'react-hot-toast'
 import { Progress } from '../ui/progress'
+import { resizeAndCompressImage } from '../CompressFile'
 
 interface PostSidebarProps {
     isEditing?: boolean
     isEditor?: boolean
     isWriting?: boolean
+    isReupdated?: boolean
 }
 
-export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps) {
+export function PostSidebar({ isEditing, isEditor, isWriting, isReupdated }: PostSidebarProps) {
     const {
         isNepali,
         category,
@@ -280,9 +282,8 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                             <AuthorSelect
                                 value={authors}
                                 onChange={(newAuthors) => setField('authors', newAuthors)}
-                                isEditor={isEditor}
                                 error={errors.authors}
-                                maxSelections={2}
+                                isNepali={isNepali}
                             />
                             {errors.author && <p className="text-red-500 text-xs mt-0.5">{errors.author}</p>}
 
@@ -415,6 +416,9 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                         onRemove={handleRemoveImage}
                         isOtherUploading={isOgUploading || isSponsoredAdsUploading || isSubmitting}
                         error={errors.heroBanner}
+                        targetWidth={1400}
+                        targetHeight={900}
+                        quality={0.85}
                     />
 
                     {/* Hero Image Credit */}
@@ -442,6 +446,9 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                         onRemove={handleRemoveImage}
                         isOtherUploading={isHeroUploading || isSponsoredAdsUploading || isSubmitting}
                         error={errors.ogBanner}
+                        targetWidth={1200}
+                        targetHeight={700}
+                        quality={0.85}
                     />
 
                     {/* OG Image Credit */}
@@ -469,6 +476,9 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                         onRemove={handleRemoveImage}
                         isOtherUploading={isHeroUploading || isOgUploading || isSubmitting}
                         error={errors.sponsoredAds}
+                        targetWidth={1000}
+                        targetHeight={1250}
+                        quality={0.85}
                     />
 
                     {/* Sponsored Link */}
@@ -529,6 +539,7 @@ export function PostSidebar({ isEditing, isEditor, isWriting }: PostSidebarProps
                     <EditorPostAction
                         onActionClick={handleActionClick}
                         isSubmitting={isSubmitting}
+                        isReupdated={isReupdated}
                     />
                 ) : (
                     <PostActions
@@ -552,6 +563,9 @@ interface ImageUploadSectionProps {
     onRemove: (field: 'heroBanner' | 'ogBanner' | 'sponsoredAds') => void
     isOtherUploading: boolean
     error?: string
+    targetWidth?: number
+    targetHeight?: number
+    quality?: number
 }
 
 const ImageUploadSection = ({
@@ -562,11 +576,28 @@ const ImageUploadSection = ({
     onUpload,
     onRemove,
     isOtherUploading,
-    error
+    error,
+    targetWidth = 1200,
+    targetHeight = 630,
+    quality = 0.8
 }: ImageUploadSectionProps) => {
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
-            await onUpload(field, e.target.files[0])
+            try {
+                // Compress the image before uploading
+                const compressedFile = await resizeAndCompressImage(
+                    e.target.files[0],
+                    targetWidth,
+                    targetHeight,
+                    quality
+                )
+                await onUpload(field, compressedFile)
+            } catch (error) {
+                console.error('Image compression/upload failed:', error)
+                toast.error('Error compressing or uploading file')
+
+            }
+
         }
     }
 

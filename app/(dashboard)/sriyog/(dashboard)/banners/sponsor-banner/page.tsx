@@ -150,7 +150,7 @@ export default function SponsorBannerManager() {
 
     const handleUploadSuccess = async (result: any, category: ContentCategory) => {
         const loadingToast = toast.loading('Uploading banner...');
-        const url = result?.info?.secure_url;
+        const url = result?.secure_url;
         if (!url) {
             toast.error('Upload failed: no URL found', { id: loadingToast });
             return;

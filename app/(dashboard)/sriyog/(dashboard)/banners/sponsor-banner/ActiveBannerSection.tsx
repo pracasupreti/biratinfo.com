@@ -28,7 +28,7 @@ export default function ActiveBannersSection({
                         <div className={`rounded-md ${!banner ? 'border' : ''} overflow-hidden`}>
                             {banner ? (
                                 <>
-                                    <div className="aspect-[1/1.5] relative bg-muted/50">
+                                    <div className="aspect-[2/2.5] relative bg-muted/50">
                                         <Image
                                             src={banner.url}
                                             alt={`Active ${category} banner`}
@@ -45,7 +45,7 @@ export default function ActiveBannersSection({
                                     </div>
                                 </>
                             ) : (
-                                <div className="aspect-[9/13] flex items-center justify-center bg-muted/25">
+                                <div className="aspect-[2/2.5] flex items-center justify-center bg-muted/25">
                                     <p className="text-xs text-muted-foreground">
                                         No active banner
                                     </p>

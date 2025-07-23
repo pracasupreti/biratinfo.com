@@ -21,10 +21,11 @@ import { Loader2 } from 'lucide-react'
 
 interface EditorPostActionProps {
     isSubmitting: boolean
+    isReupdated?: boolean
     onActionClick: (action: () => Promise<void>) => Promise<void>
 }
 
-export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActionProps) {
+export function EditorPostAction({ isSubmitting, onActionClick, isReupdated }: EditorPostActionProps) {
     const { validate, resetStore, ...state } = usePostStore()
     const { id } = useParams()
     const { getToken } = useAuth()
@@ -115,13 +116,17 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
                 throw new Error(errorData.message || 'Failed to update post')
             }
 
-            toast.success(
-                status === 'approved'
-                    ? 'The post has been successfully approved'
-                    : status === 'scheduled'
-                        ? 'The post has been scheduled for later'
-                        : 'The post has been rejected'
-            );
+            if (isReupdated) {
+                toast.success('Post updated successfully')
+            } else {
+                toast.success(
+                    status === 'approved'
+                        ? 'The post has been successfully approved'
+                        : status === 'scheduled'
+                            ? 'The post has been scheduled for later'
+                            : 'The post has been rejected'
+                )
+            }
 
             resetStore()
         } catch (error: any) {
@@ -148,7 +153,7 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
                     {isSubmitting && dialogType === 'approve' ? (
                         <Loader2 className="w-4 h-4 animate-spin mr-2" />
                     ) : (
-                        'Approve Post'
+                        isReupdated ? 'Update Post' : 'Approve Post'
                     )}
                 </Button>
 
@@ -170,12 +175,16 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
                     <AlertDialogHeader>
                         <AlertDialogTitle>
                             {dialogType === 'approve'
-                                ? 'Approve this post?'
+                                ? isReupdated
+                                    ? 'Update this post?'
+                                    : 'Approve this post?'
                                 : 'Reject this post?'}
                         </AlertDialogTitle>
                         <AlertDialogDescription>
                             {dialogType === 'approve'
-                                ? 'Are you sure you want to approve this post?'
+                                ? isReupdated
+                                    ? 'Are you sure you want to update this post?'
+                                    : 'Are you sure you want to approve this post?'
                                 : 'Are you sure you want to reject this post?'}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
@@ -188,7 +197,7 @@ export function EditorPostAction({ isSubmitting, onActionClick }: EditorPostActi
                             {isSubmitting ? (
                                 <Loader2 className="w-4 h-4 animate-spin mr-2" />
                             ) : dialogType === 'approve' ? (
-                                'Approve'
+                                isReupdated ? 'Update' : 'Approve'
                             ) : (
                                 'Reject'
                             )}

@@ -141,7 +141,7 @@ export function PostForm() {
                                         setExcerptLength(newValue.length)
                                     }
                                 }}
-                                placeholder={isNepali ? 'संक्षिप्त विवरण लेख्नुहोस् (अधिकतम १५० अक्षर)' : 'Enter excerpt (max 150 characters)'}
+                                placeholder={isNepali ? 'संक्षिप्त विवरण लेख्नुहोस् (अधिकतम ५०० अक्षर)' : 'Enter excerpt (max 500 characters)'}
                                 rows={3}
                             />
                             {errors.excerpt && (
@@ -288,15 +288,61 @@ export function PostForm() {
                                 ))}
                             </div>
                         )}
+
+                        {/* Create a temporary div to parse the content */}
                         <div
                             dangerouslySetInnerHTML={{ __html: content }}
-                            className="[&_h1]:text-2xl [&_h1]:md:text-3xl [&_h1]:font-bold [&_h1]:text-text-color [&_h1]:mb-4
-                                       [&_p]:text-base [&_p]:text-gray-800 [&_p]:mb-4 [&_p]:leading-relaxed
-                                       [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4
-                                       [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-4
-                                       [&_a]:text-blue-600 [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:opacity-75 [&_a]:cursor-pointer [&_a]:break-words
-                                       [&_img]:rounded-lg [&_img]:my-4 [&_img]:mx-auto [&_img]:max-w-full [&_img]:h-auto [&_img]:max-h-[400px] [&_img]:object-contain [&_img]:block
-                                       [&_strong]:font-semibold [&_em]:italic"
+                            ref={(node) => {
+                                if (node) {
+                                    // Find all anchor tags with YouTube links
+                                    const links = node.querySelectorAll('a[href*="youtube.com"], a[href*="youtu.be"]');
+                                    links.forEach(link => {
+                                        const href = link.getAttribute('href');
+                                        if (href) {
+                                            // Extract YouTube ID
+                                            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                                            const match = href.match(regExp);
+                                            const youtubeId = (match && match[2].length === 11) ? match[2] : null;
+
+                                            if (youtubeId) {
+                                                // Replace the link with an iframe
+                                                const iframe = document.createElement('div');
+                                                iframe.className = 'my-6 w-full aspect-video';
+                                                iframe.innerHTML = `
+                                    <iframe
+                                        src="https://www.youtube.com/embed/${youtubeId}"
+                                        class="w-full h-full rounded-lg"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen
+                                    ></iframe>
+                                `;
+                                                link.replaceWith(iframe);
+                                            } else {
+                                                // For non-YouTube links, add proper styling
+                                                link.classList.add('text-blue-600', 'underline', 'underline-offset-2', 'hover:opacity-75', 'cursor-pointer', 'break-words');
+                                            }
+                                        }
+                                    });
+
+                                    // Apply other styles
+                                    const elements = {
+                                        h1: 'text-2xl md:text-3xl font-bold text-text-color mb-4',
+                                        p: 'text-base text-gray-800 mb-4 leading-relaxed',
+                                        ul: 'list-disc pl-5 mb-4',
+                                        ol: 'list-decimal pl-5 mb-4',
+                                        img: 'rounded-lg my-4 mx-auto max-w-full h-auto max-h-[400px] object-contain block',
+                                        strong: 'font-semibold',
+                                        em: 'italic'
+                                    };
+
+                                    Object.entries(elements).forEach(([tag, classes]) => {
+                                        node.querySelectorAll(tag).forEach(el => {
+                                            el.className = classes;
+                                        });
+                                    });
+                                }
+                            }}
                         />
                     </div>
                 )}

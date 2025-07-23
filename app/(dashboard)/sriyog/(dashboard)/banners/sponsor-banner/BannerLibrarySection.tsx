@@ -32,7 +32,8 @@ export function BannerLibrarySection({
                                 key={banner._id}
                                 className={`relative rounded-md overflow-hidden border ${activeBannerId === banner._id ? 'border-green-400 border-2' : ''}`}
                             >
-                                <div className="aspect-[1/1.5] relative bg-gray-100">
+                                {/* Changed aspect ratio to 2/2.5 (same as 1000×1250) */}
+                                <div className="aspect-[2/2.5] relative bg-gray-100">
                                     <Image
                                         src={banner.url}
                                         alt="Sponsor banner"

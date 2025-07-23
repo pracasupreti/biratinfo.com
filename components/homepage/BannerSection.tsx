@@ -70,7 +70,7 @@ export default function BannerSection({ mobile = false }: { mobile?: boolean }) 
                         {error}
                     </div>
                 ) : sponsorBanner ? (
-                    <Link href="#">
+                    <Link href={link}>
                         <Image
                             src={sponsorBanner}
                             alt='Sponsor Banner'
@@ -116,6 +116,7 @@ export default function BannerSection({ mobile = false }: { mobile?: boolean }) 
                             setError('Failed to load banner image');
                             setSponsorBanner(null);
                         }}
+                        unoptimized
                     />
                 </Link>
             ) : (

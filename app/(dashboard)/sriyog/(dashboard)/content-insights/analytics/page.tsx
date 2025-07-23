@@ -5,15 +5,17 @@ import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, LabelList } from "recharts";
 
 interface User {
-    id: string;
-    name: string
-    role: string;
+    _id: string;
+    clerkId: string;
+    firstName: string;
+    lastName: string;
+    username: string;
+    avatar?: string;
 }
-
 interface Post {
     _id: string;
     title: string;
-    authors: User[] | string[]; // Can be array of User objects or author IDs (strings)
+    authors: User[] | string[];
     category: string;
     createdAt: string;
     status: string;
@@ -141,15 +143,26 @@ const AnalyticsPage = () => {
                 fetchAllUsers(token),
             ]);
 
+            console.log(approvedPosts)
+
             // Process top authors - using the formatted names from backend
             const authorPostCount = new Map<string, number>();
             approvedPosts.forEach(post => {
                 if (post.authors?.length > 0) {
                     // Handle both cases where authors is array of IDs or full user objects
                     const firstAuthor = post.authors[0];
-                    const authorName = typeof firstAuthor === 'string'
-                        ? usersResponse.find(u => u.id === firstAuthor)?.name || `Author ${firstAuthor.substring(0, 6)}`
-                        : firstAuthor.name || `Author ${firstAuthor.id.substring(0, 6)}`;
+                    let authorName: string;
+
+                    if (typeof firstAuthor === 'string') {
+                        // If author is just an ID string, find the user in usersResponse
+                        const user = usersResponse.find(u => u._id === firstAuthor || u.clerkId === firstAuthor);
+                        authorName = user
+                            ? `${user.firstName} ${user.lastName}`.trim() || user.username
+                            : `Author ${firstAuthor.substring(0, 6)}`;
+                    } else {
+                        // If author is a full user object
+                        authorName = `${firstAuthor.firstName} ${firstAuthor.lastName}`.trim() || firstAuthor.username;
+                    }
 
                     authorPostCount.set(
                         authorName,

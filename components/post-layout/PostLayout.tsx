@@ -8,9 +8,10 @@ interface PostLayoutProps {
     isEditing?: boolean
     isEditor?: boolean
     isWriting?: boolean
+    isReupdated?: boolean
 }
 
-export function PostLayout({ isEditing = false, isEditor = false, isWriting = false }: PostLayoutProps) {
+export function PostLayout({ isEditing = false, isEditor = false, isWriting = false, isReupdated = false }: PostLayoutProps) {
     const { isNepali, toggleLanguage } = usePostStore()
 
     return (
@@ -37,6 +38,7 @@ export function PostLayout({ isEditing = false, isEditor = false, isWriting = fa
                             isEditing={isEditing}
                             isEditor={isEditor}
                             isWriting={isWriting}
+                            isReupdated={isReupdated}
                         />
                     </div>
                 </div>
