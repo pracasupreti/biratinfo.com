@@ -6,33 +6,46 @@ import { useAuth } from '@clerk/nextjs'
 import { Label } from '../ui/label'
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar'
 
-interface User {
-    id: string
-    name: string | null
-    imageUrl: string
-    role?: string
+export interface User {
+    _id?: string
+    firstName?: string
+    lastName?: string
+    username?: string
+    avatar?: string
+    clerkId?: string
+    name?: string
+    imageUrl?: string
+    id?: string
 }
 
 interface AuthorSelectProps {
-    value: string[]
-    onChange: (value: string[]) => void
+    value: User[]
+    onChange: (value: User[]) => void
     error?: string | string[]
     isNepali?: boolean
+    isEditing?: boolean
+    isReupdated?: boolean
 }
 
 export function AuthorSelect({
     value = [],
     onChange,
     error,
-    isNepali
+    isNepali,
+    isEditing,
+    isReupdated
 }: AuthorSelectProps) {
-    const [currentUser, setCurrentUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const { isLoaded: isClerkLoaded, userId, getToken } = useAuth()
 
     useEffect(() => {
-        if (!isClerkLoaded) return
+        if (!isClerkLoaded) return;
+
+        if (isEditing || isReupdated || value.length > 0) {
+            setLoading(false)
+            return
+        }
 
         const fetchCurrentUser = async () => {
             try {
@@ -51,7 +64,7 @@ export function AuthorSelect({
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                     }
                 })
 
@@ -65,16 +78,13 @@ export function AuthorSelect({
                     throw new Error('User data not found in response')
                 }
 
-                setCurrentUser(data.user)
-                if (value.length === 0) {
-                    onChange([data.user.id])
-                }
+                onChange([data.user])
             } catch (error) {
                 console.error('Error fetching current user:', error)
                 setErrorMessage(
-                    error instanceof Error ?
-                        error.message :
-                        'Failed to load author information'
+                    error instanceof Error
+                        ? error.message
+                        : 'Failed to load author information'
                 )
             } finally {
                 setLoading(false)
@@ -82,12 +92,16 @@ export function AuthorSelect({
         }
 
         fetchCurrentUser()
-    }, [isClerkLoaded, userId])
+    }, [isClerkLoaded, userId, isEditing, isReupdated, value.length, onChange])
+
+    const author = value[0]
 
     if (!isClerkLoaded || loading) {
         return (
             <div className="space-y-2">
-                <Label className='text-sm font-medium text-gray-800'>{isNepali ? 'लेखक' : 'Author'}</Label>
+                <Label className='text-sm font-medium text-gray-800'>
+                    {isNepali ? 'लेखक' : 'Author'}
+                </Label>
                 <div className="flex items-center gap-2 p-3 rounded-lg bg-gray-50">
                     <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
                     <span className="text-gray-600">Loading author information...</span>
@@ -96,10 +110,12 @@ export function AuthorSelect({
         )
     }
 
-    if (errorMessage || !currentUser) {
+    if (errorMessage || !author) {
         return (
             <div className="space-y-2">
-                <Label className='text-sm font-medium text-gray-800'>{isNepali ? 'लेखक' : 'Author'}</Label>
+                <Label className='text-sm font-medium text-gray-800'>
+                    {isNepali ? 'लेखक' : 'Author'}
+                </Label>
                 <div className="p-3 rounded-lg bg-red-50 border border-red-100">
                     <p className="text-red-600">
                         {errorMessage || 'Author information not available'}
@@ -114,17 +130,21 @@ export function AuthorSelect({
 
     return (
         <div className="space-y-2">
-            <Label className="text-sm font-medium text-gray-800">{isNepali ? 'लेखक' : 'Author'}</Label>
+            <Label className="text-sm font-medium text-gray-800">
+                {isNepali ? 'लेखक' : 'Author'}
+            </Label>
             <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
                 <Avatar className="h-8 w-8">
-                    <AvatarImage src={currentUser.imageUrl} />
+                    <AvatarImage src={author.avatar || author.imageUrl} />
                     <AvatarFallback className="bg-gray-200 text-gray-700">
-                        {currentUser.name?.charAt(0) || 'U'}
+                        {author.firstName?.charAt(0) || author.username?.charAt(0) || author.name?.charAt(0) || 'U'}
                     </AvatarFallback>
                 </Avatar>
                 <div>
                     <p className="font-medium text-gray-900">
-                        {currentUser.name || 'Unknown Author'}
+                        {author.firstName && author.lastName
+                            ? `${author.firstName} ${author.lastName}`
+                            : author.username || author.name || 'Unknown Author'}
                     </p>
                     <p className="text-xs text-gray-500">{isNepali ? 'लेखक' : 'Author'}</p>
                 </div>

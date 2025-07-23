@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button'
 import { PostActions } from './PostActions'
 import { EditorPostAction } from '../editor/EditorPostAction'
-import { AuthorSelect } from './AuthorSelect'
+import { AuthorSelect, User } from './AuthorSelect'
 import { MultiSelect } from '../MultiSelectComponent'
 import { categoryOptions, Language } from '@/types/Post'
 import { uploadImage, deleteImage, uploadAudio, deleteAudio } from '@/lib/cloudinary'
@@ -284,6 +284,7 @@ export function PostSidebar({ isEditing, isEditor, isWriting, isReupdated }: Pos
                                 onChange={(newAuthors) => setField('authors', newAuthors)}
                                 error={errors.authors}
                                 isNepali={isNepali}
+                                isEditing={isEditing}
                             />
                             {errors.author && <p className="text-red-500 text-xs mt-0.5">{errors.author}</p>}
 

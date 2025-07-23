@@ -383,14 +383,6 @@ export function PostTable({
                                         <Button
                                             variant="ghost"
                                             size="icon"
-                                            onClick={() => handleEditPost(post._id)}
-                                            className="h-8 w-8 cursor-pointer"
-                                        >
-                                            <Edit className="h-4 w-4" />
-                                        </Button>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
                                             onClick={() => handleDelete(post._id)}
                                             className="h-8 w-8 text-red-500 hover:text-red-700 cursor-pointer"
                                         >

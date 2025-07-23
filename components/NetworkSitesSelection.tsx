@@ -64,7 +64,7 @@ export const NetworkSitesSection = ({
                         <Button size="sm" variant="outline" onClick={handleSelectAllFeatured} className='cursor-pointer'>
                             {isNepali ? 'सबै छान्नुहोस्' : 'Select All'}
                         </Button>
-                        <Button size="sm" variant="destructive" onClick={handleRemoveAllFeatured} className='cursor-pointer'>
+                        <Button size="sm" variant="outline" onClick={handleRemoveAllFeatured} className='cursor-pointer border-red-500'>
                             {isNepali ? 'सबै हटाउनुहोस्' : 'Remove All'}
                         </Button>
                     </div>
@@ -101,7 +101,7 @@ export const NetworkSitesSection = ({
                         <Button size="sm" variant="outline" onClick={handleSelectAllNetwork} className='cursor-pointer'>
                             {isNepali ? 'सबै छान्नुहोस्' : 'Select All'}
                         </Button>
-                        <Button size="sm" variant="destructive" onClick={handleRemoveAllNetwork} className='cursor-pointer'>
+                        <Button size="sm" variant="outline" onClick={handleRemoveAllNetwork} className='cursor-pointer border-red-500'>
                             {isNepali ? 'सबै हटाउनुहोस्' : 'Remove All'}
                         </Button>
                     </div>

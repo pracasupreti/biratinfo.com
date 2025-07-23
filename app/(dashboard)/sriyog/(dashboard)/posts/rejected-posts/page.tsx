@@ -44,6 +44,7 @@ export default async function RejectedPosts() {
                 allPosts={rejectedPosts}
                 title="Rejected Posts"
                 description="All rejected articles"
+                isEditable={true}
             />
         )
     } catch (error) {

@@ -44,6 +44,7 @@ export default async function ScheduledPosts() {
                 allPosts={scheduledPosts}
                 title="Scheduled Posts"
                 description="Manage all scheduled articles"
+                isEditable={true}
             />
         )
     } catch (error) {

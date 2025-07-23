@@ -46,6 +46,7 @@ export default async function PublishedPosts() {
                 isPublishedPost={true}
                 title="Published Posts"
                 description="Manage all published articles"
+                isEditable={true}
             />
         )
     } catch (error) {

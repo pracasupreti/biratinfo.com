@@ -57,6 +57,7 @@ export default function DraftPosts() {
             allPosts={draftPosts}
             title="Draft Posts"
             description="Manage all draft articles"
+            isEditable={true}
         />
     )
 }
