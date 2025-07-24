@@ -30,7 +30,7 @@ export default interface Post {
     tags: string[];
     date: string | Date;
     time: string;
-    authors: Author[];
+    authors: string[];
     language: string;
     readingTime: string;
     heroBanner: ImageData | null;

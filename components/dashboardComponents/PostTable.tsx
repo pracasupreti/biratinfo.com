@@ -333,7 +333,7 @@ export function PostTable({
 
                                 <div className="col-span-2 flex flex-col gap-1 items-center">
                                     {(post.authors || []).slice(0, 2).map((authorId, index) => (
-                                        <AuthorDisplay key={`${authorId}-${index}`} author={authorId} />
+                                        <AuthorDisplay key={`${authorId}-${index}`} authorId={authorId} />
                                     ))}
                                     {(post.authors?.length || 0) > 2 && (
                                         <span className="text-xs text-muted-foreground">

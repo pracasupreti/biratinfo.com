@@ -56,10 +56,11 @@ function MobileNav({ navItems }: MobileNavProps) {
                                                 ? "bg-white/20 text-white"
                                                 : "text-white hover:bg-white/10"
                                             }`}
+                                        style={{ lineHeight: '1.5' }} // Add this line
                                     >
                                         <div className="flex items-center">
                                             {typeof item.name === 'string' ? (
-                                                <span>{item.name}</span>
+                                                <span className="leading-normal">{item.name}</span>
                                             ) : (
                                                 item.name
                                             )}

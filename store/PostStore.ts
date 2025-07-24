@@ -1,5 +1,3 @@
-import { User } from '@/components/post-layout/AuthorSelect'
-import { Author } from '@/types/Post'
 import { create } from 'zustand'
 
 interface ImageData {
@@ -46,7 +44,7 @@ export interface PostState {
     tags: string[]
     date: string
     time: string
-    authors: User[]
+    authors: string[]
     language: string
     readingTime?: string
     access: string

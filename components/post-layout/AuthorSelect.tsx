@@ -6,21 +6,16 @@ import { useAuth } from '@clerk/nextjs'
 import { Label } from '../ui/label'
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar'
 
-export interface User {
-    _id?: string
-    firstName?: string
-    lastName?: string
-    username?: string
-    avatar?: string
-    clerkId?: string
-    name?: string
-    imageUrl?: string
-    id?: string
+interface Author {
+    id?: string,
+    imageUrl?: string,
+    name?: string,
+    role?: string
 }
 
 interface AuthorSelectProps {
-    value: User[]
-    onChange: (value: User[]) => void
+    value: string[]
+    onChange: (value: string[]) => void
     error?: string | string[]
     isNepali?: boolean
     isEditing?: boolean
@@ -33,73 +28,91 @@ export function AuthorSelect({
     error,
     isNepali,
     isEditing,
-    isReupdated
+    isReupdated,
 }: AuthorSelectProps) {
     const [loading, setLoading] = useState(true)
+    const [author, setAuthor] = useState<Author | null>(null)
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const { isLoaded: isClerkLoaded, userId, getToken } = useAuth()
 
     useEffect(() => {
-        if (!isClerkLoaded) return;
+        if (!isClerkLoaded) return
 
-        if (isEditing || isReupdated || value.length > 0) {
-            setLoading(false)
-            return
-        }
-
-        const fetchCurrentUser = async () => {
+        const fetchAuthor = async (clerkId: string) => {
             try {
                 setLoading(true)
                 setErrorMessage(null)
-
-                if (!userId) {
-                    throw new Error('User not authenticated')
-                }
 
                 const token = await getToken()
                 const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
                 if (!backend_uri) throw new Error('Missing API endpoint')
 
-                const response = await fetch(`${backend_uri}/api/users/${userId}`, {
+                const res = await fetch(`${backend_uri}/api/users/${clerkId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
-                    }
+                    },
                 })
 
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch user data: ${response.status}`)
-                }
+                if (!res.ok) throw new Error('Failed to fetch user')
 
-                const data = await response.json()
+                const data = await res.json()
+                if (!data?.user) throw new Error('User not found')
 
-                if (!data?.user) {
-                    throw new Error('User data not found in response')
-                }
-
-                onChange([data.user])
-            } catch (error) {
-                console.error('Error fetching current user:', error)
-                setErrorMessage(
-                    error instanceof Error
-                        ? error.message
-                        : 'Failed to load author information'
-                )
+                setAuthor(data.user)
+            } catch (err) {
+                console.error(err)
+                setErrorMessage(err instanceof Error ? err.message : 'Error fetching author')
             } finally {
                 setLoading(false)
             }
         }
 
-        fetchCurrentUser()
-    }, [isClerkLoaded, userId, isEditing, isReupdated, value.length, onChange])
+        const fetchAuthorById = async (clerkId: string) => {
+            try {
+                setLoading(true)
+                setErrorMessage(null)
 
-    const author = value[0]
+                const token = await getToken()
+                const backend_uri = process.env.NEXT_PUBLIC_BACKEND_URL
+                if (!backend_uri) throw new Error('Missing API endpoint')
+
+                const res = await fetch(`${backend_uri}/api/users/Id/${clerkId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                if (!res.ok) throw new Error('Failed to fetch user')
+
+                const data = await res.json()
+                if (!data?.user) throw new Error('User not found')
+
+                setAuthor(data.user)
+            } catch (err) {
+                console.error(err)
+                setErrorMessage(err instanceof Error ? err.message : 'Error fetching author')
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        if ((isEditing || isReupdated) && value.length > 0) {
+            // Use the existing ID to fetch
+            fetchAuthorById(value[0])
+        } else if (!isEditing && userId) {
+            // Fetch current user and set as author
+            fetchAuthor(userId).then(() => onChange([userId]))
+        }
+    }, [isClerkLoaded, userId, isEditing, isReupdated, value.length])
 
     if (!isClerkLoaded || loading) {
         return (
             <div className="space-y-2">
-                <Label className='text-sm font-medium text-gray-800'>
+                <Label className="text-sm font-medium text-gray-800">
                     {isNepali ? 'लेखक' : 'Author'}
                 </Label>
                 <div className="flex items-center gap-2 p-3 rounded-lg bg-gray-50">
@@ -113,7 +126,7 @@ export function AuthorSelect({
     if (errorMessage || !author) {
         return (
             <div className="space-y-2">
-                <Label className='text-sm font-medium text-gray-800'>
+                <Label className="text-sm font-medium text-gray-800">
                     {isNepali ? 'लेखक' : 'Author'}
                 </Label>
                 <div className="p-3 rounded-lg bg-red-50 border border-red-100">
@@ -135,23 +148,21 @@ export function AuthorSelect({
             </Label>
             <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
                 <Avatar className="h-8 w-8">
-                    <AvatarImage src={author.avatar || author.imageUrl} />
+                    <AvatarImage src={author.imageUrl} />
                     <AvatarFallback className="bg-gray-200 text-gray-700">
-                        {author.firstName?.charAt(0) || author.username?.charAt(0) || author.name?.charAt(0) || 'U'}
+                        {author.name?.charAt(0) || 'U'}
                     </AvatarFallback>
                 </Avatar>
                 <div>
                     <p className="font-medium text-gray-900">
-                        {author.firstName && author.lastName
-                            ? `${author.firstName} ${author.lastName}`
-                            : author.username || author.name || 'Unknown Author'}
+                        {author.name || 'Unknown Author'}
                     </p>
                     <p className="text-xs text-gray-500">{isNepali ? 'लेखक' : 'Author'}</p>
                 </div>
             </div>
             {error && (
                 <p className="text-red-500 text-xs mt-1">
-                    {typeof error === 'string' ? error : error?.join(', ')}
+                    {typeof error === 'string' ? error : error.join(', ')}
                 </p>
             )}
         </div>

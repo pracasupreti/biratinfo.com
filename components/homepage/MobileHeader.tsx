@@ -1,9 +1,9 @@
-// components/MobileHeader.tsx (Client Component)
 'use client'
+
 import { useAuth } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import BannerSection from './BannerSection';
 import MobileNav from '../MobileNav';
@@ -16,20 +16,32 @@ export default function MobileHeader({
     const { getToken } = useAuth();
     const [mobileNavItems, setMobileNavItems] = useState(mobileNav);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const isUpdated = useRef(false); // <-- useRef to track update status
 
     useEffect(() => {
         const updateAuthPaths = async () => {
+            if (isUpdated.current) return; // prevent multiple updates
+
             const token = await getToken();
             setIsLoggedIn(!!token);
+
+            const newItem = {
+                name: token ? 'लेख्नुहोस' : 'समाचार लेख्नुहोस',
+                path: token ? '/writer' : '/sign-up',
+            };
+
             setMobileNavItems(prev => {
-                const updated = [...prev];
-                updated[17] = {
-                    ...updated[13],
-                    name: token ? 'लेख्नुहोस' : 'समाचार लेख्नुहोस',
-                    path: token ? '/writer' : '/sign-up'
-                };
-                return updated;
+                const hasItem = prev.some(item => item.path === '/writer' || item.path === '/sign-up');
+                if (hasItem) {
+                    return prev.map(item =>
+                        item.path === '/writer' || item.path === '/sign-up' ? newItem : item
+                    );
+                } else {
+                    return [...prev, newItem];
+                }
             });
+
+            isUpdated.current = true;
         };
 
         updateAuthPaths();
@@ -63,9 +75,7 @@ export default function MobileHeader({
                     {isLoggedIn && (
                         <Link href="/writer" className="text-2xl font-semibold">+</Link>
                     )}
-                    <MobileNav
-                        navItems={mobileNavItems}
-                    />
+                    <MobileNav navItems={mobileNavItems} />
                 </div>
             </div>
 
