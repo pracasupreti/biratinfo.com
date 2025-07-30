@@ -14,7 +14,8 @@ export default function Sidebar() {
         categories: false,
         banners: false,
         administration: false,
-        network: false
+        network: false,
+        roadblock: false
     })
     const [isMobileOpen, setIsMobileOpen] = useState(false)
 
@@ -25,7 +26,8 @@ export default function Sidebar() {
             categories: pathname.includes('/content-insights'),
             banners: pathname.includes('/banners'),
             administration: pathname.includes('/administration'),
-            network: pathname.includes('/networks')
+            network: pathname.includes('/networks'),
+            roadblock: pathname.includes('/roadblock')
         })
     }, [pathname])
 
@@ -274,6 +276,41 @@ export default function Sidebar() {
                                 }`}
                         >
                             Add a Network
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Roadblock Section */}
+                <div className="mb-2">
+                    <button
+                        onClick={() => toggleSection('roadblock')}
+                        className="w-full flex justify-between items-center p-2 text-gray-700 hover:bg-gray-100 rounded-md font-medium transition-colors duration-200"
+                    >
+                        <span>RoadBlock Ads</span>
+                        <ChevronDown
+                            size={16}
+                            className={`transition-transform duration-200 ${expandedSections.roadblock ? 'rotate-0' : '-rotate-90'}`}
+                        />
+                    </button>
+                    <div className={`ml-4 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${expandedSections.roadblock ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'
+                        }`}>
+                        <Link
+                            href="/sriyog/roadblock/current-roadblocks"
+                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/sriyog/roadblock/current-roadblocks')
+                                ? 'bg-gray-100 text-gray-900 font-semibold'
+                                : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                        >
+                            Current RoadBlock Ads
+                        </Link>
+                        <Link
+                            href="/sriyog/roadblock/add-roadblock"
+                            className={`block p-2 rounded-md text-sm transition-colors duration-200 ${isActive('/sriyog/roadblock/add-roadblock')
+                                ? 'bg-gray-100 text-gray-900 font-semibold'
+                                : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                        >
+                            Add RoadBlock Ads
                         </Link>
                     </div>
                 </div>

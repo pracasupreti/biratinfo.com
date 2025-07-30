@@ -14,8 +14,7 @@ import { BannerCategoryDropdown } from './BannerCategoryDropdown';
 
 
 const CONTENT_CATEGORIES = [
-    'Sports', 'Economy', 'Politics', 'Entertainment',
-    'Technology', 'Health', 'Tourism', 'Agriculture', 'Education', 'Lifestyle'
+    'News', 'Sports', 'Entertainment', 'Politics', 'Tourism', 'Education', 'Health', 'Security', 'Technology', 'Economy', 'Agriculture', 'Culture', 'Environment', 'Opinion', 'Crime', 'Lifestyle', 'Automobile', 'Blog', 'Art', 'Editorial', 'Startups', 'Law', 'Market', 'Interview', 'Food', 'Employment', 'Literature', 'International', 'Complain'
 ] as const;
 
 export type ContentCategory = typeof CONTENT_CATEGORIES[number];

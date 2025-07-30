@@ -37,7 +37,7 @@ function Footer() {
                         <h3 className='text-[18px] font-semibold text-gray-900 font-orienta'>हाम्रो टिम</h3>
                         <ul className='space-y-3 text-gray-600'>
                             {[
-                                'अध्यक्ष : सुधीर नेपाल',
+                                'अध्यक्ष / प्रधानसम्पादक : सुधीर नेपाल',
                                 'सम्पादक : नबीन भट्टराई',
                                 'प्रविधि : प्रकाश उप्रेती',
                                 'व्यवस्थापन : सुभाष उप्रेती'
