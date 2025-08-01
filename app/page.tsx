@@ -25,12 +25,12 @@ export default async function Page() {
 
   // Then start fetching other content in parallel
   const [heroData, categoryBlocks] = await Promise.all([
-    fetch(`${backend_uri}/api/posts/featured-news`, options)
+    fetch(`${backend_uri}/api/posts/featured-news/biratinfo.com`, options)
       .then(res => res.ok ? res.json() : { post: [] })
       .then(data => data?.post || [])
       .catch(() => []),
 
-    fetch(`${backend_uri}/api/posts/homepage`, options)
+    fetch(`${backend_uri}/api/posts/homepage/biratinfo.com`, options)
       .then(res => res.ok ? res.json() : { post: [] })
       .then(data => data?.post || [])
       .catch(() => [])

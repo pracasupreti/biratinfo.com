@@ -18,11 +18,14 @@ function Body({ data }: BodyProps) {
 
 
     // Filter posts by category
-    const summaryCategories = ['sports', 'health', 'education', 'entertainment', 'culture'];
+    const summaryCategories = ['sports', 'health', 'education', 'entertainment', 'politics'];
 
-    const summaryPosts = data.filter(post =>
-        summaryCategories.includes(post.category?.toLowerCase())
-    ).slice(0, 5);
+    const summaryPosts: typeof data = [];
+
+    summaryCategories.forEach(category => {
+        const post = data.find(post => post.category?.toLowerCase() === category);
+        if (post) summaryPosts.push(post);
+    });
 
     const remaining = data.filter(post => !summaryPosts.includes(post));
 
